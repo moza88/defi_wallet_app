@@ -1,0 +1,113 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      // Validate write operations
+      function validateWrite(affectedKeys){
+        // Keys that the authenticated user should not be able to update
+        let protectedKeys = [
+          'admin'
+        ];
+
+        return (
+          // Make sure `email` is a string
+          futureData().email is string
+          // Require `email` be between 3 and 500 chars
+          // 254 is technically the limit but overshoot to be safe (stackoverflow.com/a/574698)
+          && futureData().email.trim().size() >= 3
+          && futureData().email.trim().size() <= 500
+          && (
+            // Make sure `name` either doesn't exist or ...
+            !('name' in futureData().keys()) 
+            || (
+              // Make sure `name` is a string
+              futureData().name is string
+              // And require that it's between 1 and 144 chars
+              && futureData().name.trim().size() >= 1
+              && futureData().name.trim().size() <= 144
+            ) 
+          )
+          // Make sure no protected keys were affected
+          && affectedKeys.hasAny(protectedKeys) == false
+          // Alternatively, instead of protected keys you could have an allow list
+          //&& futureData().keys().hasOnly(allowedKeys)
+        );
+      }
+
+      // The authenticated user can only read their own doc
+      allow read: if isUser(userId);
+      // For create/update we call a validation function and pass in affected keys
+      allow create: if isUser(userId) && validateWrite(futureData().keys());
+      allow update: if isUser(userId) && validateWrite(affectedKeys());
+      // The user doc can't be deleted (better to add an `isDeleted` field if that's needed)
+      allow delete: if false;
+    }
+    
+    match /items/{itemId} {
+      // Validate write operations
+      function validateWrite(affectedKeys){
+        return (
+          // Make sure `name` is a string
+          futureData().name is string
+          // Require `name` be between 1 and 144 chars
+          && futureData().name.trim().size() >= 1
+          && futureData().name.trim().size() <= 144
+          // Make sure `featured` is a bool if it exists
+          && (!('featured' in futureData().keys()) || futureData().featured is bool)
+          // Add more conditions here as needed
+        );
+      }
+      
+      // Can only read item if the authenticated user is the owner
+      allow read: if isOwner();
+      // This would allow reads from any user
+      //allow read: if true; 
+      // For create/update we call a validation function and pass in affected keys
+      allow create: if wouldBeOwner() && validateWrite(futureData().keys());
+      // Notice when updating we need to make sure authenticated user is currently the owner
+      // and that they would still be the owner if the write is successful (aka they can't change the owner)
+      allow update: if isOwner() && wouldBeOwner() && validateWrite(affectedKeys());
+      // Users can delete their own items
+      allow delete: if isOwner();
+    }
+
+    // Helper functions that simplify our rules
+
+    // Check if authenticated user's `uid` matches the specified `userId`
+    function isUser(userId) {
+      return request.auth.uid != null && request.auth.uid == userId;
+    }
+
+    // Get current data
+    function currentData() {
+      return resource.data;
+    }
+
+    // Get future data (the final data set if update goes through)
+    function futureData() {
+      return request.resource.data;
+    }
+
+    // Check if authenticated user's `uid` matches data `owner`
+    function isOwner(){
+      return isUser(currentData().owner);
+    }
+
+    // Check if authenticated user's `uid` matches future data `owner`
+    function wouldBeOwner(){
+      return isUser(futureData().owner);
+    }
+
+    // Get keys affected by an update
+    // Requires a diff between `futureData` and `currentData`
+    function affectedKeys() {
+      return futureData().diff(currentData()).affectedKeys();
+    }
+
+    // Query for extra user data belonging to the authenticated user
+    function getUserData(){
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+  }
+}
