@@ -6,6 +6,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { useForm } from "react-hook-form";
 
 export default function SendFunds({coin, walletId}, props) {
+
+    console.log("Send Funds " + walletId);
     const [pending, setPending] = useState(false);
 
     const [amount, setAmount] = useState('');
@@ -17,12 +19,25 @@ export default function SendFunds({coin, walletId}, props) {
 
     const onSubmit = (data) => {
 
-        transferFunds(coin, walletId, amount, destAddress, password);
+        console.log("Sending funds to " + walletId)
+
+        const txn =
+            {
+                coin: coin,
+                walletId: walletId,
+                amount: amount,
+                destAddress: destAddress,
+                password: password
+            };
+
+        transferFunds(txn);
     };
 
-    function transferFunds(coin, walletId, destAddress, amount, password) {
+    function transferFunds(txn) {
         var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER +"/send_txn";
         console.log(req_url);
+
+        console.log(amount);
 
         fetch(req_url, {
             method: 'POST',
@@ -31,14 +46,10 @@ export default function SendFunds({coin, walletId}, props) {
                 "Content-Type": "application/json",
                 'Access-Control-Allow-Origin': '*'
             },
-            body: JSON.stringify({
-                coin: coin,
-                walletId: walletId,
-                amount: amount,
-                destAddress: destAddress,
-                password: password,
-            })
-        })
+            body: JSON.stringify(txn)
+        }).then(r => {
+            console.log(r);
+        }).catch((error) => { console.log(error)})
     }
 
     return (

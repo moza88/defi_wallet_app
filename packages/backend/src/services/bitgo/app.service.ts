@@ -239,6 +239,7 @@ export class BitgoService {
     async sendTxn(txn: TXN) {
         this.unlockAccount();
 
+        console.log("sending txn")
         console.log(txn);
 
         const bitgo = new BitGo({ env: 'test' });
@@ -250,12 +251,10 @@ export class BitgoService {
         const txn_data = {
             walletPassphrase: txn.password,
             address: txn.destAddress,
-            amount: txn.amount
+            amount: 0.001 * 1e8
         };
 
         const amount = Number(txn.amount);
-
-        console.log("Amount is " + amount)
 
         if(amount > walletInstance.balance()){
             console.log("Amount is greater than balance, balance is " + walletInstance.balance())
@@ -264,7 +263,11 @@ export class BitgoService {
         } else if(amount < 2730) {
             console.log("Txn didn't go through because the gas fees will be higher, enter a number greater than 2730")
         } else {
-            return walletInstance.send(txn_data).catch((error) => {
+            return walletInstance.send(txn_data)
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
                 console.log(error)
 
                 return error

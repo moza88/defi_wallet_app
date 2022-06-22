@@ -49,16 +49,15 @@ export default function ListOfWallets(props) {
         "teth"
     ]);
 
-    const handleOpenSendFunds = () => {
-        setWalletId(walletId)
+    function handleOpenSendFunds(id)  {
+        setWalletId(id)
         setOpenSendFunds(true);
     }
 
-    const handleOpenViewHistory = (walletId) => {
+    const handleOpenViewHistory = () => {
         setWalletId(walletId)
         setOpenDetails(true);
     }
-
 
     function handleChange(event) {
         setCoin(event.target.value);
@@ -162,7 +161,9 @@ export default function ListOfWallets(props) {
                                     <TableCell>
                                         <Button variant="contained"
                                             startIcon={<SendIcon />}
-                                                onClick={handleOpenSendFunds}
+                                                onClick={() => {
+                                                    handleOpenSendFunds(item.id)
+                                                }}
                                             > Send
                                         </Button>
                                     </TableCell>
@@ -201,7 +202,9 @@ export default function ListOfWallets(props) {
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         Use this form to send your crypto.
                     </Typography>
+
                     <SendFunds coin={coin} walletId={walletId}/>
+
                 </Box>
             </Modal>
 
