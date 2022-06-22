@@ -13,8 +13,8 @@ function MyApp({ Component, pageProps }) {
           <>
             <Navbar
               color="default"
-              logo="https://uploads.divjoy.com/logo.svg"
-              logoInverted="https://uploads.divjoy.com/logo-white.svg"
+              logo="https://1000logos.net/wp-content/uploads/2017/11/Wells-Fargo-emblem.jpg"
+              logoInverted="https://1000logos.net/wp-content/uploads/2017/11/Wells-Fargo-emblem.jpg"
             />
 
             <Component {...pageProps} />
@@ -25,9 +25,9 @@ function MyApp({ Component, pageProps }) {
               bgImage=""
               bgImageOpacity={1}
               description="A short description of what you do here"
-              copyright={`© ${new Date().getFullYear()} Company`}
-              logo="https://uploads.divjoy.com/logo.svg"
-              logoInverted="https://uploads.divjoy.com/logo-white.svg"
+              copyright={`© ${new Date().getFullYear()} Wells Fargo`}
+              logo="https://1000logos.net/wp-content/uploads/2017/11/Wells-Fargo-emblem.jpg"
+              logoInverted="https://1000logos.net/wp-content/uploads/2017/11/Wells-Fargo-emblem.jpg"
               sticky={true}
             />
           </>

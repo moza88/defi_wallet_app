@@ -11,8 +11,8 @@ function IndexPage(props) {
         size="medium"
         bgImage=""
         bgImageOpacity={1}
-        title="Your landing page title here"
-        subtitle="This landing page is perfect for showing off your awesome product and driving people to sign up for a paid plan."
+        title="Wells Fargo's Digital Wallet"
+        subtitle="Taking care of all of your crypto needs since 2022."
       />
     </>
   );

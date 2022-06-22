@@ -33,12 +33,17 @@ function DashboardSection(props) {
     router.push('/bitgo-wallet')
   }
 
+  function moveToFireblocksWallet() {
+    router.push('/fireblocks-wallet')
+  }
+
   return (
     <Section
       bgColor={props.bgColor}
       size={props.size}
       bgImage={props.bgImage}
       bgImageOpacity={props.bgImageOpacity}
+      buttonColor={props.buttonColor}
     >
       <Container>
         <SectionHeader
@@ -47,21 +52,27 @@ function DashboardSection(props) {
           size={4}
           textAlign="center"
         />
+        <Box textAlign="center">
+
         <Typography>Welcome back {auth.user.email}! Which wallet would like to view?</Typography>
 
           <Card>
-            <CardHeader>BitGo</CardHeader>
+
+            <CardHeader title="Bitgo"/>
             <CardContent>Bitgo is a multi-signature wallet</CardContent>
 
-            <Button onClick={moveToBitgoWallet}>Bitgo Wallet</Button>
+            <Button variant="contained" size="large" color='primary'  onClick={moveToBitgoWallet}>Bitgo Wallet</Button>
           </Card>
 
-        <Card>
-          <CardHeader>Fireblocks</CardHeader>
-          <CardContent>Fireblocks is a MPC solution</CardContent>
-        </Card>
+          <br/><br/>
+          <Card>
 
+            <CardHeader title="Fireblocks"/>
+            <CardContent>Fireblocks is a MPC solution</CardContent>
 
+            <Button variant="contained" size="large" color='primary' onClick={moveToFireblocksWallet}>Fireblocks Wallet</Button>
+          </Card>
+        </Box>
       </Container>
     </Section>
   );

@@ -1,8 +1,19 @@
 import React from "react";
 import Meta from "components/Meta";
+import HeroSection from "components/hero/HeroSection";
+import TeamBiosSection from "components/TeamBiosSection";
+import Identity from "../components/identity/Identity";
+import {useAuth} from "../util/auth";
 
 function AboutPage(props) {
-  return <Meta title="About" description="Learn about our company and team" />;
+  const auth = useAuth();
+
+  return (
+      <>
+
+        <Identity/>
+      </>
+  );
 }
 
 export default AboutPage;
