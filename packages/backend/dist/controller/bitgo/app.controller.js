@@ -18,7 +18,6 @@ const app_service_1 = require("../../services/bitgo/app.service");
 const rxjs_1 = require("rxjs");
 const WalletParams_1 = require("../../model/WalletParams");
 const TXN_1 = require("../../model/TXN");
-const Auth_1 = require("../../model/Auth");
 let BitgoController = class BitgoController {
     constructor(appService) {
         this.appService = appService;
@@ -32,14 +31,8 @@ let BitgoController = class BitgoController {
     deleteWallet(coin, walletId) {
         this.appService.deleteWallet(coin, walletId);
     }
-    createWallet(walletParams, coin) {
-        this.appService.createWallet(coin, walletParams);
-    }
-    login(auth) {
-        this.appService.login(auth.username, auth.password);
-    }
-    logout() {
-        this.appService.logout();
+    async createWallet(walletParams, coin) {
+        return await this.appService.createWallet(coin, walletParams);
     }
     sendTxn(txn, coin) {
         this.appService.sendTxn(coin, txn);
@@ -78,21 +71,8 @@ __decorate([
     __param(1, (0, common_1.Param)('coin')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [WalletParams_1.WalletParams, String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], BitgoController.prototype, "createWallet", null);
-__decorate([
-    (0, common_1.Post)('/login'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Auth_1.Auth]),
-    __metadata("design:returntype", void 0)
-], BitgoController.prototype, "login", null);
-__decorate([
-    (0, common_1.Get)('/logout'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], BitgoController.prototype, "logout", null);
 __decorate([
     (0, common_1.Post)('/send_txn/coin=:coin'),
     __param(0, (0, common_1.Body)()),

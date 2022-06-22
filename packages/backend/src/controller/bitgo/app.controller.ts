@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {ApiOperation} from "@nestjs/swagger";
 import { WalletParams} from "../../model/WalletParams";
 import {TXN} from "../../model/TXN";
-import {Auth} from "../../model/Auth";
+import {NewWallet} from "../../model/NewWallet";
 
 @Controller('api/v1/bitgo')
 export class BitgoController {
@@ -31,24 +31,26 @@ export class BitgoController {
   }
 
   @Post('/create_wallet/coin=:coin')
-  createWallet(
-      @Body() walletParams : WalletParams,
+  async createWallet(
+      @Body() walletParams: WalletParams,
       @Param('coin') coin: string,
-  ) {
-    this.appService.createWallet(coin, walletParams);
+  ): Promise<NewWallet> {
+    return await this.appService.createWallet(coin, walletParams);
   }
 
+/*
   @Post('/login')
   login(
       @Body() auth : Auth
   ){
     this.appService.login(auth.username, auth.password)
   }
+*/
 
-  @Get('/logout')
+/*  @Post('/logout')
   logout(){
     this.appService.logout()
-  }
+  }*/
 
   @Post('/send_txn/coin=:coin')
   sendTxn(

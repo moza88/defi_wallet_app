@@ -5,5 +5,5 @@ export class WalletParams {
     readonly label: string;
 
     @ApiProperty()
-    readonly password: string;
+    readonly passphrase: string;
 }

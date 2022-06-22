@@ -9,17 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Auth = void 0;
+exports.BackupKey = void 0;
 const swagger_1 = require("@nestjs/swagger");
-class Auth {
+class BackupKey {
+    constructor(pubKey, privKey) {
+        this.pubKey = pubKey;
+        this.privKey = privKey;
+    }
 }
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], Auth.prototype, "username", void 0);
+], BackupKey.prototype, "pubKey", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], Auth.prototype, "password", void 0);
-exports.Auth = Auth;
-//# sourceMappingURL=Auth.js.map
+], BackupKey.prototype, "privKey", void 0);
+exports.BackupKey = BackupKey;
+//# sourceMappingURL=BackupKey.js.map

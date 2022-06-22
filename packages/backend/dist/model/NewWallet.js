@@ -9,17 +9,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WalletParams = void 0;
+exports.NewWallet = void 0;
 const swagger_1 = require("@nestjs/swagger");
-class WalletParams {
+class NewWallet {
+    constructor(walletId, receiveAddress, keychainBackupXPrv, keychainEncryptedXPrv, walletLabel) {
+        this.walletId = walletId;
+        this.receiveAddress = receiveAddress;
+        this.keychainEncryptedXPrv = keychainEncryptedXPrv;
+        this.keychainBackupXPrv = keychainBackupXPrv;
+        this.walletLabel = walletLabel;
+    }
 }
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], WalletParams.prototype, "label", void 0);
+], NewWallet.prototype, "walletId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], WalletParams.prototype, "passphrase", void 0);
-exports.WalletParams = WalletParams;
-//# sourceMappingURL=WalletParams.js.map
+], NewWallet.prototype, "receiveAddress", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], NewWallet.prototype, "keychainEncryptedXPrv", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], NewWallet.prototype, "keychainBackupXPrv", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], NewWallet.prototype, "walletLabel", void 0);
+exports.NewWallet = NewWallet;
+//# sourceMappingURL=NewWallet.js.map

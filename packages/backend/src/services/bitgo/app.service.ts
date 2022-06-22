@@ -3,13 +3,14 @@ import {HttpService} from "@nestjs/axios";
 import {map} from "rxjs";
 import {WalletParams} from "../../model/WalletParams";
 import {TXN} from "../../model/TXN";
-import { BitGo } from 'bitgo';
-
-const bitgo = new BitGo({ env: 'test' });
-//const accessToken = process.env.BITGO_ACCESS_TOKEN;
-
-var accessToken = 'v2x3f70d6c84045d8a34ffd50f058d0aed82360bd382b3c6dd06c3aed976aafbf74'
-bitgo.authenticateWithAccessToken({ accessToken });
+import {Coin, BitGo} from 'bitgo'
+import axios from 'axios'
+import {doc} from "prettier";
+import label = doc.builders.label;
+import { AxiosRequestConfig } from 'axios';
+import {NewWallet} from "../../model/NewWallet";
+import {BackupKey} from "../../model/BackupKey";
+import {BigNumber} from "bignumber.js";
 
 function authHeader() {
     const token = process.env.BITGO_ACCESS_TOKEN
@@ -53,6 +54,10 @@ export class BitgoService {
 
     login(username: string, password: string) {
 
+        const bitgo = new BitGo({ env: 'test' });
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({ accessToken });
+
         bitgo.session()
             .then(response => {
                 console.log("User is already logged in")
@@ -66,16 +71,17 @@ export class BitgoService {
                         var token = response.token;
                         var user = response.user;
                         console.log('Login Success!');
-                        console.log(response)
                         return ({token, user});
                     })
             });
     }
 
     logout() {
-        const req_url = process.env.BITGO_SERVER_URL + "/logout";
+        const bitgo = new BitGo({ env: 'test' });
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({ accessToken });
 
-        this.httpService.get(req_url, getOptions(req_url))
+        bitgo.logout()
     }
 
     getAuditLogs() {
@@ -94,14 +100,56 @@ export class BitgoService {
         );
     }
 
-    createWallet(coin: string, wallet_params: WalletParams) {
-        const req_url = process.env.BITGO_SERVER_URL + coin + "/wallet/generate";
+    async createWallet(coin: string, wallet_params: WalletParams) : Promise<NewWallet>{
 
-        console.log("creating wallet")
+        const bitgo = new BitGo({ env: 'test' });
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({ accessToken });
 
-        const requestOptions = { method: 'POST', headers: authHeader(), body: JSON.stringify({ wallet_params }) };
-        this.httpService.post(req_url, requestOptions);
+        const label = wallet_params.label
+        const passphrase = wallet_params.passphrase
 
+        const walletOptions = {
+            label,
+            passphrase,
+        };
+
+        console.log(walletOptions);
+
+        const wallet = await bitgo.coin(coin).wallets().generateWallet(walletOptions);
+
+        const walletInstance = wallet.wallet;
+
+/*
+        console.log(`Wallet ID: ${walletInstance.id()}`);
+        console.log(`Receive address: ${walletInstance.receiveAddress()}`);
+
+        console.log('BACK THIS UP: ');
+        console.log(`User keychain encrypted xPrv: ${wallet.userKeychain.encryptedPrv}`);
+        console.log(`Backup keychain xPrv: ${wallet.userKeychain.encryptedPrv}`);
+*/
+        let newWallet = new NewWallet(walletInstance.id(), walletInstance.receiveAddress(), wallet.userKeychain.encryptedPrv, wallet.userKeychain.encryptedPrv, label)
+
+        console.log(newWallet);
+
+        return newWallet;
+    }
+
+    createBackupKey(coin){
+        const bitgo = new BitGo({ env: 'test' });
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({ accessToken });
+
+        // this function takes one parameter - seed - if you want to create from your own entropy (recommended)
+        const backupKey = bitgo.coin(coin).keychains().create();
+
+        console.log('BACK THIS UP: ');
+        console.log(`Pub - this is what you add in the browser under the I have a backup key option: ${backupKey.pub}`);
+
+        // extremely sensitive material
+        console.log(`Prv - SENSITIVE MATERIAL - this is what you need to save: ${backupKey.prv}`);
+
+        return new BackupKey(backupKey.pub, backupKey.prv);
     }
 
     deleteWallet(coin: string, wallet: string) {
@@ -130,12 +178,20 @@ export class BitgoService {
 
     async getWalletBalance(coin: string, wallet: string): Promise<string> {
 
+        const bitgo = new BitGo({ env: 'test' });
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({ accessToken });
+
         const walletInstance = await bitgo.coin(coin).wallets().get({id: wallet});
 
         return walletInstance.balanceString();
     }
 
     async getConfirmedBalance(coin: string, wallet: string): Promise<string> {
+
+        const bitgo = new BitGo({ env: 'test' });
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({ accessToken });
 
         const walletInstance = await bitgo.coin(coin).wallets().get({id: wallet});
 
@@ -144,19 +200,34 @@ export class BitgoService {
 
     async getSpendableBalance(coin: string, wallet: string): Promise<string> {
 
+        const bitgo = new BitGo({ env: 'test' });
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({ accessToken });
+
         const walletInstance = await bitgo.coin(coin).wallets().get({id: wallet});
 
         return walletInstance.spendableBalanceString();
     }
 
     unlockAccount() {
+        const bitgo = new BitGo({ env: 'test' });
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({ accessToken });
+
+        console.log("unlocking account")
         bitgo.unlock({ otp: '0000000' }).then(function (unlockResponse) {
-            console.dir(unlockResponse);
+            return unlockResponse
         });
     }
 
     async sendTxn(coin: string, txn: TXN) {
         this.unlockAccount();
+
+        console.log(txn);
+
+        const bitgo = new BitGo({ env: 'test' });
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({ accessToken });
 
         const walletInstance = await bitgo.coin(coin).wallets().get({id: txn.walletId});
 
@@ -166,6 +237,24 @@ export class BitgoService {
             amount: txn.amount
         };
 
-        walletInstance.send(txn_data)
+        const amount = Number(txn.amount);
+
+        console.log("Amount is " + amount)
+
+        if(amount > walletInstance.balance()){
+            console.log("Amount is greater than balance, balance is " + walletInstance.balance())
+        } else if(amount > walletInstance.spendableBalance()){
+            console.log("Amount is greater than spendable balance, balance is " + walletInstance.spendableBalance())
+        } else if(amount < 2730) {
+            console.log("Txn didn't go through because the gas fees will be higher, enter a number greater than 2730")
+        } else {
+            return walletInstance.send(txn_data).catch((error) => {
+                console.log(error)
+
+                return error
+            })
+
+        }
+
     }
 }
