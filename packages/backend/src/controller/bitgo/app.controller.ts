@@ -5,6 +5,7 @@ import {ApiOperation} from "@nestjs/swagger";
 import { WalletParams} from "../../model/WalletParams";
 import {TXN} from "../../model/TXN";
 import {NewWallet} from "../../model/NewWallet";
+import {WalletShare} from "../../model/WalletShare";
 
 @Controller('api/v1/bitgo')
 export class BitgoController {
@@ -57,6 +58,13 @@ export class BitgoController {
       @Body() txn : TXN
   ) {
     this.appService.sendTxn(txn);
+  }
+
+  @Post('/share_wallet')
+  shareWallet(
+      @Body() walletShare : WalletShare
+  ) {
+    return this.appService.shareWallet(walletShare)
   }
 
   @Get('/address_list/coin=:coin/walletId=:walletId')

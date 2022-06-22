@@ -18,6 +18,7 @@ const app_service_1 = require("../../services/bitgo/app.service");
 const rxjs_1 = require("rxjs");
 const WalletParams_1 = require("../../model/WalletParams");
 const TXN_1 = require("../../model/TXN");
+const WalletShare_1 = require("../../model/WalletShare");
 let BitgoController = class BitgoController {
     constructor(appService) {
         this.appService = appService;
@@ -36,6 +37,9 @@ let BitgoController = class BitgoController {
     }
     sendTxn(txn) {
         this.appService.sendTxn(txn);
+    }
+    shareWallet(walletShare) {
+        return this.appService.shareWallet(walletShare);
     }
     getAddressList(coin, walletId) {
         return this.appService.getAddressList(coin, walletId);
@@ -80,6 +84,13 @@ __decorate([
     __metadata("design:paramtypes", [TXN_1.TXN]),
     __metadata("design:returntype", void 0)
 ], BitgoController.prototype, "sendTxn", null);
+__decorate([
+    (0, common_1.Post)('/share_wallet'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [WalletShare_1.WalletShare]),
+    __metadata("design:returntype", void 0)
+], BitgoController.prototype, "shareWallet", null);
 __decorate([
     (0, common_1.Get)('/address_list/coin=:coin/walletId=:walletId'),
     __param(0, (0, common_1.Param)('coin')),

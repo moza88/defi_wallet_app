@@ -4,10 +4,13 @@ import Footer from "components/Footer";
 import { AuthProvider } from "util/auth";
 import { ThemeProvider } from "util/theme";
 import { QueryClientProvider } from "util/db";
+import { Provider } from '@self.id/framework'
 
 function MyApp({ Component, pageProps }) {
   return (
     <QueryClientProvider>
+      <Provider client={{ ceramic: 'testnet-clay' }}>
+
       <ThemeProvider>
         <AuthProvider>
           <>
@@ -33,6 +36,8 @@ function MyApp({ Component, pageProps }) {
           </>
         </AuthProvider>
       </ThemeProvider>
+      </Provider>
+
     </QueryClientProvider>
   );
 }

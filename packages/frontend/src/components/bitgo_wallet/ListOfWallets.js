@@ -21,6 +21,8 @@ import WalletDetails from "./WalletDetails";
 import SendFunds from "./SendFunds";
 import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
+import CoPresentIcon from '@mui/icons-material/CoPresent';
+import ShareWallet from "./ShareWallet";
 
 const style = {
     position: 'absolute',
@@ -38,11 +40,15 @@ export default function ListOfWallets(props) {
     const [wallets, setWallets] = useState([]);
     const [walletId, setWalletId] = useState('');
     const [openSendFunds, setOpenSendFunds] = React.useState(false);
+
+    const [openShareWallet, setOpenShareWallet] = useState(false);
+
     const [openDetails, setOpenDetails] = React.useState(false);
     const [coin, setCoin] = useState("tbtc");
 
     const handleCloseSendFunds = () => setOpenSendFunds(false);
     const handleCloseDetails = () => setOpenDetails(false);
+    const handleCloseShareWallet = () => setOpenShareWallet(false);
 
     const [values, setValues] = useState([
         "tbtc",
@@ -52,6 +58,11 @@ export default function ListOfWallets(props) {
     function handleOpenSendFunds(id)  {
         setWalletId(id)
         setOpenSendFunds(true);
+    }
+
+    function handleOpenShareWallet(id) {
+        setWalletId(id)
+        setOpenShareWallet(true)
     }
 
     const handleOpenViewHistory = (id) => {
@@ -66,6 +77,10 @@ export default function ListOfWallets(props) {
 
     function refreshPage() {
         window.location.reload(false);
+    }
+
+    const shareWallet = (walletId) => {
+
     }
 
     const deleteWallet = (walletId) => {
@@ -149,6 +164,8 @@ export default function ListOfWallets(props) {
                                 <TableCell>Send Funds</TableCell>
                                 <TableCell>History</TableCell>
                                 <TableCell>Delete</TableCell>
+                                <TableCell>Share</TableCell>
+
                             </TableRow>
                         </TableHead>
 
@@ -183,6 +200,13 @@ export default function ListOfWallets(props) {
                                             Delete
                                         </Button>
                                     </TableCell>
+                                    <TableCell>
+                                        <Button color='primary' variant="contained" onClick={() => {
+                                            handleOpenShareWallet(item.id)
+                                        }} startIcon={<CoPresentIcon />}>
+                                            Share
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -204,6 +228,24 @@ export default function ListOfWallets(props) {
                     </Typography>
 
                     <SendFunds coin={coin} walletId={walletId}/>
+
+                </Box>
+            </Modal>
+
+            <Modal
+                open={openShareWallet}
+                onClose={handleCloseShareWallet}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Use this form to share your wallet
+                    </Typography>
+
+                    <ShareWallet coin={coin} walletId={walletId}/>
 
                 </Box>
             </Modal>

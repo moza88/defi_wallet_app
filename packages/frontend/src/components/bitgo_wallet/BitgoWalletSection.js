@@ -64,6 +64,7 @@ function BitgoWalletSection(props) {
                 />
 
                 <Typography variant="h6">Don't have a wallet? Click below to create one</Typography>
+
                 <Button variant="contained" color='primary'
                         onClick={() => {
                             handleOpenCreateWallet()

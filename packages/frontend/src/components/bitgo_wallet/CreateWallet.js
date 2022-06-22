@@ -128,10 +128,11 @@ export default function CreateWallet(props) {
                                 <TableCell>{newWalletId}</TableCell>
                                 <TableCell>{newReceiverAddress}</TableCell>
                                 <TableCell>Backup</TableCell>
-
                             </TableRow>
                         </TableBody>
                     </Table>
+                    <Typography>Add Bitcoins to your wallet</Typography>
+                    <a>https://testnet.help/en/btcfaucet/testnet#log</a>
                 </CardContent>
                 </Card>
             }

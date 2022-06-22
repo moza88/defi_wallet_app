@@ -3,6 +3,7 @@ import { WalletParams } from "../../model/WalletParams";
 import { TXN } from "../../model/TXN";
 import { NewWallet } from "../../model/NewWallet";
 import { BackupKey } from "../../model/BackupKey";
+import { WalletShare } from "../../model/WalletShare";
 export declare class BitgoService {
     private readonly httpService;
     constructor(httpService: HttpService);
@@ -20,5 +21,6 @@ export declare class BitgoService {
     getSpendableBalance(coin: string, wallet: string): Promise<string>;
     unlockAccount(): void;
     walletTransfers(coin: string, walletId: string): Promise<any>;
+    shareWallet(walletShare: WalletShare): Promise<any>;
     sendTxn(txn: TXN): Promise<any>;
 }

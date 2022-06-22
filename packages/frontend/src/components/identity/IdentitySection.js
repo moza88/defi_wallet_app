@@ -1,41 +1,79 @@
-import React from "react";
+import {React, useEffect, useState} from "react";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-import Alert from "@material-ui/lab/Alert";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import LinkMui from "@material-ui/core/Link";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import Section from "components/Section";
 import SectionHeader from "components/SectionHeader";
-import DashboardItems from "components/dashboard/DashboardItems";
-import { useAuth } from "util/auth";
-import {CardHeader, Button} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import { ThreeIdConnect,  EthereumAuthProvider } from '@3id/connect'
+import {useViewerConnection, useViewerRecord} from '@self.id/framework'
+import { usePublicRecord } from '@self.id/framework'
+import CeramicClient from "@ceramicnetwork/http-client";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import {useForm} from "react-hook-form";
+import CardContent from "@material-ui/core/CardContent";
+import {Card, CardHeader} from "@material-ui/core";
 
+const API_URL = 'https://ceramic-clay.3boxlabs.com';
 const useStyles = makeStyles((theme) => ({
   cardContent: {
     padding: theme.spacing(3),
   },
 }));
 
-
-function DashboardSection(props) {
+function IdentitySection(props) {
+  const [testDoc, setTestDoc] = useState();
+  const [loadedDoc, setLoadedDoc] = useState();
+  const [updatedDoc, setUpdatedDoc] = useState();
+  const [streamId, setStreamId] = useState();
+  const [ceramic, setCeramic] = useState();
+  const [ethAddresses, setEthAddresses] = useState();
+  const [ethereum, setEthereum] = useState();
+  const [commits, setCommits] = useState([]);
   const classes = useStyles();
-
-  const auth = useAuth();
+  const [connection, connect, disconnect] = useViewerConnection()
+  const record = useViewerRecord('basicProfile')
   const router = useRouter();
+  const [name, setName] = useState('')
+  const [pending, setPending] = useState(false);
+  const { handleSubmit, getValues, errors, sendFunds } = useForm();
 
-  function moveToBitgoWallet() {
-    router.push('/bitgo-wallet')
+  const [idNumber, setIdNumber] = useState('')
+  const [state, setState] = useState('')
+  const [organDonar, setOrganDonar] = useState('')
+
+  function onSubmit() {
+    record.merge({
+      idNumber: idNumber,
+      state: state,
+      organDonar: organDonar,
+      salary: '343444'
+    })
+    setName(record.content.name)
   }
 
-  function moveToFireblocksWallet() {
-    router.push('/fireblocks-wallet')
-  }
+  //Sign Up with Metamask Wallet
+  useEffect(() => {
+    if(window.ethereum) {
+      setEthereum(window.ethereum);
+      (async() => {
+        try {
+          const addresses = await window.ethereum.request({ method: 'eth_requestAccounts'})
+          setEthAddresses(addresses);
+          const accounts = await window.ethereum.request({
+            method: 'eth_requestAccounts',
+          })
+          await connect(new EthereumAuthProvider(window.ethereum, accounts[0]))
+        }
+        catch(e) {
+          console.log(e);
+        }
+      })();
+    }
+  }, []);
 
   return (
     <Section
@@ -53,29 +91,79 @@ function DashboardSection(props) {
           textAlign="center"
         />
         <Box textAlign="center">
+          {ethAddresses}
 
-        <Typography>Welcome back {auth.user.email}! Which wallet would like to view?</Typography>
+          {connection.status === 'connected' ? (
+              <p>{connection.selfID.id}</p>
+          ):
+              <p>Not Connected Yet</p>
+          }
 
-          <Card>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container={true} spacing={2}>
 
-            <CardHeader title="Bitgo"/>
-            <CardContent>Bitgo is a multi-signature wallet</CardContent>
+              <Grid item={true} xs={12}>
+                <TextField
+                    variant="outlined"
+                    type="text"
+                    label="ID Number"
+                    name="idNumber"
+                    fullWidth={true}
+                    onChange={(e) => setIdNumber(e.target.value)}
+                />
+              </Grid>
 
-            <Button variant="contained" size="large" color='primary'  onClick={moveToBitgoWallet}>Bitgo Wallet</Button>
-          </Card>
+              <Grid item={true} xs={12}>
+                <TextField
+                    variant="outlined"
+                    type="text"
+                    label="State"
+                    name="state"
+                    fullWidth={true}
+                    onChange={(e) => setState(e.target.value)}
+                />
+              </Grid>
+              <Grid item={true} xs={12}>
+                <TextField
+                    variant="outlined"
+                    type="text"
+                    label="Organ Donor"
+                    name="organDonor"
+                    fullWidth={true}
+                    onChange={(e) => setOrganDonar(e.target.value)}
+                />
+              </Grid>
+              <Grid item={true} xs={12}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    type="submit"
+                    disabled={pending}
+                    fullWidth={true}
+                >
+                  {!pending && <span>Enter ID Info</span>}
 
+                  {pending && <CircularProgress size={28} />}
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
           <br/><br/>
+          {idNumber &&
           <Card>
-
-            <CardHeader title="Fireblocks"/>
-            <CardContent>Fireblocks is a MPC solution</CardContent>
-
-            <Button variant="contained" size="large" color='primary' onClick={moveToFireblocksWallet}>Fireblocks Wallet</Button>
+            <CardHeader title="Info Commited to Network"/>
+            <CardContent>
+              <p>{record.content.idNumber}</p>
+              <p>{record.content.state}</p>
+              <p>{record.content.organDonar}</p>
+            </CardContent>
           </Card>
+          }
         </Box>
       </Container>
     </Section>
   );
 }
 
-export default DashboardSection;
+export default IdentitySection;

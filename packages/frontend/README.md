@@ -16,6 +16,9 @@ npm run dev
 ```
 When the above command completes you'll be able to view your website at `http://localhost:3000`
 
+## Test Ceramic
+https://ceramicstudio.github.io/web-playground/
+
 ## 🥞 Stack
 This project uses the following libraries and services:
 - Framework - [Next.js](https://nextjs.org)

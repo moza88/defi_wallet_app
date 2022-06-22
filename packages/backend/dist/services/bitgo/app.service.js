@@ -167,6 +167,17 @@ let BitgoService = class BitgoService {
         const walletInstance = await bitgo.coin(coin).wallets().get({ id: walletId });
         return await walletInstance.transfers();
     }
+    async shareWallet(walletShare) {
+        const bitgo = new bitgo_1.BitGo({ env: 'test' });
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({ accessToken });
+        const walletInstance = await bitgo.coin(walletShare.coin).wallets().get({ id: walletShare.walletId });
+        return await walletInstance.shareWallet({
+            email: walletShare.email,
+            walletPassphrase: walletShare.passphrase,
+            permissions: walletShare.perms,
+        }).catch((error) => console.log(error));
+    }
     async sendTxn(txn) {
         this.unlockAccount();
         console.log("sending txn");

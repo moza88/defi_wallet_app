@@ -10,6 +10,8 @@ import label = doc.builders.label;
 import { AxiosRequestConfig } from 'axios';
 import {NewWallet} from "../../model/NewWallet";
 import {BackupKey} from "../../model/BackupKey";
+import {WalletShare} from "../../model/WalletShare";
+
 import {BigNumber} from "bignumber.js";
 
 function authHeader() {
@@ -234,6 +236,21 @@ export class BitgoService {
         const walletInstance = await bitgo.coin(coin).wallets().get({id: walletId});
 
         return await walletInstance.transfers();
+    }
+
+    async shareWallet(walletShare: WalletShare) {
+        const bitgo = new BitGo({env: 'test'});
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({accessToken});
+
+        const walletInstance = await bitgo.coin(walletShare.coin).wallets().get({id: walletShare.walletId});
+
+        return await walletInstance.shareWallet({
+            email: walletShare.email,
+            walletPassphrase: walletShare.passphrase,
+            permissions: walletShare.perms,
+        }).catch((error) => console.log(error));
+
     }
 
     async sendTxn(txn: TXN) {

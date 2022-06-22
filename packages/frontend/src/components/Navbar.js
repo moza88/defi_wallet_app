@@ -85,12 +85,17 @@ function Navbar(props) {
             <Hidden smDown={true} implementation="css">
               <Link href="/about" passHref={true}>
                 <Button component="a" color="inherit">
-                  About
+                  Identity
                 </Button>
               </Link>
-              <Link href="/pricing" passHref={true}>
+              <Link href="/bitgo-wallet" passHref={true}>
                 <Button component="a" color="inherit">
-                  Pricing
+                  Bitgo Wallet
+                </Button>
+              </Link>
+              <Link href="/fireblocks-wallet" passHref={true}>
+                <Button component="a" color="inherit">
+                  Fireblocks Wallet
                 </Button>
               </Link>
               <Link href="/faq" passHref={true}>
