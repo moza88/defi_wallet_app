@@ -14,7 +14,7 @@ import Section from "components/Section";
 import SectionHeader from "components/SectionHeader";
 import DashboardItems from "components/dashboard/DashboardItems";
 import { useAuth } from "util/auth";
-import {CardHeader} from "@material-ui/core";
+import {CardHeader, Button} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   cardContent: {
@@ -22,11 +22,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 function DashboardSection(props) {
   const classes = useStyles();
 
   const auth = useAuth();
   const router = useRouter();
+
+  function moveToBitgoWallet() {
+    router.push('/bitgo-wallet')
+  }
 
   return (
     <Section
@@ -42,10 +47,13 @@ function DashboardSection(props) {
           size={4}
           textAlign="center"
         />
+        <Typography>Welcome back {auth.user.email}! Which wallet would like to view?</Typography>
+
           <Card>
-            {auth.user.email}
             <CardHeader>BitGo</CardHeader>
             <CardContent>Bitgo is a multi-signature wallet</CardContent>
+
+            <Button onClick={moveToBitgoWallet}>Bitgo Wallet</Button>
           </Card>
 
         <Card>

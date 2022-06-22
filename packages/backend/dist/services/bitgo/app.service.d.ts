@@ -12,12 +12,13 @@ export declare class BitgoService {
     getWalletList(coin: string): import("rxjs").Observable<any>;
     createWallet(coin: string, wallet_params: WalletParams): Promise<NewWallet>;
     createBackupKey(coin: any): BackupKey;
-    deleteWallet(coin: string, wallet: string): import("rxjs").Observable<any>;
+    deleteWallet(coin: string, wallet: string): Promise<void>;
     getAddressList(coin: string, wallet: string): import("rxjs").Observable<any>;
     getTxnHistory(coin: string, wallet: string): import("rxjs").Observable<any>;
     getWalletBalance(coin: string, wallet: string): Promise<string>;
     getConfirmedBalance(coin: string, wallet: string): Promise<string>;
     getSpendableBalance(coin: string, wallet: string): Promise<string>;
     unlockAccount(): void;
-    sendTxn(coin: string, txn: TXN): Promise<any>;
+    walletTransfers(coin: string, walletId: string): Promise<any>;
+    sendTxn(txn: TXN): Promise<any>;
 }

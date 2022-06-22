@@ -34,8 +34,8 @@ let BitgoController = class BitgoController {
     async createWallet(walletParams, coin) {
         return await this.appService.createWallet(coin, walletParams);
     }
-    sendTxn(txn, coin) {
-        this.appService.sendTxn(coin, txn);
+    sendTxn(txn) {
+        this.appService.sendTxn(txn);
     }
     getAddressList(coin, walletId) {
         return this.appService.getAddressList(coin, walletId);
@@ -58,7 +58,7 @@ __decorate([
     __metadata("design:returntype", rxjs_1.Observable)
 ], BitgoController.prototype, "getWalletList", null);
 __decorate([
-    (0, common_1.Get)('/delete_wallet/coin=:coin/walletId=:walletId'),
+    (0, common_1.Delete)('/delete_wallet/coin=:coin/walletId=:walletId'),
     __param(0, (0, common_1.Param)('coin')),
     __param(1, (0, common_1.Param)('walletId')),
     __metadata("design:type", Function),
@@ -74,11 +74,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BitgoController.prototype, "createWallet", null);
 __decorate([
-    (0, common_1.Post)('/send_txn/coin=:coin'),
+    (0, common_1.Post)('/send_txn/'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Param)('coin')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [TXN_1.TXN, String]),
+    __metadata("design:paramtypes", [TXN_1.TXN]),
     __metadata("design:returntype", void 0)
 ], BitgoController.prototype, "sendTxn", null);
 __decorate([

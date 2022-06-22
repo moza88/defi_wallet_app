@@ -10,7 +10,7 @@ export declare class BitgoController {
     getWalletList(coin: string): Observable<any>;
     deleteWallet(coin: string, walletId: string): void;
     createWallet(walletParams: WalletParams, coin: string): Promise<NewWallet>;
-    sendTxn(txn: TXN, coin: string): void;
+    sendTxn(txn: TXN): void;
     getAddressList(coin: string, walletId: string): Observable<any>;
     getTxnHistory(coin: string, walletId: string): Observable<any>;
 }

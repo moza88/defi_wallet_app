@@ -36,15 +36,12 @@ function getOptions(req_url : string)  {
     }
 }
 
-function deleteOptions(req_url : string)  {
-
-    return {
-        method: 'DELETE',
-        url: req_url,
-        headers: {
-            'Authorization': 'Bearer ' + process.env.BITGO_ACCESS_TOKEN,
-        }
-    }
+function getConfig()  {
+        return {
+            headers: {
+                'Authorization': 'Bearer ' + process.env.BITGO_ACCESS_TOKEN,
+            }
+        };
 }
 
 @Injectable()
@@ -152,12 +149,21 @@ export class BitgoService {
         return new BackupKey(backupKey.pub, backupKey.prv);
     }
 
-    deleteWallet(coin: string, wallet: string) {
+    async deleteWallet(coin: string, wallet: string) {
         const req_url = process.env.BITGO_SERVER_URL + coin + "/wallet/" + wallet;
 
-        return this.httpService.delete(req_url, deleteOptions(req_url)).pipe(
-            map(response => response.data)
-        );
+        console.log("deleting wallet " + wallet)
+
+        const response = axios.delete(req_url, getConfig())
+            .then((resp) => {
+                console.log(resp)
+            }).catch((error) => {
+                console.log(error)
+            })
+
+        console.log(response)
+        return response;
+
     }
 
     getAddressList(coin: string, wallet: string) {
@@ -220,7 +226,17 @@ export class BitgoService {
         });
     }
 
-    async sendTxn(coin: string, txn: TXN) {
+    async walletTransfers(coin: string, walletId: string) {
+        const bitgo = new BitGo({env: 'test'});
+        const accessToken = process.env.BITGO_ACCESS_TOKEN;
+        bitgo.authenticateWithAccessToken({accessToken});
+
+        const walletInstance = await bitgo.coin(coin).wallets().get({id: walletId});
+
+        return await walletInstance.transfers();
+    }
+
+    async sendTxn(txn: TXN) {
         this.unlockAccount();
 
         console.log(txn);
@@ -229,7 +245,7 @@ export class BitgoService {
         const accessToken = process.env.BITGO_ACCESS_TOKEN;
         bitgo.authenticateWithAccessToken({ accessToken });
 
-        const walletInstance = await bitgo.coin(coin).wallets().get({id: txn.walletId});
+        const walletInstance = await bitgo.coin(txn.coin).wallets().get({id: txn.walletId});
 
         const txn_data = {
             walletPassphrase: txn.password,

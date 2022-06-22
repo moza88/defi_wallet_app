@@ -16,6 +16,7 @@ import DashboardItems from "components/dashboard/DashboardItems";
 import { useAuth } from "util/auth";
 import {CardHeader, Button, Modal} from "@material-ui/core";
 import CreateWallet from "./CreateWallet"
+import ListOfWallets from "./ListOfWallets";
 
 const useStyles = makeStyles((theme) => ({
     cardContent: {
@@ -71,7 +72,10 @@ function BitgoWalletSection(props) {
                     Create Wallet
                 </Button>
 
-                <Typography variant="h6">Welcome back below are your multi-signature wallets</Typography>
+                <br/><br/>
+                <Typography variant="h6">Below are your multi-signature wallets</Typography>
+
+                <ListOfWallets/>
 
                 <Card>
                 </Card>

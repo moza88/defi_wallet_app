@@ -4,27 +4,27 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useForm } from "react-hook-form";
-import {useRouter} from "next/router";
 
-export default function CreateWallet(props) {
+export default function SendFunds({coin, walletId}, props) {
     const [pending, setPending] = useState(false);
 
-    const [label, setLabel] = React.useState('');
-    const [passphrase, setPassphrase] = React.useState('');
+    const [amount, setAmount] = useState('');
+    const [password, setPassword] = useState('');
+    const [destAddress, setDestAddress] = useState('');
 
-    const {handleSubmit, getValues, errors, sendFunds} = useForm();
+    const { handleSubmit, getValues, errors, sendFunds } = useForm();
 
-    const [coin, setCoin] = useState("tbtc");
 
-    function handleChange(event) {
-        setCoin(event.target.value);
-        console.log(coin)
-    }
+    const onSubmit = (data) => {
 
-    const createWallet = (label, passphrase) => {
-        console.log(label, passphrase);
+        transferFunds(coin, walletId, amount, destAddress, password);
+    };
 
-        fetch(process.env.NEXT_PUBLIC_BITGO_SERVER + '/create_wallet/' + "coin=" + coin, {
+    function transferFunds(coin, walletId, destAddress, amount, password) {
+        var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER +"/send_txn";
+        console.log(req_url);
+
+        fetch(req_url, {
             method: 'POST',
             headers: {
                 Accept: "application/json",
@@ -32,55 +32,49 @@ export default function CreateWallet(props) {
                 'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify({
-                label: label,
-                passphrase: passphrase
+                coin: coin,
+                walletId: walletId,
+                amount: amount,
+                destAddress: destAddress,
+                password: password,
             })
-        }).then((response) => {
-            console.log(response);
-
-        }).catch((error) => {
-            console.log(error)
         })
-
     }
-
-    function refreshPage() {
-        window.location.reload(false);
-    }
-
-    const onSubmit = () => {
-
-        createWallet(label, passphrase);
-        refreshPage();
-    };
 
     return (
-
         <form onSubmit={handleSubmit(onSubmit)}>
-            <br></br>
-
-            <br></br><br></br>
             <Grid container={true} spacing={2}>
+
                 <Grid item={true} xs={12}>
                     <TextField
                         variant="outlined"
                         type="text"
-                        label="Label"
-                        name="label"
-                        placeholder="My Wallet"
+                        label="Destiantion Address"
+                        name="destAddress"
                         fullWidth={true}
-                        onChange={(e) => setLabel(e.target.value)}
+                        onChange={(e) => setDestAddress(e.target.value)}
+                    />
+                </Grid>
+
+                <Grid item={true} xs={12}>
+                    <TextField
+                        variant="outlined"
+                        type="text"
+                        label="Amount"
+                        name="amount"
+                        fullWidth={true}
+                        onChange={(e) => setAmount(e.target.value)}
                     />
                 </Grid>
                 <Grid item={true} xs={12}>
                     <TextField
                         variant="outlined"
-                        type="text"
-                        label="Passphrase"
-                        name="passphrase"
+                        type="password"
+                        label="Password"
+                        name="password"
                         placeholder="something something"
                         fullWidth={true}
-                        onChange={(e) => setPassphrase(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                 </Grid>
                 <Grid item={true} xs={12}>
@@ -92,7 +86,7 @@ export default function CreateWallet(props) {
                         disabled={pending}
                         fullWidth={true}
                     >
-                        {!pending && <span>Create New Wallet</span>}
+                        {!pending && <span>Send Funds</span>}
 
                         {pending && <CircularProgress size={28} />}
                     </Button>

@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
 import { BitgoService } from '../../services/bitgo/app.service';
 import {Observable} from "rxjs";
 import {ApiOperation} from "@nestjs/swagger";
@@ -22,7 +22,7 @@ export class BitgoController {
     return this.appService.getWalletList(coin);
   }
 
-  @Get('/delete_wallet/coin=:coin/walletId=:walletId')
+  @Delete('/delete_wallet/coin=:coin/walletId=:walletId')
   deleteWallet(
       @Param('coin') coin: string,
       @Param('walletId') walletId: string
@@ -52,12 +52,11 @@ export class BitgoController {
     this.appService.logout()
   }*/
 
-  @Post('/send_txn/coin=:coin')
+  @Post('/send_txn/')
   sendTxn(
-      @Body() txn : TXN,
-      @Param('coin') coin: string,
+      @Body() txn : TXN
   ) {
-    this.appService.sendTxn(coin, txn);
+    this.appService.sendTxn(txn);
   }
 
   @Get('/address_list/coin=:coin/walletId=:walletId')
