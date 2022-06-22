@@ -8,6 +8,10 @@ export default function WalletDetails({coin, walletId}, props) {
     const entryList = [];
 
     console.log("wallet id passed" + walletId)
+    const [wallets, setWallets] = useState([]);
+
+    let entry = ''
+    const [transferHistory, setTransferHistory] = useState([])
 
     const getTxnHistory = (coin, walletId) => {
         var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + "/txn_history" + "/coin=" + coin + "/walletId=" + walletId;

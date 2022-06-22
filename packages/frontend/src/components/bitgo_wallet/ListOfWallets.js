@@ -54,8 +54,8 @@ export default function ListOfWallets(props) {
         setOpenSendFunds(true);
     }
 
-    const handleOpenViewHistory = () => {
-        setWalletId(walletId)
+    const handleOpenViewHistory = (id) => {
+        setWalletId(id)
         setOpenDetails(true);
     }
 
