@@ -22,6 +22,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Section from "components/Section";
 import { useAuth } from "util/auth";
 import { useDarkMode } from "util/theme";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -69,6 +70,7 @@ function Navbar(props) {
                 <img src={logo} alt="Logo" className={classes.logo} />
               </a>
             </Link>
+            <Typography variant="h5">Digital Wallet</Typography>
             <div className={classes.spacer} />
             <Hidden mdUp={true} implementation="css">
               <IconButton

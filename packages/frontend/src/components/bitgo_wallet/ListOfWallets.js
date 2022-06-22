@@ -83,7 +83,7 @@ export default function ListOfWallets(props) {
             }
         })
             .then(response => {
-                refreshPage();
+                getWallets(coin);
             })
 
     }
@@ -168,7 +168,7 @@ export default function ListOfWallets(props) {
                                         </Button>
                                     </TableCell>
                                     <TableCell>
-                                        <Button variant="contained"
+                                        <Button color='primary' variant="contained"
                                                 startIcon={<ArticleIcon />}
                                                 onClick={() => {
                                                     handleOpenViewHistory(item.id)
@@ -177,7 +177,7 @@ export default function ListOfWallets(props) {
                                         </Button>
                                     </TableCell>
                                     <TableCell>
-                                        <Button variant="contained" onClick={() => {
+                                        <Button color='primary' variant="contained" onClick={() => {
                                             deleteWallet(item.id)
                                         }} startIcon={<DeleteIcon />}>
                                             Delete

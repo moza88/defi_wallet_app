@@ -32,7 +32,7 @@ let BitgoController = class BitgoController {
         this.appService.deleteWallet(coin, walletId);
     }
     async createWallet(walletParams, coin) {
-        return await this.appService.createWallet(coin, walletParams);
+        return this.appService.createWallet(coin, walletParams);
     }
     sendTxn(txn) {
         this.appService.sendTxn(txn);

@@ -35,7 +35,7 @@ export class BitgoController {
       @Body() walletParams: WalletParams,
       @Param('coin') coin: string,
   ): Promise<NewWallet> {
-    return await this.appService.createWallet(coin, walletParams);
+    return this.appService.createWallet(coin, walletParams);
   }
 
 /*
