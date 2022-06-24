@@ -3,16 +3,11 @@ import {HttpService} from "@nestjs/axios";
 import {map} from "rxjs";
 import {WalletParams} from "../../model/WalletParams";
 import {TXN} from "../../model/TXN";
-import {Coin, BitGo} from 'bitgo'
+import {BitGo} from 'bitgo'
 import axios from 'axios'
-import {doc} from "prettier";
-import label = doc.builders.label;
-import { AxiosRequestConfig } from 'axios';
 import {NewWallet} from "../../model/NewWallet";
 import {BackupKey} from "../../model/BackupKey";
 import {WalletShare} from "../../model/WalletShare";
-
-import {BigNumber} from "bignumber.js";
 
 function authHeader() {
     const token = process.env.BITGO_ACCESS_TOKEN
