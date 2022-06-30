@@ -9,35 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppController = void 0;
+exports.FireblocksController = void 0;
 const common_1 = require("@nestjs/common");
-const app_service_1 = require("./app.service");
-let AppController = class AppController {
+const app_service_1 = require("../../services/fireblocks/app.service");
+let FireblocksController = class FireblocksController {
     constructor(appService) {
         this.appService = appService;
     }
     getHello() {
-        return this.appService.getHello();
-    }
-    getEnv() {
-        return process.env.BITGO_ACCESS_TOKEN;
+        return this.appService.getVaultAccounts();
     }
 };
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], AppController.prototype, "getHello", null);
-__decorate([
-    (0, common_1.Get)('/env'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], AppController.prototype, "getEnv", null);
-AppController = __decorate([
-    (0, common_1.Controller)(),
-    __metadata("design:paramtypes", [app_service_1.AppService])
-], AppController);
-exports.AppController = AppController;
+    __metadata("design:returntype", void 0)
+], FireblocksController.prototype, "getHello", null);
+FireblocksController = __decorate([
+    (0, common_1.Controller)('api/v1/fireblocks'),
+    __metadata("design:paramtypes", [app_service_1.FireblocksService])
+], FireblocksController);
+exports.FireblocksController = FireblocksController;
 //# sourceMappingURL=app.controller.js.map

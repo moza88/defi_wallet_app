@@ -112,8 +112,11 @@ export default function ListOfWallets(props) {
                 return response.json()
             })
             .then(data => {
-
                 setWallets(data.wallets)
+
+            })
+            .catch((error) => {
+                console.log(error)
             })
 
         console.log(Array.isArray(wallets));

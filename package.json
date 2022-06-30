@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "bitgo": "^14.1.2"
+    "bitgo": "^14.1.2",
+    "fireblocks-sdk": "^2.3.1"
   }
 }

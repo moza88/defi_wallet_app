@@ -14,13 +14,15 @@ const config_1 = require("@nestjs/config");
 const axios_1 = require("@nestjs/axios");
 const app_service_2 = require("./services/bitgo/app.service");
 const app_controller_2 = require("./controller/bitgo/app.controller");
+const app_controller_3 = require("./controller/fireblocks/app.controller");
+const app_service_3 = require("./services/fireblocks/app.service");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [config_1.ConfigModule.forRoot(), axios_1.HttpModule],
-        controllers: [app_controller_1.AppController, app_controller_2.BitgoController],
-        providers: [app_service_1.AppService, app_service_2.BitgoService],
+        controllers: [app_controller_1.AppController, app_controller_2.BitgoController, app_controller_3.FireblocksController],
+        providers: [app_service_1.AppService, app_service_2.BitgoService, app_service_3.FireblocksService],
     })
 ], AppModule);
 exports.AppModule = AppModule;

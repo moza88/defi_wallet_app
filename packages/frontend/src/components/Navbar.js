@@ -100,6 +100,16 @@ function Navbar(props) {
               </Link>
               <Link href="/faq" passHref={true}>
                 <Button component="a" color="inherit">
+                  Buy/Sell
+                </Button>
+              </Link>
+              <Link href="/faq" passHref={true}>
+                <Button component="a" color="inherit">
+                  Monitoring
+                </Button>
+              </Link>
+              <Link href="/faq" passHref={true}>
+                <Button component="a" color="inherit">
                   FAQ
                 </Button>
               </Link>
