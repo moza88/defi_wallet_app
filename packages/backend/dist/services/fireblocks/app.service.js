@@ -17,15 +17,50 @@ const path_1 = require("path");
 const fs = require("fs");
 function fireblocks() {
     const apiSecret = fs.readFileSync((0, path_1.join)(process.cwd(), './src/services/fireblocks/fireblocks_secret.key')).toString();
-    console.log(apiSecret);
     return new fireblocks_sdk_1.FireblocksSDK(apiSecret, process.env.FIREBLOCKS_ACCESS_TOKEN);
 }
 let FireblocksService = class FireblocksService {
     constructor(httpService) {
         this.httpService = httpService;
     }
+    async getWhitelistedWallets() {
+        return fireblocks().getInternalWallets();
+    }
+    async getExternalWallets() {
+        console.log("getting external wallets ");
+        return fireblocks().getExternalWallets();
+    }
+    async getAllAssetsInWhitelistedWallet(walletId) {
+        const wallet = await fireblocks().getInternalWallet(walletId);
+        console.log(wallet);
+        return wallet;
+    }
+    async getAllTxns(accountId) {
+        return fireblocks().getVaultAccountById(accountId);
+    }
+    async getUsers() {
+        return fireblocks().getUsers();
+    }
     async getVaultAccounts() {
-        return await fireblocks().getInternalWallets();
+        return fireblocks().getVaultAccounts();
+    }
+    async getSupportedAssets() {
+        return fireblocks().getSupportedAssets();
+    }
+    async getTxnById(txnId) {
+        return fireblocks().getTransactionByExternalTxId(txnId);
+    }
+    async getTransferTickets() {
+        return fireblocks().getTransferTickets();
+    }
+    async createVault(vaultName) {
+        return fireblocks().createVaultAccount(vaultName);
+    }
+    async getVaultAccountById(id) {
+        return fireblocks().getVaultAccountById(id);
+    }
+    async createVaultAsset(id, asset) {
+        return fireblocks().createVaultAsset(id, asset);
     }
 };
 FireblocksService = __decorate([

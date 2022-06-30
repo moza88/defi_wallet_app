@@ -9,7 +9,6 @@ async function bootstrap() {
       .setTitle('Wallet APIs')
       .setDescription('APIs that were created by Wells Fargo to manage wallets')
       .setVersion('1.0')
-      .addTag('crypto')
       .setContact('SSAT Blockchain', 'wellsfargo.com', 'mabel.oza@wellsfargo.com')
       .build();
   const document = SwaggerModule.createDocument(app, config);
