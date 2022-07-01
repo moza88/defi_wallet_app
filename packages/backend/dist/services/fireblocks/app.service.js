@@ -15,6 +15,7 @@ const axios_1 = require("@nestjs/axios");
 const fireblocks_sdk_1 = require("fireblocks-sdk");
 const path_1 = require("path");
 const fs = require("fs");
+const NewWallet_1 = require("../../model/Fireblocks/NewWallet");
 function fireblocks() {
     const apiSecret = fs.readFileSync((0, path_1.join)(process.cwd(), './src/services/fireblocks/fireblocks_secret.key')).toString();
     return new fireblocks_sdk_1.FireblocksSDK(apiSecret, process.env.FIREBLOCKS_ACCESS_TOKEN);
@@ -47,20 +48,44 @@ let FireblocksService = class FireblocksService {
     async getSupportedAssets() {
         return fireblocks().getSupportedAssets();
     }
-    async getTxnById(txnId) {
+    async getTxnByExternalId(txnId) {
         return fireblocks().getTransactionByExternalTxId(txnId);
+    }
+    async getTxnById(txnId) {
+        return fireblocks().getTransactionById(txnId);
     }
     async getTransferTickets() {
         return fireblocks().getTransferTickets();
     }
-    async createVault(vaultName) {
-        return fireblocks().createVaultAccount(vaultName);
+    async createVault(vaultName, customerRefId) {
+        const vault = await fireblocks().createVaultAccount(vaultName, false, customerRefId);
+        return vault.id;
     }
     async getVaultAccountById(id) {
         return fireblocks().getVaultAccountById(id);
     }
-    async createVaultAsset(id, asset) {
-        return fireblocks().createVaultAsset(id, asset);
+    async createNewWalletInVault(id, asset) {
+        const walletInstance = await fireblocks().createVaultAsset(id, asset);
+        console.log(walletInstance.address);
+        return new NewWallet_1.NewWallet(walletInstance.id, walletInstance.address, '', '');
+    }
+    async getBalance(id, asset) {
+        return fireblocks().getVaultAccountAsset(id, asset);
+    }
+    async generateAddress(id, asset) {
+        return fireblocks().generateNewAddress(id, asset);
+    }
+    async generateDepositAddress(id, asset, description, customerRefId) {
+        return fireblocks().generateNewAddress(id, asset, description, customerRefId);
+    }
+    async getGasStation(asset) {
+        return fireblocks().getGasStationInfo(asset);
+    }
+    async createInternalWallet(walletName, customerId) {
+        return fireblocks().createInternalWallet(walletName, customerId);
+    }
+    async createExternalWallet(walletName, customerId) {
+        return fireblocks().createExternalWallet(walletName, customerId);
     }
 };
 FireblocksService = __decorate([

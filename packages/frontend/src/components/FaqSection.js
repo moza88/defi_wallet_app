@@ -38,29 +38,42 @@ function FaqSection(props) {
 
   const items = [
     {
-      question: "Integer ornare neque mauris?",
+      question: "How are we securing cryptocurrencies?",
       answer:
-        "Integer ornare neque mauris, ac vulputate lacus venenatis et. Pellentesque ut ultrices purus. Suspendisse ut tincidunt eros. In velit mi, rhoncus dictum neque a, tincidunt lobortis justo.",
+          "Cryptocurrencies are represented by key pairs, depending on if the cryptocurrency uses a UTXO or account model, different coins or transactions generate new key pairs. ",
     },
     {
-      question: "Lorem ipsum dolor sit amet?",
+      question: "What is the difference between using a multi-signature wallet and MPC in asset security?",
+      answer:
+        "Multi-signature wallets require more than one signature to a transaction and they are all enforced on-chain. Multi-signature wallets are specific to blockchain network because they are enforce on-chain. " +
+          "MPC requires only one signature to a transaction and it's not enforced on-chain. The one signature comes from multiple key shards that are generated and signed in an ecrypted manner using homomorphic encryption. ",
+    },
+    {
+      question: "What is the difference between vaults and wallets in Fireblocks?",
+      answer:
+          "Vault accounts are containers that can be used to group and organize asset wallets. Each vault account can contain one wallet for each asset type. Once you create a vault account, you can then add asset wallets with deposit addresses.",
+    },
+    {
+      question: "What is a MPC?",
       answer:
         "Nunc nulla mauris, laoreet vel cursus lacinia, consectetur sit amet tellus. Suspendisse ut tincidunt eros. In velit mi, rhoncus dictum neque a, tincidunt lobortis justo.",
     },
     {
-      question: "Suspendisse ut tincidunt?",
+      question: "What is a ERC20 token?",
       answer:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lobortis, metus et mattis ullamcorper. Suspendisse ut tincidunt eros. In velit mi, rhoncus dictum neque a, tincidunt lobortis justo.",
     },
     {
-      question: "Ut enim ad minim veniam?",
+      question: "What is a ERC1400 token?",
       answer:
-        "Suspendisse ut tincidunt eros. In velit mi, rhoncus dictum neque a, tincidunt lobortis justo.",
+        "ERC1400 is a security token that it has mechanisms to restrict its usage based on identity, jurisdiction and asset category.",
     },
     {
-      question: "In velit mi, rhoncus dictum neque?",
+      question: "Where are the key shards stored?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
+        "The key shards are stored on servers and are secured using an secure enclaves (Intel SGX). Review the docs below for details:" +
+          " " +
+          "https://support.fireblocks.io/hc/en-us/articles/360015903159#h_01EFJ5H9S1MZAS7VGG74NXXE5A.",
     },
   ];
 

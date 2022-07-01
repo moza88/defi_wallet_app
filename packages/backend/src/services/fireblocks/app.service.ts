@@ -3,6 +3,8 @@ import {HttpService} from "@nestjs/axios";
 import {FireblocksSDK} from "fireblocks-sdk";
 import {join} from 'path';
 import fs = require('fs');
+import {RequestOptions, VaultAccountResponse} from "fireblocks-sdk/dist/types";
+import {NewWallet} from "../../model/Fireblocks/NewWallet";
 
 //const apiSecret = fs.readFileSync(join(process.cwd(), './src/services/fireblocks/fireblocks_secret.key')).toString();
 function fireblocks() {
@@ -49,24 +51,56 @@ export class FireblocksService {
         return fireblocks().getSupportedAssets();
     }
 
-    async getTxnById(txnId: string) {
+    async getTxnByExternalId(txnId: string) {
         return fireblocks().getTransactionByExternalTxId(txnId);
+    }
+
+    async getTxnById(txnId: string) {
+        return fireblocks().getTransactionById(txnId);
     }
 
     async getTransferTickets() {
         return fireblocks().getTransferTickets();
     }
 
-    async createVault(vaultName: string) {
-        return fireblocks().createVaultAccount(vaultName);
+    async createVault(vaultName: string, customerRefId: string): Promise<string> {
+        const vault = await fireblocks().createVaultAccount(vaultName, false, customerRefId)
+        return vault.id;
     }
 
     async getVaultAccountById(id: string) {
         return fireblocks().getVaultAccountById(id);
     }
 
-    async createVaultAsset(id: string, asset: string) {
-        return fireblocks().createVaultAsset(id, asset);
+    async createNewWalletInVault(id: string, asset: string): Promise<NewWallet> {
+        const walletInstance = await fireblocks().createVaultAsset(id, asset)
+
+        console.log(walletInstance.address);
+        return new NewWallet(walletInstance.id, walletInstance.address, '', '');
+    }
+
+    async getBalance(id: string, asset: string) {
+        return fireblocks().getVaultAccountAsset(id, asset);
+    }
+
+    async generateAddress(id: string, asset: string) {
+        return fireblocks().generateNewAddress(id, asset);
+    }
+
+    async generateDepositAddress(id: string, asset: string, description: string, customerRefId: string) {
+        return fireblocks().generateNewAddress(id, asset, description, customerRefId);
+    }
+
+    async getGasStation(asset: string) {
+        return fireblocks().getGasStationInfo(asset);
+    }
+
+    async createInternalWallet(walletName: string, customerId: string) {
+        return fireblocks().createInternalWallet(walletName, customerId);
+    }
+
+    async createExternalWallet(walletName: string, customerId: string) {
+        return fireblocks().createExternalWallet(walletName, customerId);
     }
 }
 

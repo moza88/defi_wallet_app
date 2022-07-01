@@ -39,6 +39,7 @@
     "start": "./node_modules/.bin/next start"
   },
   "devDependencies": {
+    "@mui/material": "^5.8.6",
     "@self.id/framework": "^0.3.2"
   }
 }
