@@ -1,0 +1,8 @@
+version: '3.2'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: 'Dockerfile'
+    ports:
+      - '9000:9000'

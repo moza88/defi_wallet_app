@@ -9,17 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateWallet = void 0;
+exports.Auth = void 0;
 const swagger_1 = require("@nestjs/swagger");
-class CreateWallet {
+class Auth {
 }
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], CreateWallet.prototype, "label", void 0);
+], Auth.prototype, "username", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], CreateWallet.prototype, "password", void 0);
-exports.CreateWallet = CreateWallet;
-//# sourceMappingURL=CreateWallet.js.map
+], Auth.prototype, "password", void 0);
+exports.Auth = Auth;
+//# sourceMappingURL=Auth.js.map

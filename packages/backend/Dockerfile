@@ -1,14 +1,14 @@
-FROM node:erbium-alpine3.14
+FROM node:15.4 as build
 
-WORKDIR /src
-
-COPY package.json .
-
-RUN yarn
-
+WORKDIR /app
+COPY package*.json .
+RUN npm install
 COPY . .
+RUN npm run build
 
-RUN yarn build
-
-EXPOSE 9000
-CMD [ "yarn", "start:dev" ]
+FROM node:15.4
+WORKDIR /app
+COPY package.json .
+RUN npm install --only=production
+COPY --from=build /app/dist ./dist
+CMD npm run start:prod

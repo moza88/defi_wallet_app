@@ -16,6 +16,7 @@ exports.BitgoController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("../../services/bitgo/app.service");
 const rxjs_1 = require("rxjs");
+const swagger_1 = require("@nestjs/swagger");
 const WalletParams_1 = require("../../model/WalletParams");
 const TXN_1 = require("../../model/TXN");
 const WalletShare_1 = require("../../model/WalletShare");
@@ -108,6 +109,7 @@ __decorate([
     __metadata("design:returntype", rxjs_1.Observable)
 ], BitgoController.prototype, "getTxnHistory", null);
 BitgoController = __decorate([
+    (0, swagger_1.ApiTags)('BitGo'),
     (0, common_1.Controller)('api/v1/bitgo'),
     __metadata("design:paramtypes", [app_service_1.BitgoService])
 ], BitgoController);

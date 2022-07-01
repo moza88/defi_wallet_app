@@ -5,26 +5,32 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useForm } from "react-hook-form";
 import {useRouter} from "next/router";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import {Card, CardHeader, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
+import CardContent from "@material-ui/core/CardContent";
 
 export default function CreateWallet(props) {
     const [pending, setPending] = useState(false);
 
-    const [label, setLabel] = React.useState('');
-    const [passphrase, setPassphrase] = React.useState('');
+    const [vaultName, setVaultName] = React.useState('');
 
     const {handleSubmit, getValues, errors, sendFunds} = useForm();
 
-    const [coin, setCoin] = useState("tbtc");
+    const [asset, setAsset] = useState("ETH_TEST");
+
+    const [newWalletId, setNewWalletId] = useState('')
+    const [newReceiverAddress, setRecieverAddress] = useState('')
 
     function handleChange(event) {
-        setCoin(event.target.value);
-        console.log(coin)
+        setAsset(event.target.value);
+        console.log(asset)
     }
 
-    const createWallet = (label, passphrase) => {
-        console.log(label, passphrase);
+    const createWallet = (vaultName, asset) => {
+        console.log(vaultName, asset);
 
-        fetch(process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + '/create_wallet/' + "coin=" + coin, {
+        fetch(process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + '/create_vault_wallet/', {
             method: 'POST',
             headers: {
                 Accept: "application/json",
@@ -32,16 +38,16 @@ export default function CreateWallet(props) {
                 'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify({
-                label: label,
-                passphrase: passphrase
+                vaultName: vaultName,
+                asset: asset
             })
-        }).then((response) => {
-            console.log(response);
+        }).then(response => response.json())
+            .then(walletInfo => {
+                console.log(walletInfo)
 
-        }).catch((error) => {
-            console.log(error)
-        })
-
+                setNewWalletId(walletInfo.id)
+                setRecieverAddress(walletInfo.address)
+            });
     }
 
     function refreshPage() {
@@ -49,55 +55,86 @@ export default function CreateWallet(props) {
     }
 
     const onSubmit = () => {
-
-        createWallet(label, passphrase);
-        refreshPage();
+        console.log(vaultName)
+        console.log(asset)
+        createWallet(vaultName, asset);
+        //refreshPage();
     };
 
     return (
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <br></br>
+        <Container>
+            <Typography variant="h6">Create Wallet</Typography>
 
-            <br></br><br></br>
-            <Grid container={true} spacing={2}>
-                <Grid item={true} xs={12}>
-                    <TextField
-                        variant="outlined"
-                        type="text"
-                        label="Label"
-                        name="label"
-                        placeholder="My Wallet"
-                        fullWidth={true}
-                        onChange={(e) => setLabel(e.target.value)}
-                    />
-                </Grid>
-                <Grid item={true} xs={12}>
-                    <TextField
-                        variant="outlined"
-                        type="text"
-                        label="Passphrase"
-                        name="passphrase"
-                        placeholder="something something"
-                        fullWidth={true}
-                        onChange={(e) => setPassphrase(e.target.value)}
-                    />
-                </Grid>
-                <Grid item={true} xs={12}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        type="submit"
-                        disabled={pending}
-                        fullWidth={true}
-                    >
-                        {!pending && <span>Create New Wallet</span>}
+            {!newWalletId &&
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Grid container={true} spacing={2}>
+                    <Grid item={true} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            type="text"
+                            label="Vault Name"
+                            name="vaultName"
+                            placeholder="My Wallet"
+                            fullWidth={true}
+                            onChange={(e) => setVaultName(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            type="text"
+                            label="Asset"
+                            name="asset"
+                            placeholder="ETH_TEST"
+                            fullWidth={true}
+                            onChange={(e) => setAsset(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            type="submit"
+                            disabled={pending}
+                            fullWidth={true}
+                        >
+                            {!pending && <span>Create New Wallet</span>}
 
-                        {pending && <CircularProgress size={28} />}
-                    </Button>
+                            {pending && <CircularProgress size={28}/>}
+                        </Button>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </form>
+            </form>
+            }
+            {newWalletId &&
+            <Card >
+                <CardHeader title ="New Wallet Details"/>
+                <CardContent>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Wallet ID</TableCell>
+                                <TableCell>Receiver Address</TableCell>
+                                <TableCell>Backup</TableCell>
+
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>{newWalletId}</TableCell>
+                                <TableCell>{newReceiverAddress}</TableCell>
+                                <TableCell>Backup</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                    <Typography>Add Bitcoins to your wallet</Typography>
+                    <a>https://testnet.help/en/btcfaucet/testnet#log</a>
+                </CardContent>
+            </Card>
+            }
+
+        </Container>
     );
 }

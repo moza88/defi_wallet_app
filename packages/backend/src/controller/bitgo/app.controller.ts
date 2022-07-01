@@ -1,12 +1,13 @@
 import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
 import { BitgoService } from '../../services/bitgo/app.service';
 import {Observable} from "rxjs";
-import {ApiOperation} from "@nestjs/swagger";
+import {ApiOperation, ApiTags} from "@nestjs/swagger";
 import { WalletParams} from "../../model/WalletParams";
 import {TXN} from "../../model/TXN";
 import {NewWallet} from "../../model/NewWallet";
 import {WalletShare} from "../../model/WalletShare";
 
+@ApiTags('BitGo')
 @Controller('api/v1/bitgo')
 export class BitgoController {
   constructor(private readonly appService: BitgoService) {}
