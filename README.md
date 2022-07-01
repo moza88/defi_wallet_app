@@ -6,14 +6,14 @@ Backend - NestJS
 
 Frontend - NextJS
 
-####Crypto Libraries
+#### Crypto Libraries
 Bitgo
 
 Fireblocks
 
-##Modifications
+## Modifications
 
-###Backend
+### Backend
 
 ##### Image Rebuild
 After making changes re-build the image using the command below:
