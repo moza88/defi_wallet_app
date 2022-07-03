@@ -1,10 +1,10 @@
 import {Injectable} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
-import {FireblocksSDK} from "fireblocks-sdk";
+import {FireblocksSDK, PeerType, TransactionArguments, VaultAccountsFilter} from "fireblocks-sdk";
 import {join} from 'path';
-import fs = require('fs');
-import {RequestOptions, VaultAccountResponse} from "fireblocks-sdk/dist/types";
 import {NewWallet} from "../../model/Fireblocks/NewWallet";
+import {Txn} from "../../model/Fireblocks/Txn";
+import fs = require('fs');
 
 //const apiSecret = fs.readFileSync(join(process.cwd(), './src/services/fireblocks/fireblocks_secret.key')).toString();
 function fireblocks() {
@@ -43,8 +43,18 @@ export class FireblocksService {
         return fireblocks().getUsers();
     }
 
-    async getVaultAccounts() {
-        return fireblocks().getVaultAccounts();
+    async getVaultAccounts(vaultAccountFilter: VaultAccountsFilter) {
+        console.log(vaultAccountFilter);
+
+        return fireblocks().getVaultAccountsWithPageInfo(vaultAccountFilter)
+            .then(res => {
+                console.log(res);
+                return res;
+            })
+            .catch(err => {
+                console.log(err);
+                return err;
+            });
     }
 
     async getSupportedAssets() {
@@ -101,6 +111,34 @@ export class FireblocksService {
 
     async createExternalWallet(walletName: string, customerId: string) {
         return fireblocks().createExternalWallet(walletName, customerId);
+    }
+
+    async createTxn(txn: Txn) {
+        console.log("creating txn")
+        console.log(txn);
+        const payload: TransactionArguments = {
+            assetId: txn.asset,
+            source: {
+                type: PeerType.VAULT_ACCOUNT,
+                id: String(txn.source)
+            },
+            destination: {
+                type: PeerType.VAULT_ACCOUNT,
+                id: String(txn.dest)
+            },
+            amount: String(txn.amount),
+            fee: String(txn.fee),
+            note: txn.note
+        };
+
+        console.log(payload);
+
+        return fireblocks().createTransaction(payload).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+            return err;
+        })
     }
 }
 
