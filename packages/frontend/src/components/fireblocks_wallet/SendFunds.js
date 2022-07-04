@@ -11,6 +11,7 @@ export default function SendFunds({coin, walletId}, props) {
     const [pending, setPending] = useState(false);
 
     const [amount, setAmount] = useState('');
+    const [fee, setFee] = useState('');
     const [password, setPassword] = useState('');
     const [destAddress, setDestAddress] = useState('');
 
@@ -23,19 +24,19 @@ export default function SendFunds({coin, walletId}, props) {
 
         const txn =
             {
-                coin: coin,
-                walletId: walletId,
+                asset: coin,
+                source: walletId,
+                dest: destAddress,
                 amount: amount,
-                destAddress: destAddress,
-                password: password
+                fee: fee,
+                note: 'sendings funds',
             };
 
         transferFunds(txn);
     };
 
     function transferFunds(txn) {
-        var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER +"/send_txn";
-        console.log(req_url);
+        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/createTxnVaultToVault";
 
         console.log(amount);
 
@@ -60,7 +61,7 @@ export default function SendFunds({coin, walletId}, props) {
                     <TextField
                         variant="outlined"
                         type="text"
-                        label="Destiantion Address"
+                        label="Destination Vault"
                         name="destAddress"
                         fullWidth={true}
                         onChange={(e) => setDestAddress(e.target.value)}
@@ -80,12 +81,11 @@ export default function SendFunds({coin, walletId}, props) {
                 <Grid item={true} xs={12}>
                     <TextField
                         variant="outlined"
-                        type="password"
-                        label="Password"
-                        name="password"
-                        placeholder="something something"
+                        type="text"
+                        label="Fee"
+                        name="fee"
                         fullWidth={true}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setFee(e.target.value)}
                     />
                 </Grid>
                 <Grid item={true} xs={12}>

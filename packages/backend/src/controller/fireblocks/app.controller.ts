@@ -7,6 +7,7 @@ import { setTimeout } from "timers/promises";
 import {NewWallet} from "../../model/Fireblocks/NewWallet";
 import {Txn} from "../../model/Fireblocks/Txn";
 import { VaultAccountFilter} from "../../model/Fireblocks/VaultAccountFilter";
+import {Observable} from "rxjs";
 
 @ApiTags('Fireblocks')
 @Controller('api/v1/fireblocks')
@@ -60,11 +61,22 @@ export class FireblocksController {
    * 3. Transfers an asset from one vault to another vault.
    * @param txn
    */
-  @Post('/createTxn')
-  async createTxn(
+  @Post('/createTxnVaultToVault')
+  async createTxnVaultToVault(
       @Body() txn: Txn
   ) {
-    return this.appService.createTxn(txn);
+    return this.appService.createTxnVaultToVault(txn);
+  }
+
+  /**
+   * 3. Transfers an asset from one vault to another vault.
+   * @param txn
+   */
+  @Post('/createTxnVaultToAddress')
+  async createTxnVaultToAddress(
+      @Body() txn: Txn
+  ) {
+    return this.appService.createTxnVaultToExtWallet(txn);
   }
 
   /**
@@ -74,7 +86,7 @@ export class FireblocksController {
   @Post('/getVaultAccounts')
   getVaultAccounts(
       @Body() vaultAccountFilter: VaultAccountFilter
-  ) {
+  ): Promise<any>{
     return this.appService.getVaultAccounts(vaultAccountFilter);
   }
 

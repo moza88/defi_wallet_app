@@ -5,6 +5,7 @@ import {join} from 'path';
 import {NewWallet} from "../../model/Fireblocks/NewWallet";
 import {Txn} from "../../model/Fireblocks/Txn";
 import fs = require('fs');
+import {map} from "rxjs";
 
 //const apiSecret = fs.readFileSync(join(process.cwd(), './src/services/fireblocks/fireblocks_secret.key')).toString();
 function fireblocks() {
@@ -19,9 +20,7 @@ export class FireblocksService {
     constructor(private readonly httpService: HttpService) {}
 
     async getWhitelistedWallets() {
-
         return fireblocks().getInternalWallets();
-
     }
 
     async getExternalWallets() : Promise<any> {
@@ -48,7 +47,7 @@ export class FireblocksService {
 
         return fireblocks().getVaultAccountsWithPageInfo(vaultAccountFilter)
             .then(res => {
-                console.log(res);
+                console.log(res.accounts);
                 return res;
             })
             .catch(err => {
@@ -113,7 +112,7 @@ export class FireblocksService {
         return fireblocks().createExternalWallet(walletName, customerId);
     }
 
-    async createTxn(txn: Txn) {
+    async createTxnVaultToVault(txn: Txn) {
         console.log("creating txn")
         console.log(txn);
         const payload: TransactionArguments = {
@@ -124,6 +123,34 @@ export class FireblocksService {
             },
             destination: {
                 type: PeerType.VAULT_ACCOUNT,
+                id: String(txn.dest)
+            },
+            amount: String(txn.amount),
+            fee: String(txn.fee),
+            note: txn.note
+        };
+
+        console.log(payload);
+
+        return fireblocks().createTransaction(payload).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+            return err;
+        })
+    }
+
+    async createTxnVaultToExtWallet(txn: Txn) {
+        console.log("creating txn")
+        console.log(txn);
+        const payload: TransactionArguments = {
+            assetId: txn.asset,
+            source: {
+                type: PeerType.VAULT_ACCOUNT,
+                id: String(txn.source)
+            },
+            destination: {
+                type: PeerType.ONE_TIME_ADDRESS,
                 id: String(txn.dest)
             },
             amount: String(txn.amount),
