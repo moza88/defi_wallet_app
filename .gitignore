@@ -33,7 +33,8 @@ node_modules/*
 
 # debug
 npm-debug.log*
-yarn-debug.log*
+yarn-debug.log*git
 yarn-error.log*
 /packages/backend/dist/
 /packages/backend/certs/
+/packages/backend/dist/*

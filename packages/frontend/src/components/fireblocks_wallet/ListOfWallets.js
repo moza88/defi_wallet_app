@@ -21,6 +21,7 @@ import WalletDetails from "./WalletDetails";
 import SendFunds from "./SendFunds";
 import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
+import CoPresentIcon from '@mui/icons-material/CoPresent';
 
 const style = {
     position: 'absolute',
@@ -36,22 +37,32 @@ const style = {
 
 export default function ListOfWallets(props) {
     const [wallets, setWallets] = useState([]);
+    const [walletNames, setWalletNames] = useState([]);
     const [walletId, setWalletId] = useState('');
     const [openSendFunds, setOpenSendFunds] = React.useState(false);
+
+    const [openShareWallet, setOpenShareWallet] = useState(false);
+
     const [openDetails, setOpenDetails] = React.useState(false);
-    const [coin, setCoin] = useState("tbtc");
+    const [coin, setCoin] = useState("ETH_TEST");
 
     const handleCloseSendFunds = () => setOpenSendFunds(false);
     const handleCloseDetails = () => setOpenDetails(false);
+    const handleCloseShareWallet = () => setOpenShareWallet(false);
 
     const [values, setValues] = useState([
-        "tbtc",
-        "teth"
+        "BTC_TEST",
+        "ETH_TEST"
     ]);
 
     function handleOpenSendFunds(id)  {
         setWalletId(id)
         setOpenSendFunds(true);
+    }
+
+    function handleOpenShareWallet(id) {
+        setWalletId(id)
+        setOpenShareWallet(true)
     }
 
     const handleOpenViewHistory = (id) => {
@@ -72,7 +83,7 @@ export default function ListOfWallets(props) {
 
         console.log("deleting wallet " + walletId)
 
-        var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + "/delete_wallet/" +
+        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/delete_wallet/" +
             "coin=" +coin + "/" + "walletId=" + walletId
 
 
@@ -83,31 +94,71 @@ export default function ListOfWallets(props) {
             }
         })
             .then(response => {
-                refreshPage();
+                getWallets(coin);
             })
 
     }
 
+    const createWallet = (vaultName, asset) => {
+        console.log(vaultName, asset);
+
+        fetch(process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + '/create_vault_wallet/', {
+            method: 'POST',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify({
+                vaultName: vaultName,
+                asset: asset
+            })
+        }).then(response => response.json())
+            .then(walletInfo => {
+                console.log(walletInfo)
+
+                setNewWalletId(walletInfo.id)
+                setRecieverAddress(walletInfo.address)
+            });
+    }
+
+
     function getWallets(coin) {
-        var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER +"/wallet_list" + "/coin=" + coin;
+        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/getVaultAccounts";
         console.log(req_url);
 
-        fetch(req_url)
-            .then(response => {
-                return response.json()
+        fetch(req_url, {
+            method: 'POST',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify({
+                namePrefix: "WF",
+                nameSuffix: "",
+                minAmountThreshold: 0,
+                assetId: "coin"
             })
-            .then(data => {
-
-                setWallets(data.wallets)
-            })
-
-        console.log(Array.isArray(wallets));
-        console.log(wallets)
+        }).then(response => {
+           // response.json()
+            console.log(response.json()
+                .then(data => {
+                console.log(data.accounts[0].name)
+                for(const element of data.accounts) {
+                    console.log(element.name)
+                    setWalletNames(walletNames => [...walletNames, element.name])
+                    setWalletId(walletId => [...walletId, element.id])
+                }
+            }))
+        }).catch((error)=> {
+            console.log(error)
+        })
     }
 
     useEffect(() => {
         getWallets(coin)
-
+        console.log(walletNames)
     }, [])
 
     return (
@@ -115,60 +166,61 @@ export default function ListOfWallets(props) {
             <Card sx={{ maxWidth: 345 }} >
 
                 <br></br>
-                <Typography variant="h5" align="center">BitGo {coin.toUpperCase()} Wallets</Typography>
+                <Typography variant="h5" align="center">Fireblocks {coin.toUpperCase()} Wallets</Typography>
 
                 <br></br>
 
                 <Container>
-                <FormControl>
-                    <InputLabel htmlFor="coin">Coin</InputLabel>
-                    <Select
-                        value={coin}
-                        onChange={handleChange}
-                        inputProps={{
-                            name: "coin",
-                            id: "coin-simple",
-                        }}
-                    >
-                        {values.map((value, index) => {
-                            return <MenuItem value={value}>{value}</MenuItem>;
-                        })}
-                    </Select>
-                </FormControl>
+                    <FormControl>
+                        <InputLabel htmlFor="coin">Coin</InputLabel>
+                        <Select
+                            value={coin}
+                            onChange={handleChange}
+                            inputProps={{
+                                name: "coin",
+                                id: "coin-simple",
+                            }}
+                        >
+                            {values.map((value, index) => {
+                                return <MenuItem key={index} value={value}>{value}</MenuItem>;
+                            })}
+                        </Select>
+                    </FormControl>
                 </Container>
 
                 <br></br>
-
                 <TableContainer component={Paper}>
                     <Table stickyHeader  aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Date Created</TableCell>
+                                <TableCell>Id</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell>Balance</TableCell>
                                 <TableCell>Send Funds</TableCell>
                                 <TableCell>History</TableCell>
                                 <TableCell>Delete</TableCell>
+
                             </TableRow>
                         </TableHead>
 
                         <TableBody>
-                            {wallets.map((item) => (
-                                <TableRow>
-                                    <TableCell>{item.startDate}</TableCell>
-                                    <TableCell>{item.label}</TableCell>
-                                    <TableCell>{item.balance}</TableCell>
+
+                            {walletNames.length && walletNames.map( (name,index)=>
+                                <TableRow key={index}>
+                                    <TableCell>{walletId[index]}</TableCell>
+                                    <TableCell>{name}</TableCell>
+                                    <TableCell>balance</TableCell>
                                     <TableCell>
                                         <Button variant="contained"
-                                            startIcon={<SendIcon />}
+                                                startIcon={<SendIcon />}
                                                 onClick={() => {
-                                                    handleOpenSendFunds(item.id)
+                                                    handleOpenSendFunds(walletId[index])
                                                 }}
-                                            > Send
+                                        > Send
                                         </Button>
                                     </TableCell>
                                     <TableCell>
-                                        <Button variant="contained"
+                                        <Button color='primary' variant="contained"
                                                 startIcon={<ArticleIcon />}
                                                 onClick={() => {
                                                     handleOpenViewHistory(item.id)
@@ -177,14 +229,14 @@ export default function ListOfWallets(props) {
                                         </Button>
                                     </TableCell>
                                     <TableCell>
-                                        <Button variant="contained" onClick={() => {
+                                        <Button color='primary' variant="contained" onClick={() => {
                                             deleteWallet(item.id)
                                         }} startIcon={<DeleteIcon />}>
                                             Delete
                                         </Button>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            )}
                         </TableBody>
                     </Table>
                 </TableContainer>

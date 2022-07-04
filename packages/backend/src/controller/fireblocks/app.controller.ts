@@ -1,11 +1,13 @@
 import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
 import { FireblocksService } from '../../services/fireblocks/app.service';
-import {VaultAccountResponse} from "fireblocks-sdk";
 import {ApiTags} from "@nestjs/swagger";
 import {VaultAsset} from "../../model/fireblocks/VaultAsset";
 import {VaultWalletParams} from "../../model/Fireblocks/VaultWalletParams";
 import { setTimeout } from "timers/promises";
 import {NewWallet} from "../../model/Fireblocks/NewWallet";
+import {Txn} from "../../model/Fireblocks/Txn";
+import { VaultAccountFilter} from "../../model/Fireblocks/VaultAccountFilter";
+import {Observable} from "rxjs";
 
 @ApiTags('Fireblocks')
 @Controller('api/v1/fireblocks')
@@ -55,9 +57,37 @@ export class FireblocksController {
         });
   }
 
-  @Get('/getVaultAccounts')
-  getVaultAccounts() {
-    return this.appService.getVaultAccounts();
+  /**
+   * 3. Transfers an asset from one vault to another vault.
+   * @param txn
+   */
+  @Post('/createTxnVaultToVault')
+  async createTxnVaultToVault(
+      @Body() txn: Txn
+  ) {
+    return this.appService.createTxnVaultToVault(txn);
+  }
+
+  /**
+   * 3. Transfers an asset from one vault to another vault.
+   * @param txn
+   */
+  @Post('/createTxnVaultToAddress')
+  async createTxnVaultToAddress(
+      @Body() txn: Txn
+  ) {
+    return this.appService.createTxnVaultToExtWallet(txn);
+  }
+
+  /**
+   * Get vault account info based on filter
+   * @param vaultAccountFilter
+   */
+  @Post('/getVaultAccounts')
+  getVaultAccounts(
+      @Body() vaultAccountFilter: VaultAccountFilter
+  ): Promise<any>{
+    return this.appService.getVaultAccounts(vaultAccountFilter);
   }
 
   @Get('/get_whitelisted_wallets')
@@ -102,7 +132,6 @@ export class FireblocksController {
         return this.appService.getVaultAccountById(accountId);
     }
 
-
     @Post('/get_balance')
     async getBalance(
         @Body() vaultAsset: VaultAsset
@@ -110,8 +139,11 @@ export class FireblocksController {
         return this.appService.getBalance(vaultAsset.id, vaultAsset.asset);
     }
 
-    @Get('/get_transfer_tickets')
-    async getTransferTickets() {
-        return this.appService.getTransferTickets();
-    }
+  @Get('/get_transfer_tickets')
+  async getTransferTickets() {
+    return this.appService.getTransferTickets();
+  }
+
+
+
 }
