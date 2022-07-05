@@ -41,7 +41,7 @@ export default function ListOfWallets(props) {
     const [walletNames, setWalletNames] = useState([]);
     const [walletId, setWalletId] = useState('');
     const [openSendFunds, setOpenSendFunds] = React.useState(false);
-    const [balances, setBalances] = useState([]);
+    const [balances, setBalances] = useState(new Map());
     const [balance, setBalance] = useState(0);
 
     const [openShareWallet, setOpenShareWallet] = useState(false);
@@ -136,7 +136,16 @@ export default function ListOfWallets(props) {
     }, [coin])
 
     useEffect(() => {
-        setBalances(getAllBalances(coin, wallets));
+        getAllBalances(coin, wallets)
+            .then(data => {
+                console.log(data)
+                setBalances(data)
+               // setBalances(balances => [...balances, data])
+            })
+            .catch((error)=> {
+            console.log(error)
+        })
+
     }, [wallets])
 
     return (
@@ -186,7 +195,7 @@ export default function ListOfWallets(props) {
                                 <TableRow key={index}>
                                     <TableCell>{wallet.id}</TableCell>
                                     <TableCell>{wallet.name}</TableCell>
-                                    <TableCell>{balances[index]}</TableCell>
+                                    <TableCell>{balances.get(wallet.id)}</TableCell>
                                     <TableCell>
                                         <Button variant="contained"
                                                 startIcon={<SendIcon />}
