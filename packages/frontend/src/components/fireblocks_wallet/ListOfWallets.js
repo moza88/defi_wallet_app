@@ -22,6 +22,7 @@ import SendFunds from "./SendFunds";
 import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
+import {getAllBalances, getBalance, test} from "./helper/fireblocks_functions";
 
 const style = {
     position: 'absolute',
@@ -96,39 +97,6 @@ export default function ListOfWallets(props) {
 
     }
 
-    function getAllBalances(coin, wallets) {
-        for(const element of wallets) {
-           // const balanceX = getBalance(coin, element.id)
-            //console.log('balance for ' + element.id + ': ' + balanceX)
-            //setBalances(balance => [...balance, [element.id]: getBalance(coin, element.id)])
-            const vaultID = "vaultID"
-            setBalances(balances => ({...balances, [element.id]: getBalance(coin, element.id)}))
-        }
-        return balances;
-    }
-
-    const getBalance = (coin, walletId) => {
-        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/get_balance";
-
-        fetch(req_url, {
-            method: 'POST',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({
-                id: walletId,
-                asset: coin,
-            })
-        }).then(response => response.json())
-          .then(data => {
-            //console.log(data)
-            setBalance(data.balance)
-        })
-        return balance;
-    }
-
     function getWallets(coin) {
         var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/getVaultAccounts";
         console.log(req_url);
@@ -144,7 +112,7 @@ export default function ListOfWallets(props) {
                 namePrefix: "WF",
                 nameSuffix: "",
                 minAmountThreshold: 0,
-                assetId: "coin"
+                assetId: ""
             })
         }).then(response => {
            // response.json()
@@ -165,8 +133,11 @@ export default function ListOfWallets(props) {
 
     useEffect(() => {
         getWallets(coin)
-
     }, [coin])
+
+    useEffect(() => {
+        setBalances(getAllBalances(coin, wallets));
+    }, [wallets])
 
     return (
         <div>
@@ -174,7 +145,6 @@ export default function ListOfWallets(props) {
 
                 <br></br>
                 <Typography variant="h5" align="center">Fireblocks {coin.toUpperCase()} Wallets</Typography>
-
                 <br></br>
 
                 <Container>
@@ -212,11 +182,11 @@ export default function ListOfWallets(props) {
 
                         <TableBody>
 
-                            {wallets.length && wallets.map( (name,index)=>
+                            {wallets.length && wallets.map( (wallet,index)=>
                                 <TableRow key={index}>
-                                    <TableCell>{wallets[index].id}</TableCell>
-                                    <TableCell>{wallets[index].name}</TableCell>
-                                    <TableCell>balance</TableCell>
+                                    <TableCell>{wallet.id}</TableCell>
+                                    <TableCell>{wallet.name}</TableCell>
+                                    <TableCell>{balances[index]}</TableCell>
                                     <TableCell>
                                         <Button variant="contained"
                                                 startIcon={<SendIcon />}
