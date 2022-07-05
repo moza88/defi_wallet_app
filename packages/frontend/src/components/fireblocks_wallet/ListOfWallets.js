@@ -22,6 +22,7 @@ import SendFunds from "./SendFunds";
 import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
+import {getAllBalances, getBalance, test} from "./helper/fireblocks_functions";
 
 const style = {
     position: 'absolute',
@@ -40,6 +41,8 @@ export default function ListOfWallets(props) {
     const [walletNames, setWalletNames] = useState([]);
     const [walletId, setWalletId] = useState('');
     const [openSendFunds, setOpenSendFunds] = React.useState(false);
+    const [balances, setBalances] = useState(new Map());
+    const [balance, setBalance] = useState(0);
 
     const [openShareWallet, setOpenShareWallet] = useState(false);
 
@@ -58,11 +61,6 @@ export default function ListOfWallets(props) {
     function handleOpenSendFunds(id)  {
         setWalletId(id)
         setOpenSendFunds(true);
-    }
-
-    function handleOpenShareWallet(id) {
-        setWalletId(id)
-        setOpenShareWallet(true)
     }
 
     const handleOpenViewHistory = (id) => {
@@ -99,30 +97,6 @@ export default function ListOfWallets(props) {
 
     }
 
-    const createWallet = (vaultName, asset) => {
-        console.log(vaultName, asset);
-
-        fetch(process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + '/create_vault_wallet/', {
-            method: 'POST',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({
-                vaultName: vaultName,
-                asset: asset
-            })
-        }).then(response => response.json())
-            .then(walletInfo => {
-                console.log(walletInfo)
-
-                setNewWalletId(walletInfo.id)
-                setRecieverAddress(walletInfo.address)
-            });
-    }
-
-
     function getWallets(coin) {
         var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/getVaultAccounts";
         console.log(req_url);
@@ -138,17 +112,18 @@ export default function ListOfWallets(props) {
                 namePrefix: "WF",
                 nameSuffix: "",
                 minAmountThreshold: 0,
-                assetId: "coin"
+                assetId: ""
             })
         }).then(response => {
            // response.json()
             console.log(response.json()
                 .then(data => {
                 console.log(data.accounts[0].name)
-                for(const element of data.accounts) {
-                    console.log(element.name)
-                    setWalletNames(walletNames => [...walletNames, element.name])
-                    setWalletId(walletId => [...walletId, element.id])
+                for(const account of data.accounts) {
+                    setWallets(wallets => [...wallets, account])
+                    console.log(account.name)
+                    setWalletNames(walletNames => [...walletNames, account.name])
+                    setWalletId(walletId => [...walletId, account.id])
                 }
             }))
         }).catch((error)=> {
@@ -158,8 +133,20 @@ export default function ListOfWallets(props) {
 
     useEffect(() => {
         getWallets(coin)
-        console.log(walletNames)
-    }, [])
+    }, [coin])
+
+    useEffect(() => {
+        getAllBalances(coin, wallets)
+            .then(data => {
+                console.log(data)
+                setBalances(data)
+               // setBalances(balances => [...balances, data])
+            })
+            .catch((error)=> {
+            console.log(error)
+        })
+
+    }, [wallets])
 
     return (
         <div>
@@ -167,7 +154,6 @@ export default function ListOfWallets(props) {
 
                 <br></br>
                 <Typography variant="h5" align="center">Fireblocks {coin.toUpperCase()} Wallets</Typography>
-
                 <br></br>
 
                 <Container>
@@ -205,16 +191,16 @@ export default function ListOfWallets(props) {
 
                         <TableBody>
 
-                            {walletNames.length && walletNames.map( (name,index)=>
+                            {wallets.length && wallets.map( (wallet,index)=>
                                 <TableRow key={index}>
-                                    <TableCell>{walletId[index]}</TableCell>
-                                    <TableCell>{name}</TableCell>
-                                    <TableCell>balance</TableCell>
+                                    <TableCell>{wallet.id}</TableCell>
+                                    <TableCell>{wallet.name}</TableCell>
+                                    <TableCell>{balances.get(wallet.id)}</TableCell>
                                     <TableCell>
                                         <Button variant="contained"
                                                 startIcon={<SendIcon />}
                                                 onClick={() => {
-                                                    handleOpenSendFunds(walletId[index])
+                                                    handleOpenSendFunds(wallets[index].id)
                                                 }}
                                         > Send
                                         </Button>
