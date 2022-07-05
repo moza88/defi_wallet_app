@@ -40,6 +40,8 @@ export default function ListOfWallets(props) {
     const [walletNames, setWalletNames] = useState([]);
     const [walletId, setWalletId] = useState('');
     const [openSendFunds, setOpenSendFunds] = React.useState(false);
+    const [balances, setBalances] = useState([]);
+    const [balance, setBalance] = useState(0);
 
     const [openShareWallet, setOpenShareWallet] = useState(false);
 
@@ -58,11 +60,6 @@ export default function ListOfWallets(props) {
     function handleOpenSendFunds(id)  {
         setWalletId(id)
         setOpenSendFunds(true);
-    }
-
-    function handleOpenShareWallet(id) {
-        setWalletId(id)
-        setOpenShareWallet(true)
     }
 
     const handleOpenViewHistory = (id) => {
@@ -99,10 +96,21 @@ export default function ListOfWallets(props) {
 
     }
 
-    const createWallet = (vaultName, asset) => {
-        console.log(vaultName, asset);
+    function getAllBalances(coin, wallets) {
+        for(const element of wallets) {
+           // const balanceX = getBalance(coin, element.id)
+            //console.log('balance for ' + element.id + ': ' + balanceX)
+            //setBalances(balance => [...balance, [element.id]: getBalance(coin, element.id)])
+            const vaultID = "vaultID"
+            setBalances(balances => ({...balances, [element.id]: getBalance(coin, element.id)}))
+        }
+        return balances;
+    }
 
-        fetch(process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + '/create_vault_wallet/', {
+    const getBalance = (coin, walletId) => {
+        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/get_balance";
+
+        fetch(req_url, {
             method: 'POST',
             headers: {
                 Accept: "application/json",
@@ -110,18 +118,16 @@ export default function ListOfWallets(props) {
                 'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify({
-                vaultName: vaultName,
-                asset: asset
+                id: walletId,
+                asset: coin,
             })
         }).then(response => response.json())
-            .then(walletInfo => {
-                console.log(walletInfo)
-
-                setNewWalletId(walletInfo.id)
-                setRecieverAddress(walletInfo.address)
-            });
+          .then(data => {
+            //console.log(data)
+            setBalance(data.balance)
+        })
+        return balance;
     }
-
 
     function getWallets(coin) {
         var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/getVaultAccounts";
@@ -145,10 +151,11 @@ export default function ListOfWallets(props) {
             console.log(response.json()
                 .then(data => {
                 console.log(data.accounts[0].name)
-                for(const element of data.accounts) {
-                    console.log(element.name)
-                    setWalletNames(walletNames => [...walletNames, element.name])
-                    setWalletId(walletId => [...walletId, element.id])
+                for(const account of data.accounts) {
+                    setWallets(wallets => [...wallets, account])
+                    console.log(account.name)
+                    setWalletNames(walletNames => [...walletNames, account.name])
+                    setWalletId(walletId => [...walletId, account.id])
                 }
             }))
         }).catch((error)=> {
@@ -158,8 +165,8 @@ export default function ListOfWallets(props) {
 
     useEffect(() => {
         getWallets(coin)
-        console.log(walletNames)
-    }, [])
+
+    }, [coin])
 
     return (
         <div>
@@ -205,16 +212,16 @@ export default function ListOfWallets(props) {
 
                         <TableBody>
 
-                            {walletNames.length && walletNames.map( (name,index)=>
+                            {wallets.length && wallets.map( (name,index)=>
                                 <TableRow key={index}>
-                                    <TableCell>{walletId[index]}</TableCell>
-                                    <TableCell>{name}</TableCell>
+                                    <TableCell>{wallets[index].id}</TableCell>
+                                    <TableCell>{wallets[index].name}</TableCell>
                                     <TableCell>balance</TableCell>
                                     <TableCell>
                                         <Button variant="contained"
                                                 startIcon={<SendIcon />}
                                                 onClick={() => {
-                                                    handleOpenSendFunds(walletId[index])
+                                                    handleOpenSendFunds(wallets[index].id)
                                                 }}
                                         > Send
                                         </Button>
