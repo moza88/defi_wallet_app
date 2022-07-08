@@ -132,6 +132,7 @@ export default function ListOfWallets(props) {
     }
 
     useEffect(() => {
+
         getWallets(coin)
     }, [coin])
 

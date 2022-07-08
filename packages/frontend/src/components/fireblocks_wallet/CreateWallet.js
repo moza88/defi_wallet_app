@@ -9,6 +9,7 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import {Card, CardHeader, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
+import {createWallet} from "./helper/fireblocks_functions";
 
 export default function CreateWallet(props) {
     const [pending, setPending] = useState(false);
@@ -22,32 +23,11 @@ export default function CreateWallet(props) {
     const [newWalletId, setNewWalletId] = useState('')
     const [newReceiverAddress, setRecieverAddress] = useState('')
 
+    const [walletInfo, setWalletInfo] = useState(null);
+
     function handleChange(event) {
         setAsset(event.target.value);
         console.log(asset)
-    }
-
-    const createWallet = (vaultName, asset) => {
-        console.log(vaultName, asset);
-
-        fetch(process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + '/create_vault_wallet/', {
-            method: 'POST',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({
-                vaultName: vaultName,
-                asset: asset
-            })
-        }).then(response => response.json())
-            .then(walletInfo => {
-                console.log(walletInfo)
-
-                setNewWalletId(walletInfo.id)
-                setRecieverAddress(walletInfo.address)
-            });
     }
 
     function refreshPage() {
@@ -57,9 +37,21 @@ export default function CreateWallet(props) {
     const onSubmit = () => {
         console.log(vaultName)
         console.log(asset)
-        createWallet(vaultName, asset);
-        //refreshPage();
+
+        setWalletInfo(createWallet(vaultName, asset).then(
+            (wallet) => {
+                console.log(wallet)
+
+                setNewWalletId(wallet.id)
+                setRecieverAddress(wallet.address)
+            }
+        ))
+
+        console.log(walletInfo)
+
     };
+
+
 
     return (
 
@@ -129,8 +121,6 @@ export default function CreateWallet(props) {
                             </TableRow>
                         </TableBody>
                     </Table>
-                    <Typography>Add Bitcoins to your wallet</Typography>
-                    <a>https://testnet.help/en/btcfaucet/testnet#log</a>
                 </CardContent>
             </Card>
             }
