@@ -22,7 +22,7 @@ import SendFunds from "./SendFunds";
 import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
-import {getAllBalances, getBalance, test} from "./helper/fireblocks_functions";
+import {getAllBalances, getBalance, test} from "../../util/fireblocks/fireblocks_functions";
 
 const style = {
     position: 'absolute',

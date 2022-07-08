@@ -1,9 +1,14 @@
 {
-  "name": "my-divjoy-project",
+  "name": "defi-wallet",
   "version": "0.1.0",
   "private": true,
   "keywords": [
-    "divjoy"
+    "wells fargo",
+    "defi",
+    "wallet",
+    "ethereum",
+    "bitcoin",
+    "crypto"
   ],
   "dependencies": {
     "@3id/connect": "^0.4.1",

@@ -23,7 +23,6 @@ function authHeader() {
 }
 
 function getOptions(req_url : string)  {
-
     return {
         method: 'GET',
         url: req_url,
@@ -230,7 +229,7 @@ export class BitgoService {
 
         const walletInstance = await bitgo.coin(coin).wallets().get({id: walletId});
 
-        return await walletInstance.transfers();
+        return walletInstance.transfers();
     }
 
     async shareWallet(walletShare: WalletShare) {
@@ -240,13 +239,13 @@ export class BitgoService {
 
         const walletInstance = await bitgo.coin(walletShare.coin).wallets().get({id: walletShare.walletId});
 
-        return await walletInstance.shareWallet({
+        return walletInstance.shareWallet({
             email: walletShare.email,
             walletPassphrase: walletShare.passphrase,
             permissions: walletShare.perms,
         }).catch((error) => console.log(error));
-
     }
+
 
     async sendTxn(txn: TXN) {
         this.unlockAccount();
@@ -278,6 +277,8 @@ export class BitgoService {
             return walletInstance.send(txn_data)
                 .then((response) => {
                     console.log(response);
+                    return response;
+
                 })
                 .catch((error) => {
                 console.log(error)
@@ -288,4 +289,6 @@ export class BitgoService {
         }
 
     }
+
+
 }

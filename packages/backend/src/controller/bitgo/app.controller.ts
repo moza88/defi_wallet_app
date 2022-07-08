@@ -29,7 +29,15 @@ export class BitgoController {
       @Param('coin') coin: string,
       @Param('walletId') walletId: string
   ) {
-    this.appService.deleteWallet(coin, walletId);
+    return this.appService.deleteWallet(coin, walletId)
+        .then(r => {
+            console.log(r);
+            return r;
+       })
+        .catch(e => {
+            console.log(e);
+            return e;
+        });
   }
 
   @Post('/create_wallet/coin=:coin')
@@ -84,5 +92,13 @@ export class BitgoController {
   ): Observable<any> {
     return this.appService.getTxnHistory(coin, walletId);
   }
+
+  @Get('/spendable_balance/coin=:coin/walletId=:walletId')
+  getSpendableBalance(
+        @Param('coin') coin: string,
+        @Param('walletId') walletId: string
+    ): Promise<string> {
+        return this.appService.getSpendableBalance(coin, walletId);
+    }
 
 }

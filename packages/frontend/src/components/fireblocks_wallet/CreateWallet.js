@@ -9,7 +9,7 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import {Card, CardHeader, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
-import {createWallet} from "./helper/fireblocks_functions";
+import {createWallet} from "../../util/fireblocks/fireblocks_functions";
 
 export default function CreateWallet(props) {
     const [pending, setPending] = useState(false);
@@ -24,15 +24,6 @@ export default function CreateWallet(props) {
     const [newReceiverAddress, setRecieverAddress] = useState('')
 
     const [walletInfo, setWalletInfo] = useState(null);
-
-    function handleChange(event) {
-        setAsset(event.target.value);
-        console.log(asset)
-    }
-
-    function refreshPage() {
-        window.location.reload(false);
-    }
 
     const onSubmit = () => {
         console.log(vaultName)
@@ -50,8 +41,6 @@ export default function CreateWallet(props) {
         console.log(walletInfo)
 
     };
-
-
 
     return (
 
