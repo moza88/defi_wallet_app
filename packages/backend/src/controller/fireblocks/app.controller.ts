@@ -2,12 +2,10 @@ import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
 import { FireblocksService } from '../../services/fireblocks/app.service';
 import {ApiTags} from "@nestjs/swagger";
 import {VaultAsset} from "../../model/fireblocks/VaultAsset";
-import {VaultWalletParams} from "../../model/Fireblocks/VaultWalletParams";
-import { setTimeout } from "timers/promises";
-import {NewWallet} from "../../model/Fireblocks/NewWallet";
-import {Txn} from "../../model/Fireblocks/Txn";
-import { VaultAccountFilter} from "../../model/Fireblocks/VaultAccountFilter";
-import {Observable} from "rxjs";
+import {VaultWalletParams} from "../../model/fireblocks/VaultWalletParams";
+import {NewWallet} from "../../model/fireblocks/NewWallet";
+import {Txn} from "../../model/fireblocks/Txn";
+import { VaultAccountFilter} from "../../model/fireblocks/VaultAccountFilter";
 
 @ApiTags('Fireblocks')
 @Controller('api/v1/fireblocks')

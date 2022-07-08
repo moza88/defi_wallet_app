@@ -2,8 +2,8 @@ import {Injectable} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {FireblocksSDK, PeerType, TransactionArguments, VaultAccountsFilter} from "fireblocks-sdk";
 import {join} from 'path';
-import {NewWallet} from "../../model/Fireblocks/NewWallet";
-import {Txn} from "../../model/Fireblocks/Txn";
+import {NewWallet} from "../../model/fireblocks/NewWallet";
+import {Txn} from "../../model/fireblocks/Txn";
 import fs = require('fs');
 import {map} from "rxjs";
 
