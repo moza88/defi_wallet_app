@@ -21,9 +21,11 @@ export class FireblocksController {
     ): Promise<NewWallet>{
 
     const customerRefId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
     const id = this.appService.createVault(vaultWalletParams.vaultName, customerRefId);
 
     const newWallet = await this.appService.createNewWalletInVault(await id, vaultWalletParams.asset)
+
     console.log('results', newWallet);
 
     return newWallet;

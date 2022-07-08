@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useForm } from "react-hook-form";
+import {transferFunds} from "../../util/bitgo/bitgo_functions";
 
 export default function SendFunds({coin, walletId}, props) {
 
@@ -32,25 +33,6 @@ export default function SendFunds({coin, walletId}, props) {
 
         transferFunds(txn);
     };
-
-    function transferFunds(txn) {
-        var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER +"/send_txn";
-        console.log(req_url);
-
-        console.log(amount);
-
-        fetch(req_url, {
-            method: 'POST',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify(txn)
-        }).then(r => {
-            console.log(r);
-        }).catch((error) => { console.log(error)})
-    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

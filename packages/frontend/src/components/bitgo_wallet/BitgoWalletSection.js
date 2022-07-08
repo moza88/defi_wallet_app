@@ -17,6 +17,7 @@ import { useAuth } from "util/auth";
 import {CardHeader, Button, Modal} from "@material-ui/core";
 import CreateWallet from "./CreateWallet"
 import ListOfWallets from "./ListOfWallets";
+import {getWallets} from "../../util/fireblocks/fireblocks_functions";
 
 const useStyles = makeStyles((theme) => ({
     cardContent: {
@@ -37,7 +38,10 @@ const style = {
 
 function BitgoWalletSection(props) {
     const [openCreateWallet, setOpenCreateWallet] = React.useState(false);
-    const handleCreateWallet = () => setOpenCreateWallet(false);
+    const handleCreateWallet = () => {
+        setOpenCreateWallet(false);
+        window.location.reload(false);
+    }
 
     const handleOpenCreateWallet = () => {
         setOpenCreateWallet(true);

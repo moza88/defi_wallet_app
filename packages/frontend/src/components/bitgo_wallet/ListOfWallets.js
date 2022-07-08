@@ -23,6 +23,7 @@ import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import ShareWallet from "./ShareWallet";
+import {deleteWallet} from "../../util/bitgo/bitgo_functions";
 
 const style = {
     position: 'absolute',
@@ -75,34 +76,6 @@ export default function ListOfWallets(props) {
         console.log(coin)
     }
 
-    function refreshPage() {
-        window.location.reload(false);
-    }
-
-    const shareWallet = (walletId) => {
-
-    }
-
-    const deleteWallet = (walletId) => {
-
-        console.log("deleting wallet " + walletId)
-
-        var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + "/delete_wallet/" +
-            "coin=" +coin + "/" + "walletId=" + walletId
-
-
-        fetch(req_url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                getWallets(coin);
-            })
-
-    }
-
     function getWallets(coin) {
         var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER +"/wallet_list" + "/coin=" + coin;
         console.log(req_url);
@@ -149,7 +122,7 @@ export default function ListOfWallets(props) {
                         }}
                     >
                         {values.map((value, index) => {
-                            return <MenuItem value={value}>{value}</MenuItem>;
+                            return <MenuItem key={index} value={value}>{value}</MenuItem>;
                         })}
                     </Select>
                 </FormControl>
@@ -157,8 +130,9 @@ export default function ListOfWallets(props) {
 
                 <br></br>
 
+                {wallets.length > 0 &&
                 <TableContainer component={Paper}>
-                    <Table stickyHeader  aria-label="sticky table">
+                    <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Date Created</TableCell>
@@ -173,23 +147,23 @@ export default function ListOfWallets(props) {
                         </TableHead>
 
                         <TableBody>
-                            {wallets.map((item) => (
-                                <TableRow>
+                            {wallets.map((item,index) => (
+                                <TableRow key={index}>
                                     <TableCell>{item.startDate}</TableCell>
                                     <TableCell>{item.label}</TableCell>
                                     <TableCell>{item.balance}</TableCell>
                                     <TableCell>
                                         <Button variant="contained"
-                                            startIcon={<SendIcon />}
+                                                startIcon={<SendIcon/>}
                                                 onClick={() => {
                                                     handleOpenSendFunds(item.id)
                                                 }}
-                                            > Send
+                                        > Send
                                         </Button>
                                     </TableCell>
                                     <TableCell>
                                         <Button color='primary' variant="contained"
-                                                startIcon={<ArticleIcon />}
+                                                startIcon={<ArticleIcon/>}
                                                 onClick={() => {
                                                     handleOpenViewHistory(item.id)
                                                 }}>
@@ -198,15 +172,20 @@ export default function ListOfWallets(props) {
                                     </TableCell>
                                     <TableCell>
                                         <Button color='primary' variant="contained" onClick={() => {
-                                            deleteWallet(item.id)
-                                        }} startIcon={<DeleteIcon />}>
+                                            deleteWallet(item.id, coin)
+                                                .then(() => {
+                                                    getWallets(coin)
+                                                }).catch((error) => {
+                                                console.log(error)
+                                            })
+                                        }} startIcon={<DeleteIcon/>}>
                                             Delete
                                         </Button>
                                     </TableCell>
                                     <TableCell>
                                         <Button color='primary' variant="contained" onClick={() => {
                                             handleOpenShareWallet(item.id)
-                                        }} startIcon={<CoPresentIcon />}>
+                                        }} startIcon={<CoPresentIcon/>}>
                                             Share
                                         </Button>
                                     </TableCell>
@@ -215,6 +194,7 @@ export default function ListOfWallets(props) {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                }
             </Card>
 
             <Modal
@@ -262,9 +242,7 @@ export default function ListOfWallets(props) {
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Below are your past transactions for {walletId}
-                    </Typography>
+
                     <WalletDetails coin={coin} walletId={walletId}/>
                 </Box>
             </Modal>

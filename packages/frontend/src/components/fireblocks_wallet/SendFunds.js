@@ -17,7 +17,6 @@ export default function SendFunds({coin, walletId}, props) {
 
     const { handleSubmit, getValues, errors, sendFunds } = useForm();
 
-
     const onSubmit = (data) => {
 
         console.log("Sending funds to " + walletId)
@@ -32,15 +31,15 @@ export default function SendFunds({coin, walletId}, props) {
                 note: 'sendings funds',
             };
 
-        transferFunds(txn);
+        transferFunds(txn)
     };
 
-    function transferFunds(txn) {
-        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/createTxnVaultToVault";
+    async function transferFunds(txn) {
+        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/createTxnVaultToVault";
 
         console.log(amount);
 
-        fetch(req_url, {
+        await fetch(req_url, {
             method: 'POST',
             headers: {
                 Accept: "application/json",
@@ -48,9 +47,14 @@ export default function SendFunds({coin, walletId}, props) {
                 'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify(txn)
-        }).then(r => {
-            console.log(r);
-        }).catch((error) => { console.log(error)})
+        })
+            .then(resp => resp)
+            .then(txnId => {
+                console.log(txnId);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     return (

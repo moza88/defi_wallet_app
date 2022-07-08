@@ -1,0 +1,412 @@
+{
+	"info": {
+		"_postman_id": "c2142d17-ec01-4c69-afcd-6e881e7f6b79",
+		"name": "Wallet-App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1000007"
+	},
+	"item": [
+		{
+			"name": "Fireblocks",
+			"item": [
+				{
+					"name": "Create Vault and Wallet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"vaultName\": \"test_wallet\",\n  \"asset\": \"ETH_TEST\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/api/v1/fireblocks/create_vault_wallet",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"fireblocks",
+								"create_vault_wallet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Whitelist Wallets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/api/v1/fireblocks/get_whitelisted_wallets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"fireblocks",
+								"get_whitelisted_wallets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vault Account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/api/v1/fireblocks/get_vault_account/0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"fireblocks",
+								"get_vault_account",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create TXN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"asset\": \"ETH_TEST\",\n  \"source\": \"0\",\n  \"dest\": \"64\",\n  \"amount\": \"0.6\",\n  \"fee\": \"0.001\",\n  \"note\": \"Rent\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/api/v1/fireblocks/createTxnVaultToVault",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"fireblocks",
+								"createTxnVaultToVault"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Balance for Vault",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"64\",\n  \"asset\": \"ETH_TEST\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/api/v1/fireblocks/get_balance",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"fireblocks",
+								"get_balance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/api/v1/fireblocks/get_txn/cb894627-fec2-4033-8d12-79cbe391bcdf",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"fireblocks",
+								"get_txn",
+								"cb894627-fec2-4033-8d12-79cbe391bcdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Supported Assets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/api/v1/fireblocks/supported_assets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"fireblocks",
+								"supported_assets"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BitGo",
+			"item": [
+				{
+					"name": "List of Wallets by Coin",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/api/v1/bitgo/wallet_list/coin=tbtc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"bitgo",
+								"wallet_list",
+								"coin=tbtc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Wallet",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/api/v1/bitgo/delete_wallet/coin=tbtc/walletId=6299543b00f5810007d335dcaaf8ae29",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"bitgo",
+								"delete_wallet",
+								"coin=tbtc",
+								"walletId=6299543b00f5810007d335dcaaf8ae29"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Address",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Txn History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/api/v1/bitgo/txn_history/coin=tbtc/walletId=629b05a85b87db0007acbefac6338e68",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"bitgo",
+								"txn_history",
+								"coin=tbtc",
+								"walletId=629b05a85b87db0007acbefac6338e68"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create TXN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"coin\": \"tbtc\",\n    \"walletId\": \"629da13429d13a0008c71457252bea3b\",\n    \"amount\": \"31783\",\n    \"destAddress\":\"2MuSbPCdQWGNEFEfBrkRMUUqfJQqKNdLdQG\",\n    \"password\":\"DeepDive0608\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/api/v1/bitgo/send_txn",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"bitgo",
+								"send_txn"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Share Wallet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"coin\": \"tbtc\",\n  \"walletId\": \"62c7bb6cb79053000712614dc07f8751\",\n  \"email\": \"mabel.oza@protonmail.com\",\n  \"passphrase\": \"testpass\",\n  \"perms\": \"view\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/api/v1/bitgo/share_wallet",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"bitgo",
+								"share_wallet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Wallet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"label\": \"test wallet\",\n  \"passphrase\": \"testpass\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9000/api/v1/bitgo/create_wallet/coin=tbtc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"bitgo",
+								"create_wallet",
+								"coin=tbtc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Addresses Using WalletID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9000/api/v1/bitgo/address_list/coin=tbtc/walletId=62c7bb6cb79053000712614dc07f8751",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"v1",
+								"bitgo",
+								"address_list",
+								"coin=tbtc",
+								"walletId=62c7bb6cb79053000712614dc07f8751"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

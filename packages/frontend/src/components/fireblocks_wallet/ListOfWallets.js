@@ -22,7 +22,7 @@ import SendFunds from "./SendFunds";
 import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
-import {getAllBalances, getBalance, test} from "./helper/fireblocks_functions";
+import {getAllBalances, getBalance, test} from "../../util/fireblocks/fireblocks_functions";
 
 const style = {
     position: 'absolute',
@@ -77,26 +77,6 @@ export default function ListOfWallets(props) {
         window.location.reload(false);
     }
 
-    const deleteWallet = (walletId) => {
-
-        console.log("deleting wallet " + walletId)
-
-        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/delete_wallet/" +
-            "coin=" +coin + "/" + "walletId=" + walletId
-
-
-        fetch(req_url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                getWallets(coin);
-            })
-
-    }
-
     function getWallets(coin) {
         var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/getVaultAccounts";
         console.log(req_url);
@@ -132,6 +112,7 @@ export default function ListOfWallets(props) {
     }
 
     useEffect(() => {
+
         getWallets(coin)
     }, [coin])
 

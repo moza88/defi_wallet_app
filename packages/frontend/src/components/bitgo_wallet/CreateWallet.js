@@ -7,11 +7,11 @@ import {Grid,
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useForm } from "react-hook-form";
-import {useRouter} from "next/router";
 import Typography from "@material-ui/core/Typography";
 import {Card, CardHeader, TableBody, TableCell, TableHead} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import Container from "@material-ui/core/Container";
+import {createWallet} from "../../util/bitgo/bitgo_functions";
 
 export default function CreateWallet(props) {
     const [pending, setPending] = useState(false);
@@ -31,37 +31,20 @@ export default function CreateWallet(props) {
         console.log(coin)
     }
 
-    const createWallet = (label, passphrase) => {
-        console.log(label, passphrase);
-
-        fetch(process.env.NEXT_PUBLIC_BITGO_SERVER + '/create_wallet/' + "coin=" + coin, {
-            method: 'POST',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({
-                label: label,
-                passphrase: passphrase
-            })
-        }).then(response => response.json())
-            .then(walletInfo => {
-                console.log(walletInfo)
-
-                setNewWalletId(walletInfo.walletId)
-                setRecieverAddress(walletInfo.receiveAddress)
-            });
-    }
-
     function refreshPage() {
         window.location.reload(false);
     }
 
     const onSubmit = () => {
 
-        createWallet(label, passphrase);
+        const walletInfo = createWallet(label, passphrase, coin);
 
+        console.log(walletInfo.then(res => {
+            console.log(res)
+            setNewWalletId(res.walletId)
+            setRecieverAddress(res.receiveAddress)
+            setPending(false)
+        }))
     };
 
     return (
@@ -131,8 +114,6 @@ export default function CreateWallet(props) {
                             </TableRow>
                         </TableBody>
                     </Table>
-                    <Typography>Add Bitcoins to your wallet</Typography>
-                    <a>https://testnet.help/en/btcfaucet/testnet#log</a>
                 </CardContent>
                 </Card>
             }
