@@ -7,10 +7,8 @@ import {Txn} from "../../model/Fireblocks/Txn";
 import fs = require('fs');
 import {map} from "rxjs";
 
-//const apiSecret = fs.readFileSync(join(process.cwd(), './src/services/fireblocks/fireblocks_secret.key')).toString();
 function fireblocks() {
-    const apiSecret = fs.readFileSync(join(process.cwd(), './src/services/fireblocks/fireblocks_secret.key')).toString();
-    //console.log(apiSecret);
+    const apiSecret = fs.readFileSync(join(process.cwd(), process.env.FIREBLOCKS_CERT_PATH)).toString();
     return new FireblocksSDK(apiSecret, process.env.FIREBLOCKS_ACCESS_TOKEN);
 }
 
@@ -132,12 +130,16 @@ export class FireblocksService {
 
         console.log(payload);
 
-        return fireblocks().createTransaction(payload).then(res => {
-            console.log(res);
-        }).catch(err => {
-            console.log(err);
-            return err;
-        })
+        return fireblocks().createTransaction(payload)
+            .then(res => res.id)
+            .then(res => {
+                console.log(res);
+                return res;
+            })
+            .catch(err => {
+                console.log(err);
+                return err;
+            });
     }
 
     async createTxnVaultToExtWallet(txn: Txn) {
