@@ -122,7 +122,7 @@ export default function ListOfWallets(props) {
                         }}
                     >
                         {values.map((value, index) => {
-                            return <MenuItem value={value}>{value}</MenuItem>;
+                            return <MenuItem key={index} value={value}>{value}</MenuItem>;
                         })}
                     </Select>
                 </FormControl>
@@ -147,8 +147,8 @@ export default function ListOfWallets(props) {
                         </TableHead>
 
                         <TableBody>
-                            {wallets.map((item) => (
-                                <TableRow>
+                            {wallets.map((item,index) => (
+                                <TableRow key={index}>
                                     <TableCell>{item.startDate}</TableCell>
                                     <TableCell>{item.label}</TableCell>
                                     <TableCell>{item.balance}</TableCell>
@@ -242,9 +242,7 @@ export default function ListOfWallets(props) {
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Below are your past transactions for {walletId}
-                    </Typography>
+
                     <WalletDetails coin={coin} walletId={walletId}/>
                 </Box>
             </Modal>

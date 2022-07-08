@@ -25,17 +25,13 @@ export default function WalletDetails({coin, walletId}, props) {
 
         <div>
 
-            <div className="App">
-                {
-                    data && data.length>0 && data.map((item)=><p>{item.about}</p>)
-                }
-            </div>
-
-            {
-                data && data.length>0 && data.map((item)=>
+            {data && data.length > 0 &&
             <Container>
-                <Typography variant="h5">Transaction History</Typography>
 
+                <Typography>
+                    Below are your past transactions for {walletId}
+                </Typography>
+                <Typography variant="h5">Transaction History</Typography>
 
                 <TableContainer component={Paper}>
                     <Table stickyHeader aria-label="sticky table">
@@ -45,20 +41,23 @@ export default function WalletDetails({coin, walletId}, props) {
                                 <TableCell>Amount</TableCell>
                             </TableRow>
                         </TableHead>
+                        {
+                            data.map((item, index) =>
 
-                        <TableBody>
-
+                                <TableBody>
                                     <TableRow>
                                         <TableCell>{item.date}</TableCell>
                                         <TableCell>{item.value}</TableCell>
                                     </TableRow>
 
-                        </TableBody>
+                                </TableBody>
+                            )}
                     </Table>
                 </TableContainer>
 
             </Container>
-                )}
+            }
+
         </div>
 
     )
