@@ -77,26 +77,6 @@ export default function ListOfWallets(props) {
         window.location.reload(false);
     }
 
-    const deleteWallet = (walletId) => {
-
-        console.log("deleting wallet " + walletId)
-
-        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/delete_wallet/" +
-            "coin=" +coin + "/" + "walletId=" + walletId
-
-
-        fetch(req_url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                getWallets(coin);
-            })
-
-    }
-
     function getWallets(coin) {
         var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/getVaultAccounts";
         console.log(req_url);

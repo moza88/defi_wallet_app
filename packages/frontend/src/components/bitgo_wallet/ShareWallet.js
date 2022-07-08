@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useForm } from "react-hook-form";
+import { shareWallet} from "../../util/bitgo/bitgo_functions";
 
 export default function ShareWallet({coin, walletId}, props) {
 
@@ -32,24 +33,6 @@ export default function ShareWallet({coin, walletId}, props) {
 
         shareWallet(walletShare);
     };
-
-    function shareWallet(walletShare) {
-        var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER +"/share_wallet";
-        console.log(req_url);
-
-        fetch(req_url, {
-            method: 'POST',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify(walletShare)
-        }).then(r => r.json)
-          .then(data => {
-            console.log(data)
-        }).catch((error) => { console.log(error)})
-    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
