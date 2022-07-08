@@ -69,11 +69,8 @@ export const createWallet = (vaultName, asset) => {
         });
 }
 
-export const getWallets = () => {
-    const req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/getVaultAccounts";
-    console.log(req_url);
-
-    let wallets = [];
+export async function transferFunds(txn) {
+    const req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/createTxnVaultToVault";
 
     return fetch(req_url, {
         method: 'POST',
@@ -82,25 +79,16 @@ export const getWallets = () => {
             "Content-Type": "application/json",
             'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({
-            namePrefix: "WF",
-            nameSuffix: "",
-            minAmountThreshold: 0,
-            assetId: ""
-        })
-    }).then(response => {
-        // response.json()
-        console.log(response.json()
-            .then(data => {
-                console.log(data.accounts[0].name)
-                for(const account of data.accounts) {
-                    wallets = [...wallets, account]
-                    console.log(account.name)
-                    return wallets;
-                }
-            }))
-    }).catch((error)=> {
-        console.log(error)
+        body: JSON.stringify(txn)
     })
+        .then(resp => resp)
+        .then(txnId => {
+            console.log(txnId);
+            return txnId;
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }
+
 
