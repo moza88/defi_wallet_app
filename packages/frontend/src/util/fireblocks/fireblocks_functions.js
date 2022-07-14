@@ -112,4 +112,19 @@ export function getWallets(coin) {
       .then(data => data.accounts)
 }
 
+export async function getVaultInfo(accountId) {
+    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/get_vault_account/" + accountId;
+    console.log(req_url);
 
+    return fetch(req_url, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        }
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data)
+            return data
+        })
+}
