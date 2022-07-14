@@ -100,3 +100,22 @@ export const getTxnHistory = (coin, walletId) => {
         }).catch((error) => { console.log(error)})
 
 }
+
+export function getWallets(coin) {
+    var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER +"/wallet_list" + "/coin=" + coin;
+    console.log(req_url);
+
+    return fetch(req_url)
+        .then(response => response.json())
+        .then(data => {
+            return data.wallets
+           // setWallets(data.wallets)
+
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+
+    console.log(Array.isArray(wallets));
+    console.log(wallets)
+}

@@ -70,7 +70,9 @@ function Navbar(props) {
                 <img src={logo} alt="Logo" className={classes.logo} />
               </a>
             </Link>
-            <Typography variant="h5">Digital Wallet</Typography>
+            <Typography variant="h5">
+              Wealth Mgmt Banking Portal
+            </Typography>
             <div className={classes.spacer} />
             <Hidden mdUp={true} implementation="css">
               <IconButton

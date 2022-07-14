@@ -29,7 +29,6 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -65,7 +64,7 @@ function FireblocksWalletSection(props) {
                 />
 
                 <Typography variant="h6">Don't have a wallet? Click below to create one</Typography>
-                <Button variant="contained"
+                <Button variant="contained" color='primary'
                         onClick={() => {
                             handleOpenCreateWallet()
                         }}>

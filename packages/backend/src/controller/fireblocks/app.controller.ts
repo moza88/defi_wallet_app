@@ -6,6 +6,7 @@ import {VaultWalletParams} from "../../model/fireblocks/VaultWalletParams";
 import {NewWallet} from "../../model/fireblocks/NewWallet";
 import {Txn} from "../../model/fireblocks/Txn";
 import { VaultAccountFilter} from "../../model/fireblocks/VaultAccountFilter";
+import { VaultDescript} from "../../model/fireblocks/VaultDescript";
 
 @ApiTags('Fireblocks')
 @Controller('api/v1/fireblocks')
@@ -88,6 +89,14 @@ export class FireblocksController {
       @Body() vaultAccountFilter: VaultAccountFilter
   ): Promise<any>{
     return this.appService.getVaultAccounts(vaultAccountFilter);
+  }
+
+  @Post('/get_vault_transactions')
+    async getVaultTransactions(
+        @Body() vaultDescript: VaultDescript
+    ): Promise<any> {
+        console.log('vaultDescript', vaultDescript);
+        return this.appService.getTransactions(vaultDescript.assets, vaultDescript.sourceId);
   }
 
   @Get('/get_whitelisted_wallets')

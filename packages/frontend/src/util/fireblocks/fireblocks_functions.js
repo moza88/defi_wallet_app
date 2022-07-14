@@ -17,7 +17,7 @@ export async function getAllBalances(coin, wallets) {
             }
         )
     }
-    //console.log(balances)
+    console.log(balances)
 
     return balances;
 }
@@ -89,6 +89,27 @@ export async function transferFunds(txn) {
         .catch(err => {
             console.log(err);
         });
+}
+
+export function getWallets(coin) {
+    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/getVaultAccounts";
+    console.log(req_url);
+
+    return fetch(req_url, {
+        method: 'POST',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
+            namePrefix: "WF",
+            nameSuffix: "",
+            minAmountThreshold: 0,
+            assetId: ""
+        })
+    }).then(response => response.json())
+      .then(data => data.accounts)
 }
 
 
