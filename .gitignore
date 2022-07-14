@@ -25,7 +25,7 @@ node_modules/*
 
 # misc
 .DS_Store
-.env*
+.env
 ./packages/frontend/.env*
 ./packages/backend/.env*
 .idea/*

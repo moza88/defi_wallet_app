@@ -30,7 +30,7 @@
     "dids": "^3.2.0",
     "firebase": "9.1.0",
     "key-did-provider-ed25519": "^2.0.0",
-    "next": "12.0.2",
+    "next": ">=12.1.0",
     "query-string": "6.13.8",
     "react": "17.0.2",
     "react-dom": "17.0.2",

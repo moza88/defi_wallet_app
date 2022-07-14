@@ -55,12 +55,13 @@ export default function CreateWallet(props) {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={12}>
+
                         <TextField
                             variant="outlined"
                             type="text"
-                            label="Label"
+                            label="Customer Name"
                             name="label"
-                            placeholder="My Wallet"
+                            placeholder="Bob Smith"
                             fullWidth={true}
                             onChange={(e) => setLabel(e.target.value)}
                         />
