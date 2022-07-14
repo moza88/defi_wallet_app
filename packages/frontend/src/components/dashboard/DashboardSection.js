@@ -15,6 +15,8 @@ import SectionHeader from "components/SectionHeader";
 import DashboardItems from "components/dashboard/DashboardItems";
 import { useAuth } from "util/auth";
 import {CardHeader, Button} from "@material-ui/core";
+import Image from "next/image";
+import digital_asset_banker from "../../assets/digital_asset_banker.png";
 
 const useStyles = makeStyles((theme) => ({
   cardContent: {
@@ -54,12 +56,22 @@ function DashboardSection(props) {
         />
         <Box textAlign="center">
 
-        <Typography>Welcome back {auth.user.email}! Which wallet would like to view?</Typography>
+          <Image
+              src={digital_asset_banker}
+              alt="Digital Asset Banker"
+              width="850px"
+              height="400px"
+          />
 
+          <br/><br/>
+          <Typography >
+            There are two different ways you can manage your customer's assets, you can use a multi-signature wallet like Bitgo or a multi-party computing solution like Fireblocks.
+          </Typography>
           <Card>
 
             <CardHeader title="Bitgo"/>
-            <CardContent>Bitgo is a multi-signature wallet</CardContent>
+            <CardContent>Bitgo is a multi-signature wallet implementation for multiple blockchain networks.
+              Multi-signature is an open source protocol, and has been through thorough testing and evaluation by the security community. Multi-signature makes use of distinct private keys specifically assigned to individuals for increased accountability and transparency.</CardContent>
 
             <Button variant="contained" size="large" color='primary'  onClick={moveToBitgoWallet}>Bitgo Wallet</Button>
           </Card>
@@ -68,7 +80,10 @@ function DashboardSection(props) {
           <Card>
 
             <CardHeader title="Fireblocks"/>
-            <CardContent>Fireblocks is a MPC solution</CardContent>
+            <CardContent>
+              Fireblocks is a MPC solution.
+              MPC is a multi-party computing solution from the 80's that allows multiple parties, in the digital asset space, to sign a messages together while preventing any one party from viewing the logical key of another.
+            </CardContent>
 
             <Button variant="contained" size="large" color='primary' onClick={moveToFireblocksWallet}>Fireblocks Wallet</Button>
           </Card>

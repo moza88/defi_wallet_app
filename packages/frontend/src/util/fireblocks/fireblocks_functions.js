@@ -103,7 +103,7 @@ export function getWallets(coin) {
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
-            namePrefix: "WF",
+            namePrefix: "WIM",
             nameSuffix: "",
             minAmountThreshold: 0,
             assetId: ""
