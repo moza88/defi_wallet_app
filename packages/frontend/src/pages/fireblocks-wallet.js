@@ -9,11 +9,8 @@ function FireblocksPage(props) {
             <FireblocksWalletSection
                 bgColor="default"
                 size="medium"
-                bgImage=""
-                bgImageOpacity={1}
-                title="Fireblocks Wallet"
-                subtitle=""
-                buttonText="Send message"
+                title="Digital Asset Management"
+                subtitle="Using Fireblocks Infrastructure"
                 buttonColor="primary"
                 showNameField={true}
             />

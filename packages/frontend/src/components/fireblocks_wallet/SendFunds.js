@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useForm } from "react-hook-form";
+import {transferFunds} from "../../util/fireblocks/fireblocks_functions";
 
 export default function SendFunds({coin, walletId}, props) {
 
@@ -31,31 +32,10 @@ export default function SendFunds({coin, walletId}, props) {
                 note: 'sendings funds',
             };
 
-        transferFunds(txn)
-    };
-
-    async function transferFunds(txn) {
-        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/createTxnVaultToVault";
-
-        console.log(amount);
-
-        await fetch(req_url, {
-            method: 'POST',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify(txn)
+        transferFunds(txn).then(r => {
+            console.log(r)
         })
-            .then(resp => resp)
-            .then(txnId => {
-                console.log(txnId);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

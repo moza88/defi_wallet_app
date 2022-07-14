@@ -9,19 +9,18 @@ function Meta(props) {
   // Meta values that are the same across all pages
   const globalMeta = {
     // Site name
-    siteName: "My App",
+    siteName: "Defi Wallet",
     // Your production domain (example: https://myapp.com)
     domain: "",
-    // Your Twitter handle (example: @divjoy)
     twitterHandle: "",
   };
 
   // Default meta values for current page (override with props)
   const defaultPageMeta = {
     // Page title
-    title: "My App",
+    title: "DeFi Wallet",
     // Page description
-    description: "My app description",
+    description: "Fulfilling all crypto needs",
     // Social share image (create this file in /public/images/)
     image: "/images/social.png",
     // Page type (see https://ogp.me/#types)

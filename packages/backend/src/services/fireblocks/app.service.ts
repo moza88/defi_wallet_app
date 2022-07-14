@@ -1,11 +1,10 @@
 import {Injectable} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
-import {FireblocksSDK, PeerType, TransactionArguments, VaultAccountsFilter} from "fireblocks-sdk";
+import {FireblocksSDK, PeerType, TransactionArguments, TransactionStatus, VaultAccountsFilter} from "fireblocks-sdk";
 import {join} from 'path';
-import {NewWallet} from "../../model/Fireblocks/NewWallet";
-import {Txn} from "../../model/Fireblocks/Txn";
+import {NewWallet} from "../../model/fireblocks/NewWallet";
+import {Txn} from "../../model/fireblocks/Txn";
 import fs = require('fs');
-import {map} from "rxjs";
 
 function fireblocks() {
     const apiSecret = fs.readFileSync(join(process.cwd(), process.env.FIREBLOCKS_CERT_PATH)).toString();
@@ -64,6 +63,30 @@ export class FireblocksService {
 
     async getTxnById(txnId: string) {
         return fireblocks().getTransactionById(txnId);
+    }
+
+    async getTransactions(sourceId: string, assets: string) {
+        console.log("getting transactions");
+        const txns =  fireblocks().getTransactions({
+            sourceType: PeerType.VAULT_ACCOUNT,
+            sourceId: '0',
+            status: TransactionStatus.COMPLETED,
+            //sourceId: sourceId,
+           // assets: assets,
+            //sourceId: sourceId
+            /*,
+            sourceId: sourceID,
+            assets: asset*/
+        })
+            .catch(err => {
+                console.log(err);
+                return err;
+            })
+        ;
+        console.log(txns);
+
+        return txns;
+
     }
 
     async getTransferTickets() {

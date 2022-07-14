@@ -63,3 +63,20 @@ Test your image locally using the command below:
 `docker-compose up -d --build backend`
 
 ##### Deploying Image to Serverless Environment
+
+We are deploying our docker images to Google Cloud's Container Registry.
+
+To re-deploy the image to the registry, run the following command:
+1. Tag the image with the tag you want to use.
+```aidl
+docker tag backend us-central1-docker.pkg.dev/wallet-app-54dff/defi-wallet-app/backend:tag1
+ ```
+2. Push the image to the registry.
+
+```aidl
+docker push us-central1-docker.pkg.dev/wallet-app-54dff/defi-wallet-app/backend:tag1
+```
+
+3. Verify that the image is now available in the registry. By visiting the following page in the console:
+   https://console.cloud.google.com/artifacts/docker/wallet-app-54dff/us-central1/defi-wallet-app?project=wallet-app-54dff
+

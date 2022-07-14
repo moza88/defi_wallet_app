@@ -9,11 +9,8 @@ function BigoWalletPage(props) {
             <BitgoWalletSection
                 bgColor="default"
                 size="medium"
-                bgImage=""
-                bgImageOpacity={1}
-                title="Bitgo Wallet"
-                subtitle=""
-                buttonText="Send message"
+                title="Digital Asset Management"
+                subtitle="Using BitGo"
                 buttonColor="primary"
                 showNameField={true}
             />

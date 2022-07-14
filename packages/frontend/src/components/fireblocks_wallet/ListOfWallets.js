@@ -22,7 +22,7 @@ import SendFunds from "./SendFunds";
 import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
-import {getAllBalances, getBalance, test} from "../../util/fireblocks/fireblocks_functions";
+import {getAllBalances, getBalance, getWallets, test} from "../../util/fireblocks/fireblocks_functions";
 
 const style = {
     position: 'absolute',
@@ -37,8 +37,8 @@ const style = {
 };
 
 export default function ListOfWallets(props) {
+    //const [wallets, setWallets] = useState([]);
     const [wallets, setWallets] = useState([]);
-    const [walletNames, setWalletNames] = useState([]);
     const [walletId, setWalletId] = useState('');
     const [openSendFunds, setOpenSendFunds] = React.useState(false);
     const [balances, setBalances] = useState(new Map());
@@ -77,43 +77,21 @@ export default function ListOfWallets(props) {
         window.location.reload(false);
     }
 
-    function getWallets(coin) {
-        var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/getVaultAccounts";
-        console.log(req_url);
+    useEffect(async () => {
 
-        fetch(req_url, {
-            method: 'POST',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({
-                namePrefix: "WF",
-                nameSuffix: "",
-                minAmountThreshold: 0,
-                assetId: ""
-            })
-        }).then(response => {
-           // response.json()
-            console.log(response.json()
-                .then(data => {
-                console.log(data.accounts[0].name)
-                for(const account of data.accounts) {
-                    setWallets(wallets => [...wallets, account])
-                    console.log(account.name)
-                    setWalletNames(walletNames => [...walletNames, account.name])
-                    setWalletId(walletId => [...walletId, account.id])
-                }
-            }))
-        }).catch((error)=> {
-            console.log(error)
-        })
-    }
+        const wallets = await getWallets(coin);
 
-    useEffect(() => {
+        console.log(wallets[0].name)
 
-        getWallets(coin)
+        let listOfWallets = [];
+        for(const wallet of wallets) {
+            listOfWallets = [...listOfWallets, wallet]
+            //listOfWallets = [...listOfWallets, wallet.name]
+        }
+        console.log(listOfWallets)
+        setWallets(listOfWallets)
+
+        console.log(wallets)
     }, [coin])
 
     useEffect(() => {
@@ -156,8 +134,9 @@ export default function ListOfWallets(props) {
                 </Container>
 
                 <br></br>
+                {wallets.length && balances.size &&
                 <TableContainer component={Paper}>
-                    <Table stickyHeader  aria-label="sticky table">
+                    <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Id</TableCell>
@@ -172,14 +151,14 @@ export default function ListOfWallets(props) {
 
                         <TableBody>
 
-                            {wallets.length && wallets.map( (wallet,index)=>
+                            {wallets.map((wallet, index) =>
                                 <TableRow key={index}>
                                     <TableCell>{wallet.id}</TableCell>
                                     <TableCell>{wallet.name}</TableCell>
                                     <TableCell>{balances.get(wallet.id)}</TableCell>
                                     <TableCell>
                                         <Button variant="contained"
-                                                startIcon={<SendIcon />}
+                                                startIcon={<SendIcon/>}
                                                 onClick={() => {
                                                     handleOpenSendFunds(wallets[index].id)
                                                 }}
@@ -188,7 +167,7 @@ export default function ListOfWallets(props) {
                                     </TableCell>
                                     <TableCell>
                                         <Button color='primary' variant="contained"
-                                                startIcon={<ArticleIcon />}
+                                                startIcon={<ArticleIcon/>}
                                                 onClick={() => {
                                                     handleOpenViewHistory(item.id)
                                                 }}>
@@ -198,7 +177,7 @@ export default function ListOfWallets(props) {
                                     <TableCell>
                                         <Button color='primary' variant="contained" onClick={() => {
                                             deleteWallet(item.id)
-                                        }} startIcon={<DeleteIcon />}>
+                                        }} startIcon={<DeleteIcon/>}>
                                             Delete
                                         </Button>
                                     </TableCell>
@@ -207,6 +186,7 @@ export default function ListOfWallets(props) {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                }
             </Card>
 
             <Modal

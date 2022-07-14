@@ -23,7 +23,7 @@ import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import ShareWallet from "./ShareWallet";
-import {deleteWallet} from "../../util/bitgo/bitgo_functions";
+import {deleteWallet, getWallets} from "../../util/bitgo/bitgo_functions";
 
 const style = {
     position: 'absolute',
@@ -76,30 +76,13 @@ export default function ListOfWallets(props) {
         console.log(coin)
     }
 
-    function getWallets(coin) {
-        var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER +"/wallet_list" + "/coin=" + coin;
-        console.log(req_url);
+    useEffect(async () => {
+        const listOfWallets = await getWallets(coin)
+        console.log(listOfWallets);
 
-        fetch(req_url)
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-                setWallets(data.wallets)
+        setWallets(listOfWallets);
 
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-
-        console.log(Array.isArray(wallets));
-        console.log(wallets)
-    }
-
-    useEffect(() => {
-        getWallets(coin)
-
-    }, [])
+    }, [coin])
 
     return (
         <div>
@@ -135,7 +118,7 @@ export default function ListOfWallets(props) {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Date Created</TableCell>
+                                <TableCell>ID</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell>Balance</TableCell>
                                 <TableCell>Send Funds</TableCell>
@@ -149,7 +132,7 @@ export default function ListOfWallets(props) {
                         <TableBody>
                             {wallets.map((item,index) => (
                                 <TableRow key={index}>
-                                    <TableCell>{item.startDate}</TableCell>
+                                    <TableCell>{item.id}</TableCell>
                                     <TableCell>{item.label}</TableCell>
                                     <TableCell>{item.balance}</TableCell>
                                     <TableCell>
