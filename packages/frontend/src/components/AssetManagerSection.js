@@ -15,15 +15,27 @@ import SectionHeader from "components/SectionHeader";
 import DashboardItems from "components/dashboard/DashboardItems";
 import { useAuth } from "util/auth";
 import {CardHeader, Button} from "@material-ui/core";
-import Image from "next/image";
-import digital_asset_banker from "../../assets/digital_asset_banker.png";
+import Image from 'next/image'
+import digital_asset_mgr from '../assets/digital_asset_manager.png'
 
 const useStyles = makeStyles((theme) => ({
   cardContent: {
     padding: theme.spacing(3),
-  },
+  }
+
 }));
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 930,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 function DashboardSection(props) {
   const classes = useStyles();
@@ -31,12 +43,16 @@ function DashboardSection(props) {
   const auth = useAuth();
   const router = useRouter();
 
-  function moveToBitgoWallet() {
-    router.push('/bitgo-wallet')
+  const [bitgoOpenVideos, setBitgoOpenVideos] = React.useState(false);
+
+  const handleCloseBitgoVideos = () => setBitgoOpenVideos(false);
+
+  function openBitGoVideos() {
+    router.push('/bitgo-asset-mgmt');
   }
 
-  function moveToFireblocksWallet() {
-    router.push('/fireblocks-wallet')
+  function openFireblocksVideos() {
+    router.push('/fireblocks-asset-mgmt');
   }
 
   return (
@@ -56,37 +72,38 @@ function DashboardSection(props) {
         />
         <Box textAlign="center">
 
+        <Typography variant="h5">
+        </Typography>
+
           <Image
-              src={digital_asset_banker}
-              alt="Digital Asset Banker"
+              src={digital_asset_mgr}
+              alt="Digital Asset Manager"
               width="850px"
               height="400px"
           />
-
           <br/><br/>
+
           <Typography >
-            There are two different ways you can manage your customer's assets, you can use a multi-signature wallet like Bitgo or a multi-party computing solution like Fireblocks.
+            Both Bitgo and Fireblocks provide portals to help you manage your digital assets.
           </Typography>
-          <Card>
-
-            <CardHeader title="Bitgo"/>
-            <CardContent>Bitgo is a multi-signature wallet implementation for multiple blockchain networks.
-              Multi-signature is an open source protocol, and has been through thorough testing and evaluation by the security community. Multi-signature makes use of distinct private keys specifically assigned to individuals for increased accountability and transparency.</CardContent>
-
-            <Button variant="contained" size="large" color='primary'  onClick={moveToBitgoWallet}>Bitgo Wallet</Button>
-          </Card>
-
+          <br/>
+          <Button
+              variant="contained" color='primary'
+              onClick={() => {
+                openBitGoVideos()
+              }}>
+              BitGo's Portal
+          </Button>
           <br/><br/>
-          <Card>
 
-            <CardHeader title="Fireblocks"/>
-            <CardContent>
-              Fireblocks is a MPC solution.
-              MPC is a multi-party computing solution from the 80's that allows multiple parties, in the digital asset space, to sign a messages together while preventing any one party from viewing the logical key of another.
-            </CardContent>
+          <Button
+              variant="contained" color='primary'
+              onClick={() => {
+                openFireblocksVideos()
+              }}>
+            Fireblock's Portal
+          </Button>
 
-            <Button variant="contained" size="large" color='primary' onClick={moveToFireblocksWallet}>Fireblocks Wallet</Button>
-          </Card>
         </Box>
       </Container>
     </Section>

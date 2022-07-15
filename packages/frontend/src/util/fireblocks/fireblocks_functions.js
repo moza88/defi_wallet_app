@@ -103,13 +103,51 @@ export function getWallets(coin) {
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
-            namePrefix: "WF",
+            namePrefix: "WIM",
             nameSuffix: "",
             minAmountThreshold: 0,
             assetId: ""
         })
     }).then(response => response.json())
       .then(data => data.accounts)
+}
+
+export async function getVaultInfo(accountId) {
+    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/get_vault_account/" + accountId;
+    console.log(req_url);
+
+    return fetch(req_url, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        }
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data)
+            return data
+        })
+}
+
+export async function getVaultTxns(asset, accountId) {
+    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/get_vault_transactions";
+    console.log(req_url);
+
+    return fetch(req_url, {
+        method: 'POST',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            assets: asset,
+            sourceId: accountId,
+        })
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data)
+            return data
+        })
 }
 
 

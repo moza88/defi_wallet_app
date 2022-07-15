@@ -40,3 +40,4 @@ yarn-error.log*
 /packages/backend/dist/*
 fireblocks.csr
 fireblocks_secret.key
+package-lock.json

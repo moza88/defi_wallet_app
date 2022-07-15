@@ -24,26 +24,30 @@ Copy the env.example file in the packages/frontend folder and populate the varia
 You'll need an API token from Firebase Google and a project ID
 
 ### Running this Project
-#### Backend
+#### Starting BitGo Express Server - Running Docker Image
 Starting BitGo Express Server, go to the root directory of the project and start Bitgo-Express Docker image:
 ```bash
 docker-compose up
 ```
-Starting up the backend
-```aidl
-cd packages/backend
-npm start
+
+#### Installing the Dependencies
+In the root directory run the following command:
+```bash
+npm run install
 ```
+
+#### Running the Backend and Frontend Projects
+In the root directory run the following command:
+```bash
+npm run start
+```
+### URL for Backend
 After everything is up and running go to the backend swagger docs
 [http://localhost:9000/api-docs
 ](http://localhost:9000/api-docs)
 
-#### Frontend
-Starting up the frontend
-```aidl
-cd packages/frontend
-npm run dev
-```
+You can also test the API's using the postman collection found in the /packages/backend/postman folder. 
+### URL for Frontend
 After everything is up and running go to
 [http://localhost:3000
 ](http://localhost:3000)
