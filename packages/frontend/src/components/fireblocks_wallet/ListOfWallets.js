@@ -224,9 +224,7 @@ export default function ListOfWallets(props) {
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Below are your past transactions for {walletId}
-                    </Typography>
+
                     <ManageWallet accountId={walletId}/>
                 </Box>
             </Modal>

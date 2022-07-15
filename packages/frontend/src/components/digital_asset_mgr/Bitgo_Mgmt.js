@@ -22,11 +22,13 @@ export default function Bitgo_Mgmt(props) {
                 textAlign="center"
             />
         <Container>
-            <Box mt={8}>
-                <Typography align="center" variant="h6">Workspace Management</Typography>
+            <Box align="center">
+                <Typography align="center" variant="h5">Workspace Management</Typography>
                 <VideoEmbed embedId="729725788" />
 
-                <Typography align="center" variant="h6">Add Users & Approvers</Typography>
+                <br/>
+
+                <Typography align="center" variant="h5">Add Users & Approvers</Typography>
                 <VideoEmbed embedId="729725788" />
             </Box>
         </Container>

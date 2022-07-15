@@ -51,6 +51,10 @@ function DashboardSection(props) {
     router.push('/bitgo-asset-mgmt');
   }
 
+  function openFireblocksVideos() {
+    router.push('/fireblocks-asset-mgmt');
+  }
+
   return (
     <Section
       bgColor={props.bgColor}
