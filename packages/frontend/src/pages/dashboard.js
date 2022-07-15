@@ -12,8 +12,8 @@ function DashboardPage(props) {
         size="medium"
         bgImage=""
         bgImageOpacity={1}
-        title="Dashboard"
-        subtitle=""
+        title="Digital Asset Banker"
+        subtitle="The digital asset bankers onboards and helps you to manage your digital assets."
       />
     </>
   );

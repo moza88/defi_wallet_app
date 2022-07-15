@@ -23,6 +23,7 @@ import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import {getAllBalances, getBalance, getWallets, test} from "../../util/fireblocks/fireblocks_functions";
+import ManageWallet from "./ManageWallet";
 
 const style = {
     position: 'absolute',
@@ -47,11 +48,14 @@ export default function ListOfWallets(props) {
     const [openShareWallet, setOpenShareWallet] = useState(false);
 
     const [openDetails, setOpenDetails] = React.useState(false);
+    const [openManage, setOpenManage] = React.useState(false);
+
     const [coin, setCoin] = useState("ETH_TEST");
 
     const handleCloseSendFunds = () => setOpenSendFunds(false);
     const handleCloseDetails = () => setOpenDetails(false);
     const handleCloseShareWallet = () => setOpenShareWallet(false);
+    const handleCloseManage = () => setOpenManage(false);
 
     const [values, setValues] = useState([
         "BTC_TEST",
@@ -66,6 +70,11 @@ export default function ListOfWallets(props) {
     const handleOpenViewHistory = (id) => {
         setWalletId(id)
         setOpenDetails(true);
+    }
+
+    const handleOpenManage = (id) => {
+        setWalletId(id)
+        setOpenManage(true);
     }
 
     function handleChange(event) {
@@ -112,26 +121,8 @@ export default function ListOfWallets(props) {
             <Card sx={{ maxWidth: 345 }} >
 
                 <br></br>
-                <Typography variant="h5" align="center">Fireblocks {coin.toUpperCase()} Wallets</Typography>
+                <Typography variant="h5" align="center">WIM Customer Vaults on Fireblocks</Typography>
                 <br></br>
-
-                <Container>
-                    <FormControl>
-                        <InputLabel htmlFor="coin">Coin</InputLabel>
-                        <Select
-                            value={coin}
-                            onChange={handleChange}
-                            inputProps={{
-                                name: "coin",
-                                id: "coin-simple",
-                            }}
-                        >
-                            {values.map((value, index) => {
-                                return <MenuItem key={index} value={value}>{value}</MenuItem>;
-                            })}
-                        </Select>
-                    </FormControl>
-                </Container>
 
                 <br></br>
                 {wallets.length && balances.size &&
@@ -144,7 +135,7 @@ export default function ListOfWallets(props) {
                                 <TableCell>Balance</TableCell>
                                 <TableCell>Send Funds</TableCell>
                                 <TableCell>History</TableCell>
-                                <TableCell>Delete</TableCell>
+                                <TableCell>Manage</TableCell>
 
                             </TableRow>
                         </TableHead>
@@ -176,7 +167,8 @@ export default function ListOfWallets(props) {
                                     </TableCell>
                                     <TableCell>
                                         <Button color='primary' variant="contained" onClick={() => {
-                                            deleteWallet(item.id)
+                                            /*deleteWallet(item.id)*/
+                                            handleOpenManage(wallets[index].id)
                                         }} startIcon={<DeleteIcon/>}>
                                             Delete
                                         </Button>
@@ -220,6 +212,20 @@ export default function ListOfWallets(props) {
                         Below are your past transactions for {walletId}
                     </Typography>
                     <WalletDetails coin={coin} walletId={walletId}/>
+                </Box>
+            </Modal>
+
+            <Modal
+                open={openManage}
+                onClose={handleCloseManage}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                    </Typography>
+
+                    <ManageWallet accountId={walletId}/>
                 </Box>
             </Modal>
         </div>

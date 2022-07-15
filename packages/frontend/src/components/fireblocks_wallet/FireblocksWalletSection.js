@@ -1,18 +1,12 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-import Alert from "@material-ui/lab/Alert";
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import LinkMui from "@material-ui/core/Link";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
 import Section from "components/Section";
 import SectionHeader from "components/SectionHeader";
-import DashboardItems from "components/dashboard/DashboardItems";
 import { useAuth } from "util/auth";
 import {CardHeader, Button, Modal} from "@material-ui/core";
 import CreateWallet from "./CreateWallet"
@@ -63,12 +57,15 @@ function FireblocksWalletSection(props) {
                     textAlign="center"
                 />
 
-                <Typography variant="h6">Don't have a wallet? Click below to create one</Typography>
+                <Typography variant="h6">Onboard your customers by creating a vault.
+                    Each vault can have multiple wallets per asset.</Typography>
+
+                <Typography><b>Note: </b> You can only have one wallet asset per vault, so you can't have two Ethereum mainnent wallets in the same vault. </Typography>
                 <Button variant="contained" color='primary'
                         onClick={() => {
                             handleOpenCreateWallet()
                         }}>
-                    Create Wallet
+                    Create Vault
                 </Button>
 
                 <br/><br/>

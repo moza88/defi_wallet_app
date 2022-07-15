@@ -212,17 +212,17 @@ function Navbar(props) {
         >
           <Link href="/about" passHref={true}>
             <ListItem component="a" button={true}>
-              <ListItemText>About</ListItemText>
+              <ListItemText>Identity</ListItemText>
             </ListItem>
           </Link>
           <Link href="/faq" passHref={true}>
             <ListItem component="a" button={true}>
-              <ListItemText>Pricing</ListItemText>
+              <ListItemText>FAQ</ListItemText>
             </ListItem>
           </Link>
-          <Link href="/about" passHref={true}>
+          <Link href="/asset-manager" passHref={true}>
             <ListItem component="a" button={true}>
-              <ListItemText>FAQ</ListItemText>
+              <ListItemText>Ops Asset Manager</ListItemText>
             </ListItem>
           </Link>
 
