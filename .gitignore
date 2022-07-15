@@ -38,3 +38,5 @@ yarn-error.log*
 /packages/backend/dist/
 /packages/backend/certs/
 /packages/backend/dist/*
+fireblocks.csr
+fireblocks_secret.key
