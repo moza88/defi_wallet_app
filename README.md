@@ -1,5 +1,11 @@
 ### Getting Started
 
+### Architecture (WIP)
+
+![img.png](img.png)
+https://lucid.app/lucidchart/87e5866a-3231-491e-8be2-fcadd8c0b00a/edit?viewport_loc=-10%2C-74%2C1516%2C823%2C0_0&invitationId=inv_56dbf55e-9189-4098-bf52-b859954aa493#
+
+
 ### Stack
 Backend - NestJS
 
@@ -9,6 +15,14 @@ Frontend - NextJS
 Bitgo
 
 Fireblocks
+
+#### Bitgo Signer
+Currently for this POC we are using a docker instance of the signer
+
+#### Fireblocks Signer
+Azure Cloud to host both the API Callback Handler and API Co-Signe
+
+API Co-Signer uses Intel SGX enclave device to secure the key shards stored in a secret DB
 
 ### Setting Up the Project
 #### Backend
