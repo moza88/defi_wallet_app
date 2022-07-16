@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {map} from "rxjs";
-import { bitgo } from '../../config/bitgo.config';
-import { getOptions} from "../../config/bitgo.config";
+import {bitgo, getOptions} from '../../config/bitgo.config';
 
 @Injectable()
 export class BitgoAccountService {
@@ -40,7 +39,6 @@ export class BitgoAccountService {
             map(response => response.data)
         );
     }
-
 
     unlockAccount() {
         bitgo().unlock({ otp: '0000000' }).then(function (unlockResponse) {

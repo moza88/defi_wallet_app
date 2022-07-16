@@ -9,6 +9,14 @@ export function bitgo() {
     return bitgo;
 }
 
+export function bitgoCoin(coin) {
+    const bitgo = new BitGo({ env: 'test' });
+    const accessToken = process.env.BITGO_ACCESS_TOKEN;
+    bitgo.authenticateWithAccessToken({ accessToken });
+
+    return bitgo.coin(coin);
+}
+
 export function getOptions(req_url : string)  {
     return {
         method: 'GET',

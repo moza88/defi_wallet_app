@@ -45,16 +45,11 @@ export default function ListOfWallets(props) {
     const [openShareWallet, setOpenShareWallet] = useState(false);
 
     const [openDetails, setOpenDetails] = React.useState(false);
-    const [coin, setCoin] = useState("tbtc");
+    const [coin, setCoin] = useState("teth");
 
     const handleCloseSendFunds = () => setOpenSendFunds(false);
     const handleCloseDetails = () => setOpenDetails(false);
     const handleCloseShareWallet = () => setOpenShareWallet(false);
-
-    const [values, setValues] = useState([
-        "tbtc",
-        "teth"
-    ]);
 
     function handleOpenSendFunds(id)  {
         setWalletId(id)
@@ -92,24 +87,6 @@ export default function ListOfWallets(props) {
                 <Typography variant="h5" align="center">BitGo {coin.toUpperCase()} Wallets</Typography>
 
                 <br></br>
-
-                <Container>
-                <FormControl>
-                    <InputLabel htmlFor="coin">Coin</InputLabel>
-                    <Select
-                        value={coin}
-                        onChange={handleChange}
-                        inputProps={{
-                            name: "coin",
-                            id: "coin-simple",
-                        }}
-                    >
-                        {values.map((value, index) => {
-                            return <MenuItem key={index} value={value}>{value}</MenuItem>;
-                        })}
-                    </Select>
-                </FormControl>
-                </Container>
 
                 <br></br>
 

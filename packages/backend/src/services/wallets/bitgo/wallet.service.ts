@@ -2,35 +2,13 @@ import { Injectable } from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {map} from "rxjs";
 import {WalletParams} from "../../../model/WalletParams";
-import {TXN} from "../../../model/TXN";
 import {BitGo} from 'bitgo'
 import axios from 'axios'
 import {NewWallet} from "../../../model/NewWallet";
 import {BackupKey} from "../../../model/BackupKey";
 import {WalletShare} from "../../../model/WalletShare";
+import {bitgo, bitgoCoin, getOptions} from '../../config/bitgo.config';
 
-function authHeader() {
-    const token = process.env.BITGO_ACCESS_TOKEN
-    if (token) {
-        return {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        };
-    }
-    return {
-        'Content-Type': 'application/json',
-    };
-}
-
-function getOptions(req_url : string)  {
-    return {
-        method: 'GET',
-        url: req_url,
-        headers: {
-            'Authorization': 'Bearer ' + process.env.BITGO_ACCESS_TOKEN,
-        }
-    }
-}
 
 function getConfig()  {
     return {
@@ -69,18 +47,10 @@ export class BitgoWalletService {
 
         console.log(walletOptions);
 
-        const wallet = await bitgo.coin(coin).wallets().generateWallet(walletOptions);
+        const wallet = await bitgoCoin(coin).wallets().generateWallet(walletOptions);
 
         const walletInstance = wallet.wallet;
 
-        /*
-                console.log(`Wallet ID: ${walletInstance.id()}`);
-                console.log(`Receive address: ${walletInstance.receiveAddress()}`);
-
-                console.log('BACK THIS UP: ');
-                console.log(`User keychain encrypted xPrv: ${wallet.userKeychain.encryptedPrv}`);
-                console.log(`Backup keychain xPrv: ${wallet.userKeychain.encryptedPrv}`);
-        */
         let newWallet = new NewWallet(walletInstance.id(), walletInstance.receiveAddress(), wallet.userKeychain.encryptedPrv, wallet.userKeychain.encryptedPrv, label)
 
         console.log(newWallet);
@@ -94,7 +64,7 @@ export class BitgoWalletService {
         bitgo.authenticateWithAccessToken({ accessToken });
 
         // this function takes one parameter - seed - if you want to create from your own entropy (recommended)
-        const backupKey = bitgo.coin(coin).keychains().create();
+        const backupKey = bitgoCoin(coin).keychains().create();
 
         console.log('BACK THIS UP: ');
         console.log(`Pub - this is what you add in the browser under the I have a backup key option: ${backupKey.pub}`);
@@ -131,24 +101,16 @@ export class BitgoWalletService {
     }
 
 
-
-
     async walletTransfers(coin: string, walletId: string) {
-        const bitgo = new BitGo({env: 'test'});
-        const accessToken = process.env.BITGO_ACCESS_TOKEN;
-        bitgo.authenticateWithAccessToken({accessToken});
 
-        const walletInstance = await bitgo.coin(coin).wallets().get({id: walletId});
+        const walletInstance = await bitgoCoin(coin).wallets().get({id: walletId});
 
         return walletInstance.transfers();
     }
 
     async shareWallet(walletShare: WalletShare) {
-        const bitgo = new BitGo({env: 'test'});
-        const accessToken = process.env.BITGO_ACCESS_TOKEN;
-        bitgo.authenticateWithAccessToken({accessToken});
 
-        const walletInstance = await bitgo.coin(walletShare.coin).wallets().get({id: walletShare.walletId});
+        const walletInstance = await bitgoCoin(walletShare.coin).wallets().get({id: walletShare.walletId});
 
         return walletInstance.shareWallet({
             email: walletShare.email,

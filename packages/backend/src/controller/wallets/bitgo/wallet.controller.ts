@@ -5,7 +5,7 @@ import { WalletParams} from "../../../model/WalletParams";
 import {TXN} from "../../../model/TXN";
 import {NewWallet} from "../../../model/NewWallet";
 import {WalletShare} from "../../../model/WalletShare";
-import {BitgoWalletService} from "../../../services/wallets/bitgo/wallet-mgmt.service";
+import {BitgoWalletService} from "../../../services/wallets/bitgo/wallet.service";
 
 @ApiTags('BitGo')
 @Controller('api/v1/bitgo')

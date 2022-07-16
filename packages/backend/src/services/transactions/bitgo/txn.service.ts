@@ -1,44 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {map} from "rxjs";
-import {WalletParams} from "../../../model/WalletParams";
 import {TXN} from "../../../model/TXN";
-import {BitGo} from 'bitgo'
-import axios from 'axios'
-import {NewWallet} from "../../../model/NewWallet";
-import {BackupKey} from "../../../model/BackupKey";
-import {WalletShare} from "../../../model/WalletShare";
-
-function authHeader() {
-    const token = process.env.BITGO_ACCESS_TOKEN
-    if (token) {
-        return {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        };
-    }
-    return {
-        'Content-Type': 'application/json',
-    };
-}
-
-function getOptions(req_url : string)  {
-    return {
-        method: 'GET',
-        url: req_url,
-        headers: {
-            'Authorization': 'Bearer ' + process.env.BITGO_ACCESS_TOKEN,
-        }
-    }
-}
-
-function getConfig()  {
-    return {
-        headers: {
-            'Authorization': 'Bearer ' + process.env.BITGO_ACCESS_TOKEN,
-        }
-    };
-}
+import {bitgo, bitgoCoin, getOptions} from '../../config/bitgo.config';
 
 @Injectable()
 export class BitgoTxnService {
@@ -55,54 +19,36 @@ export class BitgoTxnService {
 
     async getWalletBalance(coin: string, wallet: string): Promise<string> {
 
-        const bitgo = new BitGo({ env: 'test' });
-        const accessToken = process.env.BITGO_ACCESS_TOKEN;
-        bitgo.authenticateWithAccessToken({ accessToken });
-
-        const walletInstance = await bitgo.coin(coin).wallets().get({id: wallet});
+        const walletInstance = await bitgoCoin(coin).wallets().get({id: wallet});
 
         return walletInstance.balanceString();
     }
 
     async getConfirmedBalance(coin: string, wallet: string): Promise<string> {
 
-        const bitgo = new BitGo({ env: 'test' });
-        const accessToken = process.env.BITGO_ACCESS_TOKEN;
-        bitgo.authenticateWithAccessToken({ accessToken });
-
-        const walletInstance = await bitgo.coin(coin).wallets().get({id: wallet});
+        const walletInstance = await bitgoCoin(coin).wallets().get({id: wallet});
 
         return walletInstance.confirmedBalanceString();
     }
 
     async getSpendableBalance(coin: string, wallet: string): Promise<string> {
 
-        const bitgo = new BitGo({ env: 'test' });
-        const accessToken = process.env.BITGO_ACCESS_TOKEN;
-        bitgo.authenticateWithAccessToken({ accessToken });
-
-        const walletInstance = await bitgo.coin(coin).wallets().get({id: wallet});
+        const walletInstance = await bitgoCoin(coin).wallets().get({id: wallet});
 
         return walletInstance.spendableBalanceString();
     }
 
     unlockAccount() {
-        const bitgo = new BitGo({ env: 'test' });
-        const accessToken = process.env.BITGO_ACCESS_TOKEN;
-        bitgo.authenticateWithAccessToken({ accessToken });
 
         console.log("unlocking account")
-        bitgo.unlock({ otp: '0000000' }).then(function (unlockResponse) {
+        bitgo().unlock({ otp: '0000000' }).then(function (unlockResponse) {
             return unlockResponse
         });
     }
 
     async walletTransfers(coin: string, walletId: string) {
-        const bitgo = new BitGo({env: 'test'});
-        const accessToken = process.env.BITGO_ACCESS_TOKEN;
-        bitgo.authenticateWithAccessToken({accessToken});
 
-        const walletInstance = await bitgo.coin(coin).wallets().get({id: walletId});
+        const walletInstance = await bitgoCoin(coin).wallets().get({id: walletId});
 
         return walletInstance.transfers();
     }
@@ -114,11 +60,7 @@ export class BitgoTxnService {
         console.log("sending txn")
         console.log(txn);
 
-        const bitgo = new BitGo({ env: 'test' });
-        const accessToken = process.env.BITGO_ACCESS_TOKEN;
-        bitgo.authenticateWithAccessToken({ accessToken });
-
-        const walletInstance = await bitgo.coin(txn.coin).wallets().get({id: txn.walletId});
+        const walletInstance = await bitgoCoin(txn.coin).wallets().get({id: txn.walletId});
 
         const txn_data = {
             walletPassphrase: txn.password,
@@ -146,7 +88,6 @@ export class BitgoTxnService {
 
                     return error
                 })
-
         }
 
     }
