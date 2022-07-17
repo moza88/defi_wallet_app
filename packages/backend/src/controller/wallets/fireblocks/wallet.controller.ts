@@ -1,17 +1,17 @@
 import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
-import { FireblocksService } from '../../services/fireblocks/app.service';
 import {ApiTags} from "@nestjs/swagger";
-import {VaultAsset} from "../../model/fireblocks/VaultAsset";
-import {VaultWalletParams} from "../../model/fireblocks/VaultWalletParams";
-import {NewWallet} from "../../model/fireblocks/NewWallet";
-import {Txn} from "../../model/fireblocks/Txn";
-import { VaultAccountFilter} from "../../model/fireblocks/VaultAccountFilter";
-import { VaultDescript} from "../../model/fireblocks/VaultDescript";
+import {VaultAsset} from "../../../model/fireblocks/VaultAsset";
+import {VaultWalletParams} from "../../../model/fireblocks/VaultWalletParams";
+import {NewWallet} from "../../../model/fireblocks/NewWallet";
+import {Txn} from "../../../model/fireblocks/Txn";
+import { VaultAccountFilter} from "../../../model/fireblocks/VaultAccountFilter";
+import { VaultDescript} from "../../../model/fireblocks/VaultDescript";
+import {FireblocksWalletService} from "../../../services/wallets/fireblocks/wallet.service";
 
 @ApiTags('Fireblocks')
 @Controller('api/v1/fireblocks')
-export class FireblocksController {
-  constructor(private readonly appService: FireblocksService) {}
+export class FireblocksWalletController {
+  constructor(private readonly appService: FireblocksWalletService) {}
 
 
   @Post('/create_vault_wallet/')
@@ -59,28 +59,6 @@ export class FireblocksController {
   }
 
   /**
-   * 3. Transfers an asset from one vault to another vault.
-   * @param txn
-   */
-  @Post('/createTxnVaultToVault')
-  async createTxnVaultToVault(
-      @Body() txn: Txn
-  ) {
-    return this.appService.createTxnVaultToVault(txn);
-  }
-
-  /**
-   * 3. Transfers an asset from one vault to another vault.
-   * @param txn
-   */
-  @Post('/createTxnVaultToAddress')
-  async createTxnVaultToAddress(
-      @Body() txn: Txn
-  ) {
-    return this.appService.createTxnVaultToExtWallet(txn);
-  }
-
-  /**
    * Get vault account info based on filter
    * @param vaultAccountFilter
    */
@@ -89,14 +67,6 @@ export class FireblocksController {
       @Body() vaultAccountFilter: VaultAccountFilter
   ): Promise<any>{
     return this.appService.getVaultAccounts(vaultAccountFilter);
-  }
-
-  @Post('/get_vault_transactions')
-    async getVaultTransactions(
-        @Body() vaultDescript: VaultDescript
-    ): Promise<any> {
-        console.log('vaultDescript', vaultDescript);
-        return this.appService.getTransactions(vaultDescript.assets, vaultDescript.sourceId);
   }
 
   @Get('/get_whitelisted_wallets')
@@ -116,24 +86,6 @@ export class FireblocksController {
     return this.appService.getAllAssetsInWhitelistedWallet(walletId);
   }
 
-  @Get('/getUsers')
-  getUsers() {
-    return this.appService.getUsers();
-  }
-
-  @Get('/supported_assets')
-  getSupportedAssets() {
-    return this.appService.getSupportedAssets();
-  }
-
-  @Get('/get_txn/:txnId')
-  getTxn(
-      @Param('txnId') txnId: string,
-    ) {
-        return this.appService.getTxnById(txnId);
-  }
-
-
     @Get('/get_vault_account/:accountId')
     async getVaultAccount(
         @Param('accountId') accountId: string
@@ -147,12 +99,5 @@ export class FireblocksController {
     ) {
         return this.appService.getBalance(vaultAsset.id, vaultAsset.asset);
     }
-
-  @Get('/get_transfer_tickets')
-  async getTransferTickets() {
-    return this.appService.getTransferTickets();
-  }
-
-
 
 }

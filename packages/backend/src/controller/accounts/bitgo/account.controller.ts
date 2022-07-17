@@ -7,11 +7,12 @@ import {NewWallet} from "../../../model/NewWallet";
 import {WalletShare} from "../../../model/WalletShare";
 import {BitgoAccountService} from "../../../services/accounts/bitgo/account.service";
 
-@ApiTags('BitGo')
 @Controller('api/v1/bitgo')
 export class BitgoAccountController {
     constructor(private readonly appService: BitgoAccountService) {}
 
+    @ApiTags('Bitgo Accounts - Audit Log')
+    @ApiOperation({description: 'Bitgo Accounts - Get Wallets'})
     @Get('/audit_log')
     getAuditLogs(): Observable<any> {
         return this.appService.getAuditLogs();

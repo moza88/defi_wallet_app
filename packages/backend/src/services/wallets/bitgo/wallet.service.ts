@@ -33,10 +33,6 @@ export class BitgoWalletService {
 
     async createWallet(coin: string, wallet_params: WalletParams) : Promise<NewWallet>{
 
-        const bitgo = new BitGo({ env: 'test' });
-        const accessToken = process.env.BITGO_ACCESS_TOKEN;
-        bitgo.authenticateWithAccessToken({ accessToken });
-
         const label = wallet_params.label
         const passphrase = wallet_params.passphrase
 
@@ -59,9 +55,6 @@ export class BitgoWalletService {
     }
 
     createBackupKey(coin){
-        const bitgo = new BitGo({ env: 'test' });
-        const accessToken = process.env.BITGO_ACCESS_TOKEN;
-        bitgo.authenticateWithAccessToken({ accessToken });
 
         // this function takes one parameter - seed - if you want to create from your own entropy (recommended)
         const backupKey = bitgoCoin(coin).keychains().create();
