@@ -1,35 +1,40 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, Logger} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {FireblocksSDK, PeerType, TransactionArguments, TransactionStatus, VaultAccountsFilter} from "fireblocks-sdk";
 import {join} from 'path';
-import {Txn} from "../../../model/fireblocks/Txn";
+import {Txn} from "../../../model/transactions/fireblocks/Txn";
 import fs = require('fs');
-import {fireblocks} from "../../config/fireblocks.config";
+import {fireblocks} from "../../../config/fireblocks.config";
 
 @Injectable()
 export class FireblocksTxnService {
 
     constructor(private readonly httpService: HttpService) {}
 
+    private readonly logger = new Logger(FireblocksTxnService.name);
+
 
     async getAllTxns(accountId: string) {
+
+        this.logger.log("Getting all transactions for account: " + accountId);
         return fireblocks().getVaultAccountById(accountId);
     }
 
-    async getSupportedAssets() {
-        return fireblocks().getSupportedAssets();
-    }
-
     async getTxnByExternalId(txnId: string) {
+        this.logger.log("Getting transaction by external id: " + txnId);
+
         return fireblocks().getTransactionByExternalTxId(txnId);
     }
 
     async getTxnById(txnId: string) {
+        this.logger.log("Getting transaction by id: " + txnId);
+
         return fireblocks().getTransactionById(txnId);
     }
 
     async getTransactions(sourceId: string, assets: string) {
-        console.log("getting transactions");
+        this.logger.log("Getting transactions for account: " + sourceId);
+
         const txns =  fireblocks().getTransactions({
             sourceType: PeerType.VAULT_ACCOUNT,
             sourceId: '0',
@@ -53,20 +58,28 @@ export class FireblocksTxnService {
     }
 
     async getTransferTickets() {
+        this.logger.log("Getting transfer tickets");
+
         return fireblocks().getTransferTickets();
     }
 
     async getBalance(id: string, asset: string) {
+        this.logger.log("Getting balance for account: " + id);
+
         return fireblocks().getVaultAccountAsset(id, asset);
     }
 
     async getGasStation(asset: string) {
+        this.logger.log("Getting gas station for asset: " + asset);
+
         return fireblocks().getGasStationInfo(asset);
     }
 
     async createTxnVaultToVault(txn: Txn) {
-        console.log("creating txn")
-        console.log(txn);
+        this.logger.log("Creating transaction for account: " + txn.source);
+
+        this.logger.log("Transaction data: " + JSON.stringify(txn));
+
         const payload: TransactionArguments = {
             assetId: txn.asset,
             source: {
@@ -82,7 +95,7 @@ export class FireblocksTxnService {
             note: txn.note
         };
 
-        console.log(payload);
+        this.logger.log("TXN Payload data: " + JSON.stringify(payload));
 
         return fireblocks().createTransaction(payload)
             .then(res => res.id)
@@ -97,8 +110,9 @@ export class FireblocksTxnService {
     }
 
     async createTxnVaultToExtWallet(txn: Txn) {
-        console.log("creating txn")
-        console.log(txn);
+        this.logger.log("Creating vault to external wallet transaction for account: " + txn.source);
+        this.logger.log("Transaction data: " + JSON.stringify(txn));
+
         const payload: TransactionArguments = {
             assetId: txn.asset,
             source: {
@@ -114,7 +128,7 @@ export class FireblocksTxnService {
             note: txn.note
         };
 
-        console.log(payload);
+        this.logger.log("TXN Payload data: " + JSON.stringify(payload));
 
         return fireblocks().createTransaction(payload).then(res => {
             console.log(res);

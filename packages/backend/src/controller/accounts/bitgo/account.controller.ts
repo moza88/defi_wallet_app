@@ -1,10 +1,10 @@
 import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
 import {Observable} from "rxjs";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
-import { WalletParams} from "../../../model/WalletParams";
-import {TXN} from "../../../model/TXN";
-import {NewWallet} from "../../../model/NewWallet";
-import {WalletShare} from "../../../model/WalletShare";
+import { WalletParams} from "../../../model/wallets/bitgo/WalletParams";
+import {TXN} from "../../../model/transactions/bitgo/TXN";
+import {NewWallet} from "../../../model/wallets/bitgo/NewWallet";
+import {WalletShare} from "../../../model/wallets/bitgo/WalletShare";
 import {BitgoAccountService} from "../../../services/accounts/bitgo/account.service";
 
 @Controller('api/v1/bitgo')

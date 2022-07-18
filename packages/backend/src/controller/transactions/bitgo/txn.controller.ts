@@ -1,17 +1,17 @@
 import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
 import {Observable} from "rxjs";
 import {ApiOperation, ApiTags} from "@nestjs/swagger";
-import { WalletParams} from "../../../model/WalletParams";
-import {TXN} from "../../../model/TXN";
-import {NewWallet} from "../../../model/NewWallet";
-import {WalletShare} from "../../../model/WalletShare";
+import { WalletParams} from "../../../model/wallets/bitgo/WalletParams";
+import {TXN} from "../../../model/transactions/bitgo/TXN";
+import {NewWallet} from "../../../model/wallets/bitgo/NewWallet";
+import {WalletShare} from "../../../model/wallets/bitgo/WalletShare";
 import {BitgoTxnService} from "../../../services/transactions/bitgo/txn.service";
 
-@ApiTags('BitGo')
 @Controller('api/v1/bitgo')
 export class BitgoTxnController {
   constructor(private readonly appService: BitgoTxnService) {}
 
+  @ApiTags('BitGo Transactions - Send Transaction')
   @Post('/send_txn/')
   sendTxn(
       @Body() txn : TXN
@@ -19,6 +19,7 @@ export class BitgoTxnController {
     this.appService.sendTxn(txn);
   }
 
+  @ApiTags('BitGo Transactions - Get Transaction History')
   @Get('/txn_history/coin=:coin/walletId=:walletId')
   getTxnHistory(
       @Param('coin') coin: string,
@@ -27,6 +28,7 @@ export class BitgoTxnController {
     return this.appService.getTxnHistory(coin, walletId);
   }
 
+  @ApiTags('BitGo Transactions - Get Spendable Balance')
   @Get('/spendable_balance/coin=:coin/walletId=:walletId')
   getSpendableBalance(
         @Param('coin') coin: string,

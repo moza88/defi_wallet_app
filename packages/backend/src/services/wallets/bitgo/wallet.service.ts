@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {map} from "rxjs";
-import {WalletParams} from "../../../model/WalletParams";
+import {WalletParams} from "../../../model/wallets/bitgo/WalletParams";
 import {BitGo} from 'bitgo'
 import axios from 'axios'
-import {NewWallet} from "../../../model/NewWallet";
-import {BackupKey} from "../../../model/BackupKey";
-import {WalletShare} from "../../../model/WalletShare";
-import {bitgo, bitgoCoin, getOptions} from '../../config/bitgo.config';
+import {NewWallet} from "../../../model/wallets/bitgo/NewWallet";
+import {BackupKey} from "../../../model/wallets/bitgo/BackupKey";
+import {WalletShare} from "../../../model/wallets/bitgo/WalletShare";
+import {bitgo, bitgoCoin, getOptions} from '../../../config/bitgo.config';
 
 
 function getConfig()  {

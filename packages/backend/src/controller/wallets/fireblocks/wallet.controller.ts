@@ -1,19 +1,18 @@
 import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
 import {ApiTags} from "@nestjs/swagger";
-import {VaultAsset} from "../../../model/fireblocks/VaultAsset";
-import {VaultWalletParams} from "../../../model/fireblocks/VaultWalletParams";
-import {NewWallet} from "../../../model/fireblocks/NewWallet";
-import {Txn} from "../../../model/fireblocks/Txn";
-import { VaultAccountFilter} from "../../../model/fireblocks/VaultAccountFilter";
-import { VaultDescript} from "../../../model/fireblocks/VaultDescript";
+import {VaultAsset} from "../../../model/wallets/fireblocks/VaultAsset";
+import {VaultWalletParams} from "../../../model/wallets/fireblocks/VaultWalletParams";
+import {NewWallet} from "../../../model/wallets/fireblocks/NewWallet";
+import {Txn} from "../../../model/transactions/fireblocks/Txn";
+import { VaultAccountFilter} from "../../../model/wallets/fireblocks/VaultAccountFilter";
+import { VaultDescript} from "../../../model/wallets/fireblocks/VaultDescript";
 import {FireblocksWalletService} from "../../../services/wallets/fireblocks/wallet.service";
 
-@ApiTags('Fireblocks')
 @Controller('api/v1/fireblocks')
 export class FireblocksWalletController {
   constructor(private readonly appService: FireblocksWalletService) {}
 
-
+  @ApiTags('Fireblocks Wallets - Create Vault and Wallet')
   @Post('/create_vault_wallet/')
   async createVaultWallet(
         @Body() vaultWalletParams: VaultWalletParams
@@ -31,9 +30,10 @@ export class FireblocksWalletController {
   }
 
   /**
-   * 1. Creates a new vault account for the user. This is the first step to onboard a user.
+   * Creates a new vault account for the user. This is the first step to onboard a user.
    * @param vaultName
    */
+  @ApiTags('Fireblocks Wallets - Create Vault')
   @Get('/create_vault/:vault_name')
   async createVault(
       @Param('vault_name') vaultName: string,
@@ -43,9 +43,10 @@ export class FireblocksWalletController {
   }
 
   /**
-   * 2. Create a asset wallet in the vault created previously. This is the second step to onboard a user.
+   * Create a asset wallet in the vault created previously. This is the second step to onboard a user.
    * @param vaultAsset
    */
+  @ApiTags('Fireblocks Wallets - Create Wallet')
   @Post('/create_wallet/:accountId/:asset')
   async createWallet(
       @Body() vaultAsset: VaultAsset) {
@@ -62,6 +63,7 @@ export class FireblocksWalletController {
    * Get vault account info based on filter
    * @param vaultAccountFilter
    */
+  @ApiTags('Fireblocks Wallets - Create Vault Account')
   @Post('/getVaultAccounts')
   getVaultAccounts(
       @Body() vaultAccountFilter: VaultAccountFilter
@@ -69,16 +71,19 @@ export class FireblocksWalletController {
     return this.appService.getVaultAccounts(vaultAccountFilter);
   }
 
+  @ApiTags('Fireblocks Wallets - Get All Whitelisted Wallets')
   @Get('/get_whitelisted_wallets')
   getWhiteListedWallets() {
     return this.appService.getWhitelistedWallets();
   }
 
+  @ApiTags('Fireblocks Wallets - Get All External Wallets')
   @Get('/get_external_wallets')
   getExternalWallets() {
     return this.appService.getExternalWallets();
   }
 
+  @ApiTags('Fireblocks Wallets - Get Whitelisted Wallet by Wallet Id')
   @Get('/get_whitelisted_wallets/:walletId')
   getAllAssetsInWhitelistedWallet(
       @Param('walletId') walletId: string,
@@ -86,18 +91,20 @@ export class FireblocksWalletController {
     return this.appService.getAllAssetsInWhitelistedWallet(walletId);
   }
 
-    @Get('/get_vault_account/:accountId')
-    async getVaultAccount(
-        @Param('accountId') accountId: string
-    ) {
+  @ApiTags('Fireblocks Wallets - Get Vault Account by Account Id')
+  @Get('/get_vault_account/:accountId')
+  async getVaultAccount(
+      @Param('accountId') accountId: string
+  ) {
         return this.appService.getVaultAccountById(accountId);
     }
 
-    @Post('/get_balance')
-    async getBalance(
-        @Body() vaultAsset: VaultAsset
-    ) {
-        return this.appService.getBalance(vaultAsset.id, vaultAsset.asset);
-    }
+  @ApiTags('Fireblocks Wallets - Get Balance')
+  @Post('/get_balance')
+  async getBalance(
+      @Body() vaultAsset: VaultAsset
+  ) {
+    return this.appService.getBalance(vaultAsset.id, vaultAsset.asset);
+  }
 
 }
