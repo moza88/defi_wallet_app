@@ -15,7 +15,9 @@ import TextField from "@material-ui/core/TextField";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {useForm} from "react-hook-form";
 import CardContent from "@material-ui/core/CardContent";
-import {Card, CardHeader} from "@material-ui/core";
+import {Card, CardHeader, Table, TableCell, TableRow} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import Link from "next/link";
 
 const API_URL = 'https://ceramic-clay.3boxlabs.com';
 const useStyles = makeStyles((theme) => ({
@@ -150,15 +152,31 @@ function IdentitySection(props) {
             </Grid>
           </form>
           <br/><br/>
-          {idNumber &&
+          {idNumber && record &&
           <Card>
-            <CardHeader title="Info Commited to Network"/>
+            <CardHeader title="Info Commited to the Network"/>
             <CardContent>
-              <p>{record.content.idNumber}</p>
-              <p>{record.content.state}</p>
-              <p>{record.content.organDonar}</p>
-            </CardContent>
+              <Table>
+                <TableRow>
+                  <TableCell>ID Number</TableCell>
+                  <TableCell>State</TableCell>
+                  <TableCell>Organ Donor</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>{record.content.idNumber}</TableCell>
+                  <TableCell>{record.content.state}</TableCell>
+                  <TableCell>{record.content.organDonar}</TableCell>
+                </TableRow>
+              </Table>
+             </CardContent>
+            <Typography variant="h6" gutterBottom>
+              Verify your identity in any Ceramic Node or web app connected to Ceramic. <br/>
+              <Link href="https://ceramicstudio.github.io/web-playground/">Ceramic Playground</Link>
+
+            </Typography>
           </Card>
+
+
           }
         </Box>
       </Container>

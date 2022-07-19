@@ -1,9 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const logger = new Logger('APP');
 
   const config = new DocumentBuilder()
       .setTitle('Wallet APIs')
@@ -17,6 +19,10 @@ async function bootstrap() {
 
   app.enableCors();
 
-  await app.listen(9000);
+  const port = process.env.PORT || 3000;
+
+  await app.listen(port, () => {
+    logger.log(`⛱ server running on port ${port}`)
+  });
 }
 bootstrap();
