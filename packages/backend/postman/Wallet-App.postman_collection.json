@@ -1,14 +1,375 @@
 {
 	"info": {
-		"_postman_id": "c2142d17-ec01-4c69-afcd-6e881e7f6b79",
+		"_postman_id": "38cbfb6a-1311-4ed1-a849-6d6f38250113",
 		"name": "Wallet-App",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "1000007"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Fireblocks",
 			"item": [
+				{
+					"name": "Vault",
+					"item": [
+						{
+							"name": "list_vault_accounts_page",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9000/api/v1/fireblocks/vault/list_vault_accounts_pages?namePrefix=PK&assetId=BTC_TEST",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"v1",
+										"fireblocks",
+										"vault",
+										"list_vault_accounts_pages"
+									],
+									"query": [
+										{
+											"key": "after",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "before",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "300",
+											"disabled": true
+										},
+										{
+											"key": "minAmountThreshold",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "namePrefix",
+											"value": "PK"
+										},
+										{
+											"key": "nameSufix",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "assetId",
+											"value": "BTC_TEST"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getVaultAccountAsset",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:9000/api/v1/fireblocks/vault/accounts/77/ETH_TEST",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"v1",
+										"fireblocks",
+										"vault",
+										"accounts",
+										"77",
+										"ETH_TEST"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getVaultAccountById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9000/api/v1/fireblocks/vault/account/77",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"v1",
+										"fireblocks",
+										"vault",
+										"account",
+										"77"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "refreshVaultAssetBalance",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9000/api/v1/fireblocks/vault/accounts/77/ETH_TEST/balance",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"v1",
+										"fireblocks",
+										"vault",
+										"accounts",
+										"77",
+										"ETH_TEST",
+										"balance"
+									],
+									"query": [
+										{
+											"key": "minAmountThreshold",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getVaultBalanceByAsset",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9000/api/v1/fireblocks/vault/assets/ETH_TEST",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"v1",
+										"fireblocks",
+										"vault",
+										"assets",
+										"ETH_TEST"
+									],
+									"query": [
+										{
+											"key": "minAmountThreshold",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getDepositAddresses",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9000/api/v1/fireblocks/vault/accounts/77/ETH_TEST/addresses",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"v1",
+										"fireblocks",
+										"vault",
+										"accounts",
+										"77",
+										"ETH_TEST",
+										"addresses"
+									],
+									"query": [
+										{
+											"key": "minAmountThreshold",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getMaxSpendableAmount",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9000/api/v1/fireblocks/vault/accounts/77/BTC_TEST/max_spendable_amount",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"v1",
+										"fireblocks",
+										"vault",
+										"accounts",
+										"77",
+										"BTC_TEST",
+										"max_spendable_amount"
+									],
+									"query": [
+										{
+											"key": "minAmountThreshold",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getUnspentInputs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9000/api/v1/fireblocks/vault/assets/BTC_TEST",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"v1",
+										"fireblocks",
+										"vault",
+										"assets",
+										"BTC_TEST"
+									],
+									"query": [
+										{
+											"key": "minAmountThreshold",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "public_key_info",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9000/api/v1/fireblocks/vault/public_key_info?algorithm=MPC_ECDSA_SECP256K1&compressed=false&derivationPath=[44,0,0,0,0]",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"v1",
+										"fireblocks",
+										"vault",
+										"public_key_info"
+									],
+									"query": [
+										{
+											"key": "algorithm",
+											"value": "MPC_ECDSA_SECP256K1"
+										},
+										{
+											"key": "compressed",
+											"value": "false"
+										},
+										{
+											"key": "derivationPath",
+											"value": "[44,0,0,0,0]"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPublicKeyInfoForVaultAccount",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9000/api/v1/fireblocks/vault/getPublicKeyInfoForVaultAccount?vaultAccountId=77&assetId=BTC_TEST&addressIndex=0&change=0&compressed=true",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9000",
+									"path": [
+										"api",
+										"v1",
+										"fireblocks",
+										"vault",
+										"getPublicKeyInfoForVaultAccount"
+									],
+									"query": [
+										{
+											"key": "vaultAccountId",
+											"value": "77"
+										},
+										{
+											"key": "assetId",
+											"value": "BTC_TEST"
+										},
+										{
+											"key": "addressIndex",
+											"value": "0"
+										},
+										{
+											"key": "change",
+											"value": "0"
+										},
+										{
+											"key": "compressed",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
 				{
 					"name": "Create Vault and Wallet",
 					"request": {
@@ -260,7 +621,10 @@
 					"name": "Verify Address",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
