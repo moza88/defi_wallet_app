@@ -3,6 +3,8 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 
+declare const module: any;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger('APP');
@@ -24,5 +26,10 @@ async function bootstrap() {
   await app.listen(port, () => {
     logger.log(`⛱ server running on port ${port}`)
   });
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 bootstrap();

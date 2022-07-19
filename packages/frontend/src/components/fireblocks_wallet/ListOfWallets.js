@@ -95,7 +95,6 @@ export default function ListOfWallets(props) {
         let listOfWallets = [];
         for(const wallet of wallets) {
             listOfWallets = [...listOfWallets, wallet]
-            //listOfWallets = [...listOfWallets, wallet.name]
         }
         console.log(listOfWallets)
         setWallets(listOfWallets)

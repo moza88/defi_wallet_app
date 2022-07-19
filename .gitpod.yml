@@ -2,15 +2,18 @@
 # Please adjust to your needs (see https://www.gitpod.io/docs/config-gitpod-file)
 # and commit this file to your remote git repository to share the goodness with others.
 
-tasks:
-  - name: backend
-    init: cd /packages/backend && npm install
-    command: cd packages/backend && npm start
+image:
+  file: .gitpod.Dockerfile
 
-  - name: frontend
-    init: cd /packages/frontend && npm install
-    command: cd packages/frontend && npm run dev
-    openMode: split-right
+tasks:
+  - init: npm install
+    command: npm run build |
+  - command: npm start
+
+
+ports:
+  - port: 3000
+    onOpen: open-preview
 
 github:
   prebuilds:

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, Logger} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
 import {map} from "rxjs";
 import {WalletParams} from "../../../model/wallets/bitgo/WalletParams";
@@ -22,6 +22,8 @@ function getConfig()  {
 export class BitgoWalletService {
 
     constructor(private readonly httpService: HttpService) {}
+
+    private readonly logger = new Logger(BitgoWalletService.name);
 
     getWalletList(coin: string) {
         const req_url = process.env.BITGO_SERVER_URL + coin + "/wallet/?limit=50";
@@ -93,6 +95,11 @@ export class BitgoWalletService {
         );
     }
 
+    async getAddress(coin: string, walletId: string, address: string) {
+        const walletInstance = await bitgoCoin(coin).wallets().get({id: walletId});
+
+        return walletInstance.getAddress({address: address});
+    }
 
     async walletTransfers(coin: string, walletId: string) {
 
@@ -112,5 +119,25 @@ export class BitgoWalletService {
         }).catch((error) => console.log(error));
     }
 
+    async getWallet(coin: string, walletId: string) {
+        const walletInstance = await bitgoCoin
+    }
 
+    createAddress(coin: string, walletId: string) {
+
+        this.logger.log("creating address for wallet " + walletId)
+
+        const req_url = process.env.BITGO_SERVER_URL + coin + "/wallet/" + walletId + "/address";
+
+        this.logger.log(req_url)
+        return fetch(req_url, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + process.env.BITGO_ACCESS_TOKEN,
+            }
+        })
+        .then(response => response.json())
+        .catch(error => console.log(error));
+        //const response =  this.httpService.post(req_url );
+    }
 }

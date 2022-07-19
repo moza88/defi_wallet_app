@@ -63,4 +63,23 @@ export class BitgoWalletController {
     return this.appService.getAddressList(coin, walletId);
   }
 
+  @ApiTags('BitGo Wallets - Create Address')
+  @Get('/create_address/coin=:coin/walletId=:walletId')
+  async createAddress(
+      @Param('coin') coin: string,
+      @Param('walletId') walletId: string
+  ): Promise<any> {
+    return this.appService.createAddress(coin, walletId);
+  }
+
+  @ApiTags('BitGo Wallets - Get Address')
+  @Get('/get_address/coin=:coin/walletId=:walletId/address=:address')
+  async getAddress(
+        @Param('coin') coin: string,
+        @Param('walletId') walletId: string,
+        @Param('address') address: string
+    ): Promise<any> {
+        return this.appService.getAddress(coin, walletId, address);
+    }
+
 }

@@ -2,22 +2,22 @@ import Container from "@material-ui/core/Container";
 import {Card, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import React, {useEffect, useState} from "react";
-import {getAllAddressesBalance, getTxnHistory} from "../../util/bitgo/bitgo_functions";
+import {getTxnHistory} from "../../util/bitgo/bitgo_functions";
 
-export default function WalletDetails({coin, walletId}, props) {
+export default function WalletHistory({coin, walletId}, props) {
     const [data,setData]=useState([]);
     const entryList = [];
 
-    useEffect(async () => {
-        console.log(await getAllAddressesBalance(coin, walletId));
+    useEffect(() => {
+        getTxnHistory(coin, walletId)
+            .then(function(myJson) {
+                setData(myJson.transfers)
 
-        await getAllAddressesBalance(coin, walletId)
-            .then(res => {
-                console.log(res.id);
-                setData(res);
-            })
-            .catch(err => {
-                console.log(err);
+                console.log(data);
+                data.forEach((entry) => {
+                    entryList.push(entry.address)
+                })
+                    return entryList;
             })
     }, [coin, walletId])
 
@@ -25,7 +25,7 @@ export default function WalletDetails({coin, walletId}, props) {
 
         <div>
 
-            {data && data.length > 0 &&
+            {data && data.length > 0 ? (
             <Container>
 
                 <Typography>
@@ -46,8 +46,8 @@ export default function WalletDetails({coin, walletId}, props) {
 
                                 <TableBody>
                                     <TableRow>
-                                        <TableCell>{item.address}</TableCell>
-                                        <TableCell>{item.balance.balance}</TableCell>
+                                        <TableCell>{item.date}</TableCell>
+                                        <TableCell>{item.value}</TableCell>
                                     </TableRow>
 
                                 </TableBody>
@@ -56,6 +56,7 @@ export default function WalletDetails({coin, walletId}, props) {
                 </TableContainer>
 
             </Container>
+            ) : <div>No Transaction History Yet...</div>
             }
 
         </div>
