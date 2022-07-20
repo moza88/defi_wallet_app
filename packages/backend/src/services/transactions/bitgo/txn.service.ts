@@ -4,6 +4,7 @@ import {map} from "rxjs";
 import {TXN} from "../../../model/transactions/bitgo/TXN";
 import {bitgo, bitgoCoin, getOptions} from '../../../config/bitgo.config';
 import {BitgoAccountService} from "../../accounts/bitgo/account.service";
+import {Coin} from "bitgo";
 
 @Injectable()
 export class BitgoTxnService {
@@ -55,7 +56,7 @@ export class BitgoTxnService {
     }
 
 
-    async sendTxn(txn: TXN): {
+    async sendTxn(txn: TXN) {
 
         this.logger.log("Sending txn for " + txn.toString());
 
@@ -96,6 +97,56 @@ export class BitgoTxnService {
                 })
         }
 
+
+
     }
 
+    async createTxn(txn: TXN): Promise<any> {
+
+        this.logger.log("Sending txn for " + txn.toString());
+
+        const accountService = new BitgoAccountService(this.httpService);
+
+        accountService.unlockAccount();
+
+        const walletInstance = await bitgoCoin(txn.coin).wallets().get({id: txn.walletId});
+
+        const txn_data = {
+            walletPassphrase: txn.password,
+            address: txn.destAddress,
+            //amount: 0.001 * 1e8
+            amount: Number(txn.amount)
+        };
+
+        const amount = Number(txn.amount);
+
+        this.logger.log(walletInstance.balance())
+
+/*        if(amount > walletInstance.balance()){
+            this.logger.log("Amount is greater than balance, balance is " + walletInstance.balance())
+        } else if(amount > walletInstance.spendableBalance()){
+            this.logger.log("Amount is greater than spendable balance, balance is " + walletInstance.spendableBalance())
+            /!*} else if(amount < 2730) {
+                this.logger.log("Txn didn't go through because the gas fees will be higher, enter a number greater than 2730")*!/
+        } else {*/
+        const transaction = await walletInstance.send(txn_data)
+                .then((response) => {
+                    this.logger.log(response);
+                    return response;
+
+                })
+                .catch((error) => {
+                    this.logger.log(error)
+
+                    return error
+                })
+
+        const basecoin = bitgoCoin(txn.coin) as Coin.Tbtc;
+        const explanation = await basecoin.explainTransaction({ txHex: transaction.tx });
+        this.logger.log("Explain transaction: " + JSON.stringify(explanation));
+        this.logger.log(explanation.id);
+
+        return explanation
+
+    }
 }

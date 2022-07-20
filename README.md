@@ -2,9 +2,8 @@
 
 ### Architecture (WIP)
 
-![img.png](img.png)
-https://lucid.app/lucidchart/87e5866a-3231-491e-8be2-fcadd8c0b00a/edit?viewport_loc=-10%2C-74%2C1516%2C823%2C0_0&invitationId=inv_56dbf55e-9189-4098-bf52-b859954aa493#
-
+![img_1.png](img_1.png)
+https://lucid.app/lucidchart/17d6ec18-0a55-4525-879f-b62e62618ec7/edit?viewport_loc=-76%2C-120%2C2273%2C1233%2C0_0&invitationId=inv_c4e17f19-afbd-43c3-8227-595913ee0788#
 
 ### Stack
 Backend - NestJS
