@@ -62,7 +62,10 @@ export default function ListOfWallets(props) {
     const [coin, setCoin] = useState("tbtc");
 
     const handleCloseSendFunds = () => setOpenSendFunds(false);
-    const handleCloseDetails = () => setOpenDetails(false);
+    const handleCloseDetails = () => {
+        setOpenDetails(false);
+        refreshPage();
+    }
     const handleCloseShareWallet = () => setOpenShareWallet(false);
     const handleCloseHistory = () => setOpenHistory(false);
 
@@ -89,6 +92,10 @@ export default function ListOfWallets(props) {
     function handleChange(event) {
         setCoin(event.target.value);
         console.log(coin)
+    }
+
+    function refreshPage() {
+        window.location.reload(false);
     }
 
     useEffect(async () => {

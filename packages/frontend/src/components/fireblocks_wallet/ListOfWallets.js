@@ -24,6 +24,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import {getAllBalances, getBalance, getWallets, test} from "../../util/fireblocks/fireblocks_functions";
 import ManageWallet from "./ManageWallet";
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 const style = {
     position: 'absolute',
@@ -168,8 +169,8 @@ export default function ListOfWallets(props) {
                                         <Button color='primary' variant="contained" onClick={() => {
                                             /*deleteWallet(item.id)*/
                                             handleOpenManage(wallets[index].id)
-                                        }} startIcon={<DeleteIcon/>}>
-                                            Delete
+                                        }} startIcon={<AccountBalanceWalletIcon/>}>
+                                            View Wallets
                                         </Button>
                                     </TableCell>
                                 </TableRow>

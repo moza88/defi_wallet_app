@@ -157,7 +157,6 @@ export function getAddressBalance(coin, walletId, address) {
 }
 
 export async function getAllAddressesBalance(coin, walletId) {
-    let addressBalance = new Map;
     //console.log("Get All Addresses Balance: " + coin + " " + walletId);
     let balances = []
     getAddresses(coin, walletId).then(
@@ -165,6 +164,7 @@ export async function getAllAddressesBalance(coin, walletId) {
             for (const element of addresses) {
                 getAddressBalance(coin, walletId, element.id).then(
                     (balance) => {
+                        //balances = balances.concat(balance)
                         //console.log(balance)
                         balances.push(balance)
                         //addressBalance.set(element.id, balance)
@@ -174,6 +174,25 @@ export async function getAllAddressesBalance(coin, walletId) {
             console.log(error)
         })
    // console.log(balances)
+    return balances;
+
+}
+
+export async function getAllBalances(coin, walletId, wallets) {
+    //console.log("Get All Addresses Balance: " + coin + " " + walletId);
+    let balances = []
+    for (const element of wallets) {
+        console.log("address: " + element)
+        getAddressBalance(coin, walletId, element).then(
+            (balance) => {
+                //balances = balances.concat(balance)
+                //console.log(balance)
+                balances.push(balance)
+                //balances = [...balances, balance]
+                //balances = balances.concat(balance)
+                //addressBalance.set(element.id, balance)
+            }
+        )}
     return balances;
 
 }

@@ -55,7 +55,8 @@ export class BitgoTxnService {
     }
 
 
-    async sendTxn(txn: TXN) {
+    async sendTxn(txn: TXN): {
+
         this.logger.log("Sending txn for " + txn.toString());
 
         const accountService = new BitgoAccountService(this.httpService);
@@ -67,17 +68,20 @@ export class BitgoTxnService {
         const txn_data = {
             walletPassphrase: txn.password,
             address: txn.destAddress,
-            amount: 0.001 * 1e8
+            //amount: 0.001 * 1e8
+            amount: Number(txn.amount)
         };
 
         const amount = Number(txn.amount);
+
+        this.logger.log(walletInstance.balance())
 
         if(amount > walletInstance.balance()){
             this.logger.log("Amount is greater than balance, balance is " + walletInstance.balance())
         } else if(amount > walletInstance.spendableBalance()){
             this.logger.log("Amount is greater than spendable balance, balance is " + walletInstance.spendableBalance())
-        } else if(amount < 2730) {
-            this.logger.log("Txn didn't go through because the gas fees will be higher, enter a number greater than 2730")
+        /*} else if(amount < 2730) {
+            this.logger.log("Txn didn't go through because the gas fees will be higher, enter a number greater than 2730")*/
         } else {
             return walletInstance.send(txn_data)
                 .then((response) => {

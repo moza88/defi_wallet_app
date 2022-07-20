@@ -11,20 +11,20 @@ export default function WalletDetails({coin, walletId}, props) {
     useEffect(async () => {
         console.log(await getAllAddressesBalance(coin, walletId));
 
+        //TODO: Fix this, it's too slow and a little funky
         await getAllAddressesBalance(coin, walletId)
             .then(res => {
                 console.log(res.id);
                 setData(res);
             })
             .catch(err => {
-                console.log(err);
+            console.log(err);
             })
     }, [coin, walletId])
 
     return(
 
         <div>
-
             {data && data.length > 0 &&
             <Container>
 
@@ -45,7 +45,7 @@ export default function WalletDetails({coin, walletId}, props) {
                             data.map((item, index) =>
 
                                 <TableBody>
-                                    <TableRow>
+                                    <TableRow index = {index}>
                                         <TableCell>{item.address}</TableCell>
                                         <TableCell>{item.balance.balance}</TableCell>
                                     </TableRow>
@@ -57,7 +57,6 @@ export default function WalletDetails({coin, walletId}, props) {
 
             </Container>
             }
-
         </div>
 
     )
