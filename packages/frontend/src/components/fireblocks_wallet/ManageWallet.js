@@ -1,8 +1,20 @@
-import {useEffect, useState} from "react";
-import {getVaultInfo, getVaultTxns} from "../../util/fireblocks/fireblocks_functions";
+import React, {useEffect, useState} from "react";
+import {createWalletOnly, getVaultInfo, getVaultTxns, transferFunds} from "../../util/fireblocks/fireblocks_functions";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import {Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
+import {
+    Checkbox,
+    FormControlLabel,
+    FormGroup,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TextField
+} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import {useForm} from "react-hook-form";
 
 
 export default function ManageWallet({accountId}, props) {
@@ -13,6 +25,22 @@ export default function ManageWallet({accountId}, props) {
     const [customerId, setCustomerId] = useState(null);
     const [assets, setAssets] = useState([]);
     const [txnHistory, setTxnHistory] = useState([]);
+    const [selectedAsset, setSelectedAsset] = useState([]);
+
+    const [whiteWalletAddress, setWhiteWalletAddress] = useState(null);
+
+    const { handleSubmit, getValues, errors, sendFunds } = useForm();
+
+    function createWallet() {
+        console.log("Assets: ", selectedAsset);
+        console.log("Account ID: ", accountId);
+        createWalletOnly(selectedAsset, accountId);
+    }
+
+    const onSubmit = (data) => {
+
+        console.log("Sending funds to " + whiteWalletAddress)
+    };
 
     //Get all wallets in a vault
     useEffect(async () => {
@@ -50,6 +78,10 @@ export default function ManageWallet({accountId}, props) {
         console.log("whilteListAddresses");
     }
 
+    const handleChange = (event) => {
+        setSelectedAsset(event.target.checked);
+    };
+
     return(
         <Container>
             <Typography variant="h6">
@@ -58,6 +90,36 @@ export default function ManageWallet({accountId}, props) {
             <Typography variant="body1">
                 Customer ID: {customerId}
             </Typography>
+
+            <FormControlLabel
+                control={<Checkbox checked={selectedAsset} onChange={handleChange} />}
+                label="BTC_TEST"
+            />
+            <Button variant="contained" color='secondary'
+                    onClick={createWallet}>
+                Create Wallet
+            </Button>
+
+{/*            <form onSubmit={handleSubmit(onSubmit)}>
+                <Grid container={true} spacing={2}>
+
+                    <Grid item={true} xs={12}>
+                        <TextField
+                            variant="outlined"
+                            type="text"
+                            label="White Wallet Address"
+                            name="whiteWalletAddress"
+                            fullWidth={true}
+                            onChange={(e) => setWhiteWalletAddress(e.target.value)}
+                        />
+                    </Grid>
+
+                    <Button variant="contained" color='secondary' type="submit">
+                        Add Whitelisted Addresses
+                    </Button>
+                </Grid>
+            </form>*/}
+
             {assets.map(asset => {
                 return(
                       <Table>

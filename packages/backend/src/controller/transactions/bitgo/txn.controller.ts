@@ -37,4 +37,12 @@ export class BitgoTxnController {
         return this.appService.getSpendableBalance(coin, walletId);
     }
 
+    @ApiTags('BitGo Transactions - Create Transaction')
+    @Post('/create_txn/')
+    createTxn(
+        @Body() txn : TXN
+    ) {
+        this.appService.createTxn(txn);
+    }
+
 }

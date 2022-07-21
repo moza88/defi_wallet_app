@@ -1,14 +1,16 @@
-import {Body, Controller, Delete, Get, Param, Post} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Logger, Param, Post} from '@nestjs/common';
 import { FireblocksTxnService } from '../../../services/transactions/fireblocks/txn.service';
 import {ApiTags} from "@nestjs/swagger";
 import {VaultAsset} from "../../../model/wallets/fireblocks/VaultAsset";
 import {Txn} from "../../../model/transactions/fireblocks/Txn";
 import { VaultDescript} from "../../../model/wallets/fireblocks/VaultDescript";
+import {getError} from "../../error/fireblocks/getError";
 
 @Controller('api/v1/fireblocks')
 export class FireblocksTxnController {
   constructor(private readonly appService: FireblocksTxnService) {}
 
+    private readonly logger = new Logger(FireblocksTxnController.name);
   /**
    * Transfers an asset from one vault to another vault.
    * @param txn
@@ -18,7 +20,11 @@ export class FireblocksTxnController {
   async createTxnVaultToVault(
       @Body() txn: Txn
   ) {
-    return this.appService.createTxnVaultToVault(txn);
+    return this.appService.createTxnVaultToVault(txn)
+        .catch(e => {
+            this.logger.log(e);
+            return getError(e);
+        });
   }
 
   /**
@@ -30,7 +36,11 @@ export class FireblocksTxnController {
   async createTxnVaultToAddress(
       @Body() txn: Txn
   ) {
-    return this.appService.createTxnVaultToExtWallet(txn);
+    return this.appService.createTxnVaultToExtWallet(txn)
+        .catch(e => {
+            this.logger.log(e);
+            return getError(e);
+        });
   }
 
   @ApiTags('Fireblocks Transactions - Get Vault Transactions')
@@ -39,7 +49,11 @@ export class FireblocksTxnController {
         @Body() vaultDescript: VaultDescript
     ): Promise<any> {
         console.log('vaultDescript', vaultDescript);
-        return this.appService.getTransactions(vaultDescript.assets, vaultDescript.sourceId);
+        return this.appService.getTransactions(vaultDescript.assets, vaultDescript.sourceId)
+            .catch(e => {
+                this.logger.log(e)
+                return getError(e);
+            });
   }
 
   @ApiTags('Fireblocks Transactions - Get Transactions by Transaction ID')
@@ -47,7 +61,11 @@ export class FireblocksTxnController {
   getTxn(
       @Param('txnId') txnId: string,
     ) {
-        return this.appService.getTxnById(txnId);
+        return this.appService.getTxnById(txnId)
+            .catch(e => {
+                this.logger.log(e)
+                return getError(e);
+            });
   }
 
 
@@ -56,13 +74,21 @@ export class FireblocksTxnController {
     async getBalance(
         @Body() vaultAsset: VaultAsset
     ) {
-        return this.appService.getBalance(vaultAsset.id, vaultAsset.asset);
+        return this.appService.getBalance(vaultAsset.id, vaultAsset.asset)
+            .catch(e => {
+                this.logger.log(e);
+                return getError(e);
+            });
     }
 
   @ApiTags('Fireblocks Transactions - Get Transfer Tickets')
   @Get('/get_transfer_tickets')
   async getTransferTickets() {
-    return this.appService.getTransferTickets();
+    return this.appService.getTransferTickets()
+        .catch(e => {
+            this.logger.log(e);
+            return getError(e);
+        });
   }
 
 

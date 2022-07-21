@@ -1,6 +1,7 @@
 import {QueryClient, useQuery} from "react-query";
 import {doc} from "firebase/firestore";
 import {useState} from "react";
+import {getBalance} from "../fireblocks/fireblocks_functions";
 
 export const createWallet = (label, passphrase, coin) => {
     console.log(label, passphrase);
@@ -108,6 +109,7 @@ export function getWallets(coin) {
     return fetch(req_url)
         .then(response => response.json())
         .then(data => {
+
             return data.wallets
            // setWallets(data.wallets)
 
@@ -115,7 +117,82 @@ export function getWallets(coin) {
         .catch((error) => {
             console.log(error)
         })
+}
 
-    console.log(Array.isArray(wallets));
-    console.log(wallets)
+export function createNewAddress(coin, walletId) {
+    var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + "/create_address" + "/coin=" + coin + "/walletId=" + walletId;
+    console.log(req_url);
+
+    return fetch(req_url)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            return data
+        }).catch((error) => { console.log(error)})
+}
+
+export function getAddresses(coin, walletId) {
+    var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + "/address_list" + "/coin=" + coin + "/walletId=" + walletId;
+    console.log("Get Addresses: " + req_url);
+
+    return fetch(req_url)
+        .then(response => response.json())
+        .then(data => {
+         //   console.log(data)
+            return data.addresses
+        }).catch((error) => { console.log(error)})
+}
+
+export function getAddressBalance(coin, walletId, address) {
+    var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + "/get_address" + "/coin=" + coin + "/walletId=" + walletId + "/address=" + address;
+//    console.log("Get Address Balance: " + req_url);
+
+    return fetch(req_url)
+        .then(response => response.json())
+        .then((data) => data)
+        .then(data => {
+           // console.log(data)
+            return data
+        }).catch((error) => { console.log(error)})
+}
+
+export async function getAllAddressesBalance(coin, walletId) {
+    //console.log("Get All Addresses Balance: " + coin + " " + walletId);
+    let balances = []
+    getAddresses(coin, walletId).then(
+        (addresses) => {
+            for (const element of addresses) {
+                getAddressBalance(coin, walletId, element.id).then(
+                    (balance) => {
+                        //balances = balances.concat(balance)
+                        //console.log(balance)
+                        balances.push(balance)
+                        //addressBalance.set(element.id, balance)
+                    }
+                )}
+        }).catch((error) => {
+            console.log(error)
+        })
+   // console.log(balances)
+    return balances;
+
+}
+
+export async function getAllBalances(coin, walletId, wallets) {
+    //console.log("Get All Addresses Balance: " + coin + " " + walletId);
+    let balances = []
+    for (const element of wallets) {
+        console.log("address: " + element)
+        getAddressBalance(coin, walletId, element).then(
+            (balance) => {
+                //balances = balances.concat(balance)
+                //console.log(balance)
+                balances.push(balance)
+                //balances = [...balances, balance]
+                //balances = balances.concat(balance)
+                //addressBalance.set(element.id, balance)
+            }
+        )}
+    return balances;
+
 }

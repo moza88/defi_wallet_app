@@ -1,7 +1,7 @@
 import React from "react";
 import Meta from "components/Meta";
 import ContactSection from "components/contact/ContactSection";
-import Bitgo_Mgmt from "../components/digital_asset_mgr/Bitgo_Mgmt";
+import Bitgo_Mgmt from "../components/digital_asset_mgr/BitgoMgmtSection";
 import FireblocksMgmtSection from "../components/digital_asset_mgr/FireblocksMgmtSection";
 
 function FireblocksMgmtPage(props) {

@@ -23,9 +23,10 @@ import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import ShareWallet from "./ShareWallet";
+import WalletHistory from "./WalletHistory";
 import {deleteWallet, getWallets} from "../../util/bitgo/bitgo_functions";
 
-const style = {
+const sm_modal_style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -37,19 +38,41 @@ const style = {
     p: 4,
 };
 
+const lg_modal_style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 800,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 export default function ListOfWallets(props) {
     const [wallets, setWallets] = useState([]);
     const [walletId, setWalletId] = useState('');
+
     const [openSendFunds, setOpenSendFunds] = React.useState(false);
-
     const [openShareWallet, setOpenShareWallet] = useState(false);
-
     const [openDetails, setOpenDetails] = React.useState(false);
-    const [coin, setCoin] = useState("teth");
+    const [openHistory, setOpenHistory] = React.useState(false);
+
+    const [coin, setCoin] = useState("tbtc");
 
     const handleCloseSendFunds = () => setOpenSendFunds(false);
-    const handleCloseDetails = () => setOpenDetails(false);
+    const handleCloseDetails = () => {
+        setOpenDetails(false);
+        refreshPage();
+    }
     const handleCloseShareWallet = () => setOpenShareWallet(false);
+    const handleCloseHistory = () => setOpenHistory(false);
+
+    function handleOpenWalletDetails(id) {
+        setWalletId(id);
+        setOpenDetails(true);
+    }
 
     function handleOpenSendFunds(id)  {
         setWalletId(id)
@@ -63,7 +86,7 @@ export default function ListOfWallets(props) {
 
     const handleOpenViewHistory = (id) => {
         setWalletId(id)
-        setOpenDetails(true);
+        setOpenHistory(true);
     }
 
     function handleChange(event) {
@@ -71,11 +94,25 @@ export default function ListOfWallets(props) {
         console.log(coin)
     }
 
+    function refreshPage() {
+        window.location.reload(false);
+    }
+
     useEffect(async () => {
         const listOfWallets = await getWallets(coin)
-        console.log(listOfWallets);
 
-        setWallets(listOfWallets);
+        let WIMWallets = []
+
+        for(const element of listOfWallets) {
+            console.log(element.label.substring(0,3))
+            if(element.label.substring(0,3) === "WIM") {
+                WIMWallets.push(element)
+                console.log(wallets)
+            }
+        }
+        setWallets(WIMWallets)
+
+        console.log(wallets);
 
     }, [coin])
 
@@ -84,13 +121,13 @@ export default function ListOfWallets(props) {
             <Card sx={{ maxWidth: 345 }} >
 
                 <br></br>
-                <Typography variant="h5" align="center">BitGo {coin.toUpperCase()} Wallets</Typography>
+                <Typography variant="h5" align="center">BitGo Bitcoin Wallets</Typography>
 
                 <br></br>
 
                 <br></br>
 
-                {wallets.length > 0 &&
+                {wallets &&
                 <TableContainer component={Paper}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
@@ -110,7 +147,11 @@ export default function ListOfWallets(props) {
                             {wallets.map((item,index) => (
                                 <TableRow key={index}>
                                     <TableCell>{item.id}</TableCell>
-                                    <TableCell>{item.label}</TableCell>
+                                    <TableCell>
+                                        <Button onClick={() => handleOpenWalletDetails(item.id)}>
+                                            {item.label}
+                                        </Button>
+                                    </TableCell>
                                     <TableCell>{item.balance}</TableCell>
                                     <TableCell>
                                         <Button variant="contained"
@@ -163,7 +204,7 @@ export default function ListOfWallets(props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={sm_modal_style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -181,7 +222,7 @@ export default function ListOfWallets(props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={sm_modal_style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -199,13 +240,28 @@ export default function ListOfWallets(props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={lg_modal_style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
 
                     <WalletDetails coin={coin} walletId={walletId}/>
                 </Box>
             </Modal>
+
+            <Modal
+                open={openHistory}
+                onClose={handleCloseHistory}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={sm_modal_style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                    </Typography>
+
+                    <WalletHistory coin={coin} walletId={walletId}/>
+                </Box>
+            </Modal>
+
         </div>
     )
 }

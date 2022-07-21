@@ -1,13 +1,12 @@
 import React from "react";
 import Meta from "components/Meta";
-import ContactSection from "components/contact/ContactSection";
-import Bitgo_Mgmt from "../components/digital_asset_mgr/Bitgo_Mgmt";
+import BitgoMgmtSection from "../components/digital_asset_mgr/BitgoMgmtSection";
 
 function BitgoMgmtPage(props) {
   return (
     <>
       <Meta title="Bitgo Management Clips" />
-      <Bitgo_Mgmt
+      <BitgoMgmtSection
         bgColor="default"
         size="medium"
         bgImage=""
