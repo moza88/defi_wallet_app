@@ -1,8 +1,8 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
-import Section from "components/Section";
-import SectionHeader from "components/SectionHeader";
+import Section from "components/section/Section";
+import SectionHeader from "components/section/SectionHeader";
 import Image from "next/image";
 import bob_digital_asset_banker from "../assets/bob_digital_asset_banker.png";
 import dolly_digital_asset_ops_mgr from "../assets/dolly_digital_asset_ops_mgr.png";
@@ -14,11 +14,11 @@ function HeroSection(props) {
   const router = useRouter();
 
   function handleClickDigitalAssetOps() {
-    router.push("/asset-manager");
+    router.push("/asset-mgmt/asset-manager");
   }
 
   function handleClickDigitalAssetBanker() {
-    router.push("/dashboard");
+    router.push("/wallets/wallets");
   }
 
   return (

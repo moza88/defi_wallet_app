@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Alert from "@material-ui/lab/Alert";
-import Section from "components/Section";
+import Section from "components/section/Section";
 import ReauthModal from "components/auth/ReauthModal";
 import SettingsNav from "components/settings/SettingsNav";
 import SettingsGeneral from "components/settings/SettingsGeneral";

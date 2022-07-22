@@ -3,8 +3,8 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import { useRouter } from "next/router";
 import { makeStyles } from "@material-ui/core/styles";
-import Section from "components/Section";
-import SectionHeader from "components/SectionHeader";
+import Section from "components/section/Section";
+import SectionHeader from "components/section/SectionHeader";
 import Button from "@material-ui/core/Button";
 import { ThreeIdConnect,  EthereumAuthProvider } from '@3id/connect'
 import {useViewerConnection, useViewerRecord} from '@self.id/framework'

@@ -37,7 +37,7 @@ export class FireblocksTxnService {
 
         const txns =  fireblocks().getTransactions({
             sourceType: PeerType.VAULT_ACCOUNT,
-            sourceId: '0',
+            sourceId: sourceId,
             status: TransactionStatus.COMPLETED,
             //sourceId: sourceId,
            // assets: assets,
