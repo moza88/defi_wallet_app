@@ -61,21 +61,25 @@ export default function ListOfWallets(props) {
 
     const [coin, setCoin] = useState("tbtc");
 
-    const [data, setData]=useState([]);
-
     const [walletBalance, setWalletBalance] = useState([]);
 
     const handleCloseSendFunds = () => setOpenSendFunds(false);
     const handleCloseDetails = () => {
+
         setOpenDetails(false);
-        //refreshPage();
+
+       // refreshPage();
     }
     const handleCloseShareWallet = () => setOpenShareWallet(false);
     const handleCloseHistory = () => setOpenHistory(false);
 
     function handleOpenWalletDetails(id) {
-        setWalletId(id);
-        setOpenDetails(true);
+        if(walletBalance.length > 0) {
+            setWalletId(id);
+            setOpenDetails(true);
+        } else {
+            alert("You don't have any addresses in this wallet");
+        }
     }
 
     function handleOpenSendFunds(id)  {
@@ -103,6 +107,7 @@ export default function ListOfWallets(props) {
     }
 
     useEffect(async () => {
+        //Listing out all the wallets in the main page, but filtering on only WIM wallets.
         const listOfWallets = await getWallets(coin)
 
         let WIMWallets = []
@@ -122,9 +127,13 @@ export default function ListOfWallets(props) {
 
     useEffect(async () => {
 
+        let walletsBalancesTmp = []
+
+        //Pulling in all the addressess of all the wallets and their balances
         wallets.map(async (wallet) => {
-            let walletsBalancesTmp = []
-            const address = await getAddresses(coin, wallet.id)
+            console.log("getting addresses for " + wallet.id)
+
+            await getAddresses(coin, wallet.id)
                 .then(res => {
                     res.map(async address => {
                         console.log(address)
@@ -133,6 +142,8 @@ export default function ListOfWallets(props) {
                     })
                 })
 
+            walletsBalancesTmp.sort((a, b) => (a.id > b.id) ? 1 : -1);
+            console.log("printing wallet balances")
             console.log(walletsBalancesTmp)
             setWalletBalance(walletsBalancesTmp);
 
@@ -172,7 +183,9 @@ export default function ListOfWallets(props) {
                                 <TableRow key={index}>
                                     <TableCell>{item.id}</TableCell>
                                     <TableCell>
-                                        <Button onClick={() => handleOpenWalletDetails(item.id)}>
+                                        <Button onClick={() => {
+                                            handleOpenWalletDetails(item.id)
+                                        }}>
                                             {item.label}
                                         </Button>
                                     </TableCell>

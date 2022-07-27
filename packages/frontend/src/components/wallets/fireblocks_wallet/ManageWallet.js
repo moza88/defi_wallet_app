@@ -43,7 +43,15 @@ export default function ManageWallet({accountId}, props) {
         console.log("Account ID: ", accountId);
         //setNewAddress(createWalletOnly('BTC_TEST', accountId));
 
-        console.log(createWalletOnly('BTC_TEST', accountId));
+        createWalletOnly('BTC_TEST', accountId)
+            .then(res => {
+                console.log("Is the New Wallet Created: ", res.statusText);
+            }).catch(err => {
+            console.log("Error: ", err);
+        });
+
+        getAddressesForVault(accountId)
+
     }
 
     const onSubmit = (data) => {
@@ -52,10 +60,8 @@ export default function ManageWallet({accountId}, props) {
     };
 
 
-    //Get all wallets in a vault
-    useEffect(async () => {
-
-        const vaultInfo = await getVaultInfo(accountId)
+    async function getAddressesForVault(id) {
+        return getVaultInfo(accountId)
             .then(response => {
                 console.log(response.name)
                 setVaultInfo(response);
@@ -64,10 +70,20 @@ export default function ManageWallet({accountId}, props) {
                 setCustomerId(response.customerRefId)
                 setAssets(response.assets)
             })
+            .catch(error => {
+                    console.log(error)
+                }
+            )
 
-        //console.log(vaultInfo);
+       // console.log(vaultInfo);
 
-        setVaultInfo(await getVaultInfo(accountId));
+      //  setVaultInfo(vaultInfo);
+    }
+
+    //Get all wallets in a vault
+    useEffect(async () => {
+
+        await getAddressesForVault(accountId);
 
     }, [accountId]);
 

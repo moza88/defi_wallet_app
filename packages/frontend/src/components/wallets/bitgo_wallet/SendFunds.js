@@ -31,7 +31,7 @@ export default function SendFunds({coin, walletId}, props) {
                 password: password
             };
 
-        transferFunds(txn);
+        console.log(transferFunds(txn));
     };
 
     return (

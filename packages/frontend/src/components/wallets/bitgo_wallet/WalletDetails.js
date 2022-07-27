@@ -1,85 +1,66 @@
 import Container from "@material-ui/core/Container";
-import {Card, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import React, {useEffect, useState} from "react";
-import {
-    getAddressBalance,
-    getAddresses,
-    getAllAddressesBalance,
-    getTxnHistory
-} from "../../../util/bitgo/bitgo_functions";
 
 export default function WalletDetails({coin, walletId, data}, props) {
-    //const [data, setData]=useState([]);
     const [addresses, setAddresses] = useState([]);
 
-    const entryList = [];
+    function filteredAddresses(listAddresses, id) {
+        let addressList = []
+        for(const element of listAddresses) {
+            if (element.id === id) {
+                console.log(element)
+                addressList = [...addressList, element]
+                //addressList.push(element);
+            }
+        }
+        console.log("Printing all addresses for " + id);
+        console.log(addressList);
+
+        addressList.sort((a, b) => parseFloat(b.balance) - parseFloat(a.balance));
+        // console.log(addresses)
+
+        return addressList;
+    }
 
     useEffect(async () => {
-        console.log(data.address);
 
-    })
+        setAddresses(filteredAddresses(data, walletId));
 
-/*    useEffect(async () => {
-        /!*data.map((item) => {
-             getAddressBalance(coin, walletId, item.address)
-                .then(res => {
-                    setData(res);
-                }).catch(err => {
-                    console.log(err);
-                }
-            )
-        })*!/
+    }, [data, walletId]);
 
-        console.log("print addresses")
-        console.log(addresses);
-        const address = addresses[0].address
-
-        getAddressBalance(coin, walletId, address)
-            .then(res => {
-                console.log(res)
-                setData(res);
-            }).catch(err => {
-                console.log(err);
-            }
-        )
-    }, [addresses])*/
 
     return(
 
         <div>
-            {data && data.length > 0 &&
-            <Container>
-
-                <Typography>
-                    Below are your past transactions for {walletId}
-                </Typography>
-                <Typography variant="h5">Transaction History</Typography>
-
-                <TableContainer component={Paper}>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Date</TableCell>
-                                <TableCell>Amount</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        {
-                            data.map((item, index) =>
-
-                                <TableBody>
-                                    <TableRow key={index}>
-                                        <TableCell>{item.address}</TableCell>
-                                        <TableCell>{item.balance}</TableCell>
+            {addresses && addresses.length > 0 && (
+                <Container maxWidth="lg">
+                    <Typography>
+                        Below are all the addresses for {walletId}
+                    </Typography>
+                    <TableContainer component={Paper}>
+                        <Table aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Address</TableCell>
+                                    <TableCell align="right">Balance</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {addresses.map((address) => (
+                                    <TableRow key={address.address}>
+                                        <TableCell component="th" scope="row">
+                                            {address.address}
+                                        </TableCell>
+                                        <TableCell align="right">{address.balance}</TableCell>
                                     </TableRow>
-
-                                </TableBody>
-                            )}
-                    </Table>
-                </TableContainer>
-
-            </Container>
-            }
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Container>
+            )}
         </div>
 
     )

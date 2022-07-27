@@ -20,7 +20,7 @@ export default function WalletDetails({coin, walletId}, props) {
     useEffect(async () => {
         const vaultTxns = await getVaultTxns('ETH_TEST', walletId)
             .then(r => {
-               // console.log(r)
+                console.log(r)
                 setTxnHistory(r)
             })
 

@@ -92,7 +92,7 @@ export async function transferFunds(txn) {
 }
 
 export function getWallets(coin) {
-    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/getVaultAccounts";
+    const req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/getVaultAccounts";
     console.log(req_url);
 
     return fetch(req_url, {
@@ -103,7 +103,8 @@ export function getWallets(coin) {
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
-            namePrefix: "WIM ",
+            //TODO: Change the suffix to WIM before the demo
+            namePrefix: "",
             nameSuffix: "",
             minAmountThreshold: 0,
             assetId: ""
@@ -155,6 +156,7 @@ export async function createWalletOnly(asset, accountId) {
     const req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/create_wallet/" + accountId + "/" + asset;
 
     console.log("params: " + asset + " " + accountId)
+
     return fetch(req_url, {
         method: 'POST',
         headers: {
@@ -166,7 +168,7 @@ export async function createWalletOnly(asset, accountId) {
             id: accountId,
             asset: asset,
         })
-    }).then(response => response.json())
+    }).then(response => response)
         .then(data => {
             console.log(data)
             return data
