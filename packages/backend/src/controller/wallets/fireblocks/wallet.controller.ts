@@ -142,4 +142,17 @@ export class FireblocksWalletController {
         });
   }
 
+  @ApiTags('Fireblocks Wallets - Get Gas Station Info')
+    @Get('/get_gas_station_info/:asset')
+    async getGasStationInfo(
+        @Param('asset') asset: string
+  ) {
+
+        return this.appService.getGasStation(asset)
+            .catch((e) => {
+                this.logger.log(e);
+                return getError(e);
+            });
+        }
+
 }

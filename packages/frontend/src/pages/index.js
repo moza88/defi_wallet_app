@@ -1,5 +1,5 @@
 import React from "react";
-import Meta from "components/Meta";
+import Meta from "components/section/Meta";
 import HeroSection from "components/HeroSection";
 
 function IndexPage(props) {

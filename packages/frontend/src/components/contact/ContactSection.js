@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import Section from "components/Section";
-import SectionHeader from "components/SectionHeader";
+import Section from "components/section/Section";
+import SectionHeader from "components/section/SectionHeader";
 import Contact from "components/contact/Contact";
 
 function ContactSection(props) {

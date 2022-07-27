@@ -140,4 +140,5 @@ export class BitgoWalletService {
         .catch(error => console.log(error));
         //const response =  this.httpService.post(req_url );
     }
+
 }

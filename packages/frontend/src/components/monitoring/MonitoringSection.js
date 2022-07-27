@@ -1,7 +1,7 @@
-import SectionHeader from "../SectionHeader";
+import SectionHeader from "../section/SectionHeader";
 import React from "react";
 import Container from "@material-ui/core/Container";
-import Section from "../Section";
+import Section from "../section/Section";
 
 function MonitoringSection(props) {
 

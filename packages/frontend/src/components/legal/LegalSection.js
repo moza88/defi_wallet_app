@@ -4,7 +4,7 @@ import Tab from "@material-ui/core/Tab";
 import Link from "next/link";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-import Section from "components/Section";
+import Section from "components/section/Section";
 import LegalTerms from "components/legal/LegalTerms";
 import LegalPrivacy from "components/legal/LegalPrivacy";
 

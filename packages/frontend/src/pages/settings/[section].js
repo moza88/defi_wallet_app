@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import Meta from "components/Meta";
+import Meta from "components/section/Meta";
 import SettingsSection from "components/settings/SettingsSection";
 import { requireAuth } from "util/auth";
 

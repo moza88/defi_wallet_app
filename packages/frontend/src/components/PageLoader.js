@@ -2,7 +2,7 @@ import React from "react";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Section from "components/Section";
+import Section from "components/section/Section";
 
 function PageLoader(props) {
   const { height = 350 } = props;

@@ -71,14 +71,14 @@ export class FireblocksTxnController {
 
   @ApiTags('Fireblocks Transactions - Get Balance')
   @Post('/get_balance')
-    async getBalance(
+  async getBalance(
         @Body() vaultAsset: VaultAsset
-    ) {
-        return this.appService.getBalance(vaultAsset.id, vaultAsset.asset)
-            .catch(e => {
-                this.logger.log(e);
-                return getError(e);
-            });
+  ) {
+      return this.appService.getBalance(vaultAsset.id, vaultAsset.asset)
+          .catch(e => {
+              this.logger.log(e);
+              return getError(e);
+          });
     }
 
   @ApiTags('Fireblocks Transactions - Get Transfer Tickets')
@@ -90,7 +90,5 @@ export class FireblocksTxnController {
             return getError(e);
         });
   }
-
-
 
 }

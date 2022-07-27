@@ -92,7 +92,7 @@ export async function transferFunds(txn) {
 }
 
 export function getWallets(coin) {
-    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/getVaultAccounts";
+    const req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/getVaultAccounts";
     console.log(req_url);
 
     return fetch(req_url, {
@@ -103,7 +103,8 @@ export function getWallets(coin) {
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
-            namePrefix: "WIM ",
+            //TODO: Change the suffix to WIM before the demo
+            namePrefix: "",
             nameSuffix: "",
             minAmountThreshold: 0,
             assetId: ""
@@ -132,7 +133,7 @@ export async function getVaultInfo(accountId) {
 export async function getVaultTxns(asset, accountId) {
     var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/get_vault_transactions";
     console.log(req_url);
-
+    console.log(asset, accountId);
     return fetch(req_url, {
         method: 'POST',
         headers: {
@@ -151,9 +152,11 @@ export async function getVaultTxns(asset, accountId) {
 }
 
 export async function createWalletOnly(asset, accountId) {
+    console.log("creating wallet only")
     const req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/create_wallet/" + accountId + "/" + asset;
 
     console.log("params: " + asset + " " + accountId)
+
     return fetch(req_url, {
         method: 'POST',
         headers: {
@@ -165,6 +168,23 @@ export async function createWalletOnly(asset, accountId) {
             id: accountId,
             asset: asset,
         })
+    }).then(response => response)
+        .then(data => {
+            console.log(data)
+            return data
+        })
+}
+
+export async function getDepositAddress(asset, accountId) {
+    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/vault/accounts/" + accountId + "/" + asset + "/addresses";
+    console.log(req_url);
+    console.log(asset, accountId);
+    return fetch(req_url, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        }
     }).then(response => response.json())
         .then(data => {
             console.log(data)
