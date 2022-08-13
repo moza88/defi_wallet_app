@@ -54,6 +54,16 @@ function FaqSection(props) {
           "Vault accounts are containers that can be used to group and organize asset wallets. Each vault account can contain one wallet for each asset type. Once you create a vault account, you can then add asset wallets with deposit addresses.",
     },
     {
+      question: "Why bother having a multi-signature solution?",
+      answer:
+          "Reduces risk by preventing a single point of breach",
+    },
+    {
+      question: "Why bother having a multi-signature solution?",
+      answer:
+          "Reduces risk by preventing a single point of breach",
+    },
+    {
       question: "What is a MPC?",
       answer:
         "Nunc nulla mauris, laoreet vel cursus lacinia, consectetur sit amet tellus. Suspendisse ut tincidunt eros. In velit mi, rhoncus dictum neque a, tincidunt lobortis justo.",

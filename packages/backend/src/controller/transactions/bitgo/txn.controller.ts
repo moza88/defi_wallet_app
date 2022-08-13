@@ -16,7 +16,7 @@ export class BitgoTxnController {
   sendTxn(
       @Body() txn : TXN
   ) {
-    this.appService.sendTxn(txn);
+    return this.appService.sendTxn(txn);
   }
 
   @ApiTags('BitGo Transactions - Get Transaction History')

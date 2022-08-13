@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
-    createWalletOnly,
-    getDepositAddress,
+    createWalletOnly, getDepositAddress,
     getVaultInfo,
     getVaultTxns,
     transferFunds
@@ -23,7 +22,7 @@ import Button from "@material-ui/core/Button";
 import {useForm} from "react-hook-form";
 
 
-export default function ManageWallet({accountId}, props) {
+export default function ManageWallet({accountId, depositAddress}, props) {
 
     const [vaultInfo, setVaultInfo] = useState([]);
     const [vaultName, setVaultName] = useState(null);
@@ -34,16 +33,38 @@ export default function ManageWallet({accountId}, props) {
     const [newAddress, setNewAddress] = useState(null);
     const [whiteWalletAddress, setWhiteWalletAddress] = useState(null);
 
-    const [depositAddress, setDepositAddress] = useState(new Map);
+    // const [depositAddress, setDepositAddress] = useState(new Map);
 
-    const { handleSubmit, getValues, errors, sendFunds } = useForm();
+    const {handleSubmit, getValues, errors, sendFunds} = useForm();
+
+    useEffect(() => {
+        console.log(depositAddress.get(accountId));
+    }, [depositAddress]);
+
+
+    function getDepositAddress(id, asset) {
+
+        console.log(depositAddress)
+        console.log("Deposit Address: " + depositAddress.get(id).toString());
+        console.log(depositAddress.get(id));
+
+        for(const element of depositAddress.get(id)) {
+
+            console.log(element.assetId);
+            if (element.assetId === asset) {
+                console.log(element.address)
+                return element.address;
+            }
+
+        }
+    }
 
     function createWallet() {
         console.log("Assets: ", selectedAsset);
         console.log("Account ID: ", accountId);
         //setNewAddress(createWalletOnly('BTC_TEST', accountId));
 
-        createWalletOnly('BTC_TEST', accountId)
+        createWalletOnly('ETH_TEST', accountId)
             .then(res => {
                 console.log("Is the New Wallet Created: ", res.statusText);
             }).catch(err => {
@@ -87,25 +108,6 @@ export default function ManageWallet({accountId}, props) {
 
     }, [accountId]);
 
-    useEffect(async () => {
-
-        let addresses = new Map
-        assets.map(async (asset) => {
-            await getDepositAddress(asset.id, accountId)
-                .then(response => {
-                    //console.log(response)
-                    //console.log(response[0].address)
-                    const address = response[0].address;
-                    addresses.set(asset.id, response[0].address)
-                })
-        })
-
-        console.log("Getting address: " + addresses.get('BTC_TEST'))
-
-        setDepositAddress(addresses);
-
-    }, [assets]);
-
 
     //Add a delete button for each wallet
 
@@ -129,7 +131,7 @@ export default function ManageWallet({accountId}, props) {
 
             <FormControlLabel
                 control={<Checkbox checked={selectedAsset} onChange={handleChange} />}
-                label="BTC_TEST"
+                label="ETH_TEST"
             />
             <Button variant="contained" color='secondary'
                     onClick={createWallet}>
@@ -140,25 +142,17 @@ export default function ManageWallet({accountId}, props) {
             <Table>
                 <TableHead>
                     <TableRow>
-                        {/*
                         <TableCell>Address</TableCell>
-*/}
                         <TableCell>Asset</TableCell>
                         <TableCell>Balance</TableCell>
-                        <TableCell>Frozen</TableCell>
-                        <TableCell>Deposit Address</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {assets && depositAddress && assets.map(asset => (
                         <TableRow>
-                            {/*
-                            <TableCell>{getDepositAddress(asset.id, accountId)}</TableCell>
-*/}
+                            <TableCell>{getDepositAddress(accountId, asset.id)}</TableCell>
                             <TableCell>{asset.id}</TableCell>
-                            <TableCell>{asset.total}</TableCell>
-                            <TableCell>{asset.frozen}</TableCell>
-                            <TableCell>{depositAddress.get(asset.id)}</TableCell>
+                            <TableCell>{asset.balance}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

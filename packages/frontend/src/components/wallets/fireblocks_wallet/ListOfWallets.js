@@ -22,7 +22,13 @@ import SendFunds from "./SendFunds";
 import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
-import {getAllBalances, getBalance, getWallets, test} from "../../../util/fireblocks/fireblocks_functions";
+import {
+    getAllBalances, getAllDepositAddresses,
+    getBalance,
+    getDepositAddress,
+    getWallets,
+    test
+} from "../../../util/fireblocks/fireblocks_functions";
 import ManageWallet from "./ManageWallet";
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
@@ -69,6 +75,7 @@ export default function ListOfWallets(props) {
     const [openSendFunds, setOpenSendFunds] = React.useState(false);
     const [balances, setBalances] = useState(new Map());
     const [balance, setBalance] = useState(0);
+    const [addresses, setAddresses] = useState(new Map());
 
     const [openShareWallet, setOpenShareWallet] = useState(false);
 
@@ -111,6 +118,9 @@ export default function ListOfWallets(props) {
         window.location.reload(false);
     }
 
+    /**
+     * Get all Wallets for the table
+     */
     useEffect(async () => {
 
         const wallets = await getWallets(coin);
@@ -127,6 +137,9 @@ export default function ListOfWallets(props) {
         console.log(wallets)
     }, [coin])
 
+    /**
+     * Get the balances of all wallets
+     */
     useEffect(() => {
         getAllBalances(coin, wallets)
             .then(data => {
@@ -135,10 +148,23 @@ export default function ListOfWallets(props) {
                // setBalances(balances => [...balances, data])
             })
             .catch((error)=> {
-            console.log(error)
+            //console.log(error)
         })
 
     }, [wallets])
+
+    useEffect(  async () => {
+        let mapAddresses = new Map();
+        await getAllDepositAddresses(wallets).then(
+            async data => {
+                //console.log(await data[0])
+                mapAddresses = await data[0]
+                setAddresses(await data[0])
+            }
+        )
+        console.log(mapAddresses)
+        setAddresses(mapAddresses)
+    }, [wallets]);
 
     return (
         <div>
@@ -239,6 +265,7 @@ export default function ListOfWallets(props) {
                 </Box>
             </Modal>
 
+            {addresses && addresses.size &&
             <Modal
                 open={openManage}
                 onClose={handleCloseManage}
@@ -249,9 +276,11 @@ export default function ListOfWallets(props) {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
 
-                    <ManageWallet accountId={walletId}/>
+                    <ManageWallet accountId={walletId} depositAddress={addresses}/>
                 </Box>
             </Modal>
+            }
+
         </div>
     )
 }

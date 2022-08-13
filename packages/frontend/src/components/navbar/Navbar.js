@@ -105,6 +105,11 @@ function Navbar(props) {
                   Monitoring
                 </Button>
               </Link>
+              <Link href="/project_info/tech-info" passHref={true}>
+                <Button component="a" color="inherit">
+                  Technology
+                </Button>
+              </Link>
               <Link href="/faq/faq" passHref={true}>
                 <Button component="a" color="inherit">
                   FAQ

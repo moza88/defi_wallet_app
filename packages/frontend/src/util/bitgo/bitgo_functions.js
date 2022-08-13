@@ -62,25 +62,24 @@ export function shareWallet(walletShare) {
         }).catch((error) => { console.log(error)})
 }
 
-export function transferFunds(txn, amount) {
+export function transferFunds(txn) {
     const req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + "/send_txn";
     console.log(req_url);
-
-    console.log(amount);
 
     return fetch(req_url, {
         method: 'POST',
         headers: {
             Accept: "application/json",
-            "Content-Type": "application/json",
-            'Access-Control-Allow-Origin': '*'
+                    "Content-Type": "application/json"
         },
         body: JSON.stringify(txn)
-    }).then(r => {
-
-        console.log(r);
-        return r;
-    }).catch((error) => { console.log(error)})
+    }).then(r => r)
+      .then(data => {
+            console.log(data)
+            return data;
+        }).catch((error) => {
+            console.log(error)
+        })
 }
 
 export const getTxnHistory = (coin, walletId) => {

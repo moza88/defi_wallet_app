@@ -31,7 +31,19 @@ export default function SendFunds({coin, walletId}, props) {
                 password: password
             };
 
-        console.log(transferFunds(txn));
+        const transfer = transferFunds(txn);
+        console.log(transfer);
+        console.log(transfer
+            .then(res => res)
+            .then(res => {
+                console.log(res);
+                setPending(false);
+            }).catch(err => {
+                console.log(err);
+                setPending(false);
+            })
+        )
+
     };
 
     return (

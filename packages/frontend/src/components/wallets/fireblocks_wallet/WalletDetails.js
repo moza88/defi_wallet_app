@@ -18,7 +18,7 @@ export default function WalletDetails({coin, walletId}, props) {
     const [transferHistory, setTransferHistory] = useState([])
 
     useEffect(async () => {
-        const vaultTxns = await getVaultTxns('ETH_TEST', walletId)
+        const vaultTxns = getVaultTxns('ETH_TEST', walletId)
             .then(r => {
                 console.log(r)
                 setTxnHistory(r)

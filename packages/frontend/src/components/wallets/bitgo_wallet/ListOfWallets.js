@@ -25,6 +25,8 @@ import CoPresentIcon from '@mui/icons-material/CoPresent';
 import ShareWallet from "./ShareWallet";
 import WalletHistory from "./WalletHistory";
 import {deleteWallet, getAddressBalance, getAddresses, getWallets} from "../../../util/bitgo/bitgo_functions";
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+
 
 const sm_modal_style = {
     position: 'absolute',
@@ -114,10 +116,10 @@ export default function ListOfWallets(props) {
 
         for(const element of listOfWallets) {
             console.log(element.label.substring(0,3))
-            if(element.label.substring(0,3) === "WIM") {
+            //if(element.label.substring(0,3) === "WIM") {
                 WIMWallets.push(element)
                 console.log(wallets)
-            }
+            //}
         }
         setWallets(WIMWallets)
 
@@ -168,12 +170,14 @@ export default function ListOfWallets(props) {
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
+                                <TableCell>Coin</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell>Balance</TableCell>
                                 <TableCell>Send Funds</TableCell>
                                 <TableCell>History</TableCell>
-                                <TableCell>Delete</TableCell>
-                                <TableCell>Share</TableCell>
+                                <TableCell>Addresses</TableCell>
+{/*                                <TableCell>Delete</TableCell>
+                                <TableCell>Share</TableCell>*/}
 
                             </TableRow>
                         </TableHead>
@@ -182,12 +186,9 @@ export default function ListOfWallets(props) {
                             {wallets.map((item,index) => (
                                 <TableRow key={index}>
                                     <TableCell>{item.id}</TableCell>
+                                    <TableCell>{item.coin}</TableCell>
                                     <TableCell>
-                                        <Button onClick={() => {
-                                            handleOpenWalletDetails(item.id)
-                                        }}>
                                             {item.label}
-                                        </Button>
                                     </TableCell>
                                     <TableCell>{item.balance}</TableCell>
                                     <TableCell>
@@ -209,6 +210,15 @@ export default function ListOfWallets(props) {
                                         </Button>
                                     </TableCell>
                                     <TableCell>
+                                        <Button color='primary' variant="contained"
+                                                startIcon={<AccountBalanceWalletIcon/>}
+                                                onClick={() => {
+                                                    handleOpenWalletDetails(item.id)
+                                                }}>
+                                            View Addresses
+                                        </Button>
+                                    </TableCell>
+{/*                                    <TableCell>
                                         <Button color='primary' variant="contained" onClick={() => {
                                             deleteWallet(item.id, coin)
                                                 .then(() => {
@@ -219,14 +229,14 @@ export default function ListOfWallets(props) {
                                         }} startIcon={<DeleteIcon/>}>
                                             Delete
                                         </Button>
-                                    </TableCell>
-                                    <TableCell>
+                                    </TableCell>*/}
+{/*                                    <TableCell>
                                         <Button color='primary' variant="contained" onClick={() => {
                                             handleOpenShareWallet(item.id)
                                         }} startIcon={<CoPresentIcon/>}>
                                             Share
                                         </Button>
-                                    </TableCell>
+                                    </TableCell>*/}
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -253,7 +263,7 @@ export default function ListOfWallets(props) {
                 </Box>
             </Modal>
 
-            <Modal
+{/*            <Modal
                 open={openShareWallet}
                 onClose={handleCloseShareWallet}
                 aria-labelledby="modal-modal-title"
@@ -269,7 +279,7 @@ export default function ListOfWallets(props) {
                     <ShareWallet coin={coin} walletId={walletId}/>
 
                 </Box>
-            </Modal>
+            </Modal>*/}
 
             <Modal
                 open={openDetails}
@@ -291,7 +301,7 @@ export default function ListOfWallets(props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={sm_modal_style}>
+                <Box sx={lg_modal_style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
 

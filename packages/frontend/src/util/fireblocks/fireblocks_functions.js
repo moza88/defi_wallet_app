@@ -104,7 +104,7 @@ export function getWallets(coin) {
         },
         body: JSON.stringify({
             //TODO: Change the suffix to WIM before the demo
-            namePrefix: "",
+            namePrefix: "WIM ",
             nameSuffix: "",
             minAmountThreshold: 0,
             assetId: ""
@@ -175,10 +175,10 @@ export async function createWalletOnly(asset, accountId) {
         })
 }
 
-export async function getDepositAddress(asset, accountId) {
+export function getDepositAddress(asset, accountId) {
     var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/vault/accounts/" + accountId + "/" + asset + "/addresses";
     console.log(req_url);
-    console.log(asset, accountId);
+   // console.log(asset, accountId);
     return fetch(req_url, {
         method: 'GET',
         headers: {
@@ -187,8 +187,31 @@ export async function getDepositAddress(asset, accountId) {
         }
     }).then(response => response.json())
         .then(data => {
-            console.log(data)
+          //  console.log(data)
             return data
         })
+}
+
+export async function getAllDepositAddresses(vaults) {
+
+    let addresses = new Map
+
+    return vaults.map(async (vault) => {
+       // console.log(vault);
+
+        for (let asset of vault.assets) {
+
+            console.log("asset type" + asset)
+            getDepositAddress(asset.id, vault.id)
+
+                .then(response => {
+                    addresses.set(vault.id, response)
+                })
+        }
+
+        console.log(addresses);
+        return addresses;
+    });
+
 }
 

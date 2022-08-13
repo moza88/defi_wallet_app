@@ -36,9 +36,8 @@ export default function WalletDetails({coin, walletId, data}, props) {
         <div>
             {addresses && addresses.length > 0 && (
                 <Container maxWidth="lg">
-                    <Typography>
-                        Below are all the addresses for {walletId}
-                    </Typography>
+                    <Typography variant="h6">Addresses for Wallet {walletId}</Typography>
+
                     <TableContainer component={Paper}>
                         <Table aria-label="simple table">
                             <TableHead>

@@ -8,6 +8,7 @@ import Section from "../section/Section";
 import Image from "next/image";
 import tap_retail_ex from "../../assets/tap_retail_ex.png";
 import tap_policy from "../../assets/tap_policy.png";
+import accounts_using_fireblocks from "../../assets/accounts_using_fireblocks.png";
 
 export default function FireblocksMgmtSection(props) {
 
@@ -26,6 +27,19 @@ export default function FireblocksMgmtSection(props) {
             />
         <Container>
             <Box align="center">
+
+                <Image
+                    src={accounts_using_fireblocks}
+                    alt="Account Structure with Bitgo"
+                    width="830px"
+                    height="600px"
+                />
+
+                <br/><br/>
+
+                <Typography align="center" variant="h5">There is only 1 signature to a transaction.</Typography>
+
+                <br/><br/><br/>
                 <Typography align="center" variant="h5">Workspace Management</Typography>
                 <VideoEmbed embedId="729740514" />
 
