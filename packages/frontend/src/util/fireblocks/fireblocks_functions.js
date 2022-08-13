@@ -205,7 +205,7 @@ export async function getAllDepositAddresses(vaults) {
             getDepositAddress(asset.id, vault.id)
 
                 .then(response => {
-                    addresses.set(vault.id, response)
+                    addresses.set(vault.id + "|" + asset.id, response)
                 })
         }
 

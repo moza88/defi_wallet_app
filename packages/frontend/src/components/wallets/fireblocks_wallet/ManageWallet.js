@@ -45,17 +45,16 @@ export default function ManageWallet({accountId, depositAddress}, props) {
     function getDepositAddress(id, asset) {
 
         console.log(depositAddress)
-        console.log("Deposit Address: " + depositAddress.get(id).toString());
+        console.log("Deposit Address: " + depositAddress.get(id  + "|" + asset).toString());
         console.log(depositAddress.get(id));
 
-        for(const element of depositAddress.get(id)) {
+        for(const element of depositAddress.get(id  + "|" + asset)) {
 
             console.log(element.assetId);
             if (element.assetId === asset) {
                 console.log(element.address)
                 return element.address;
             }
-
         }
     }
 
