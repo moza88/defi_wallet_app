@@ -131,6 +131,23 @@ export async function getVaultInfo(accountId) {
         })
 }
 
+export async function getTxnStatus(txnId) {
+    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/get_txn/" + txnId;
+    console.log(req_url);
+
+    return fetch(req_url, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        }
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data)
+            return data
+        })
+}
+
 export async function getVaultTxns(asset, accountId) {
     var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/get_vault_transactions";
     console.log(req_url);
