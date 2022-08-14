@@ -33,7 +33,7 @@ export default function SendFunds({ walletId}, props) {
         }
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit = async () => {
 
         console.log("Sending " + coin + " to " + walletId)
 
@@ -49,24 +49,12 @@ export default function SendFunds({ walletId}, props) {
 
         console.log(txn);
 
-        console.log(transferFunds(txn))
         transferFunds(txn)
-            .then(async res => {
-                console.log(await res);
-                setPending(false);
+            .then( res => {
+                console.log( res);
             }).catch(err => {
                 console.log(err);
-                setPending(false);
             })
-
-        /*transferFunds(txn).then(res => {
-            console.log(res);
-        }).catch(err => {
-            console.log(err);
-        }).finally(() => {
-            setPending(false);
-        } );*/
-
     };
 
     return (

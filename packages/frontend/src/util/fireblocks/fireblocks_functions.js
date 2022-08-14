@@ -81,11 +81,14 @@ export async function transferFunds(txn) {
         body: JSON.stringify(txn)
 
     })
-      .then( resp => {
-          return resp.json();
+      .then(  async resp => {
+          //console.log(await resp.json())
+          return await resp.json();
       })
       .then(data => {
             console.log(data);
+            return data;
+            //return data;
       });
 }
 
