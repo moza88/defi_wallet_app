@@ -5,8 +5,10 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useForm } from "react-hook-form";
 import {transferFunds} from "../../../util/fireblocks/fireblocks_functions";
+import {FormControl, InputLabel, Select} from "@material-ui/core";
+import MenuItem from "@mui/material/MenuItem";
 
-export default function SendFunds({coin, walletId}, props) {
+export default function SendFunds({ walletId}, props) {
 
     console.log("Send Funds " + walletId);
     const [pending, setPending] = useState(false);
@@ -15,12 +17,25 @@ export default function SendFunds({coin, walletId}, props) {
     const [fee, setFee] = useState('');
     const [password, setPassword] = useState('');
     const [destAddress, setDestAddress] = useState('');
+    const [coin, setCoin] = useState('BTC_TEST');
+    const [selectedCoin, setSelectedCoin] = useState(1);
 
     const { handleSubmit, getValues, errors, sendFunds } = useForm();
 
-    const onSubmit = (data) => {
+    const selectionChangeHandler = (event) => {
 
-        console.log("Sending funds to " + walletId)
+        if(event.target.value === 1) {
+            setSelectedCoin(1);
+            setCoin('BTC_TEST');
+        } else {
+            setSelectedCoin(2);
+            setCoin('ETH_TEST');
+        }
+    };
+
+    const onSubmit = async (data) => {
+
+        console.log("Sending " + coin + " to " + walletId)
 
         const txn =
             {
@@ -28,13 +43,30 @@ export default function SendFunds({coin, walletId}, props) {
                 source: walletId,
                 dest: destAddress,
                 amount: amount,
-                fee: fee,
+                fee: 0.001,
                 note: 'sendings funds',
             };
 
-        transferFunds(txn).then(r => {
-            console.log(r)
-        })
+        console.log(txn);
+
+        console.log(transferFunds(txn))
+        transferFunds(txn)
+            .then(async res => {
+                console.log(await res);
+                setPending(false);
+            }).catch(err => {
+                console.log(err);
+                setPending(false);
+            })
+
+        /*transferFunds(txn).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        }).finally(() => {
+            setPending(false);
+        } );*/
+
     };
 
     return (
@@ -62,7 +94,17 @@ export default function SendFunds({coin, walletId}, props) {
                         onChange={(e) => setAmount(e.target.value)}
                     />
                 </Grid>
+
                 <Grid item={true} xs={12}>
+                    <FormControl>
+                        <InputLabel>Assets</InputLabel>
+                        <Select value={selectedCoin} onChange={selectionChangeHandler}>
+                            <MenuItem value={1}>BTC_TEST</MenuItem>
+                            <MenuItem value={2}>ETH_TEST</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
+                {/*                <Grid item={true} xs={12}>
                     <TextField
                         variant="outlined"
                         type="text"
@@ -71,7 +113,7 @@ export default function SendFunds({coin, walletId}, props) {
                         fullWidth={true}
                         onChange={(e) => setFee(e.target.value)}
                     />
-                </Grid>
+                </Grid>*/}
                 <Grid item={true} xs={12}>
                     <Button
                         variant="contained"

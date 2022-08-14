@@ -1,6 +1,3 @@
-import {useState} from "react";
-
-
 export async function getAllBalances(coin, wallets) {
     let balances = new Map()
 
@@ -72,6 +69,8 @@ export const createWallet = (vaultName, asset) => {
 export async function transferFunds(txn) {
     const req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/createTxnVaultToVault";
 
+    console.log(txn);
+
     return fetch(req_url, {
         method: 'POST',
         headers: {
@@ -80,15 +79,14 @@ export async function transferFunds(txn) {
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify(txn)
+
     })
-        .then(resp => resp)
-        .then(txnId => {
-            console.log(txnId);
-            return txnId;
-        })
-        .catch(err => {
-            console.log(err);
-        });
+      .then( resp => {
+          return resp.json();
+      })
+      .then(data => {
+            console.log(data);
+      });
 }
 
 export function getWallets(coin) {

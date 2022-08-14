@@ -75,7 +75,7 @@ export class FireblocksTxnService {
     }
 
     async createTxnVaultToVault(txn: Txn) {
-        this.logger.log("Creating transaction for account: " + txn.source);
+        this.logger.log("Creating transaction for account: " + txn);
 
         this.logger.log("Transaction data: " + JSON.stringify(txn));
 
@@ -97,9 +97,9 @@ export class FireblocksTxnService {
         this.logger.log("TXN Payload data: " + JSON.stringify(payload));
 
         return fireblocks().createTransaction(payload)
-            .then(res => res.id)
-            .then(res => {
-                console.log(res);
+            .then(res => res)
+            .then(res =>  {
+                console.log(res)
                 return res;
             })
             .catch(err => {

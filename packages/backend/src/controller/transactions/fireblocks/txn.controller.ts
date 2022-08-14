@@ -19,7 +19,7 @@ export class FireblocksTxnController {
   @Post('/createTxnVaultToVault')
   async createTxnVaultToVault(
       @Body() txn: Txn
-  ) {
+  ): Promise<any> {
     return this.appService.createTxnVaultToVault(txn)
         .catch(e => {
             this.logger.log(e);
