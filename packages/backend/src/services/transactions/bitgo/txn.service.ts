@@ -46,7 +46,6 @@ export class BitgoTxnService {
         return walletInstance.spendableBalanceString();
     }
 
-
     async walletTransfers(coin: string, walletId: string) {
         this.logger.log("Getting wallet transfers for " + walletId + " on " + coin);
 
@@ -54,7 +53,6 @@ export class BitgoTxnService {
 
         return walletInstance.transfers();
     }
-
 
     async sendTxn(txn: TXN) {
 

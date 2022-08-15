@@ -98,54 +98,46 @@ docker push us-central1-docker.pkg.dev/wallet-app-54dff/defi-wallet-app/backend:
    https://console.cloud.google.com/artifacts/docker/wallet-app-54dff/us-central1/defi-wallet-app?project=wallet-app-54dff
 
 
-###NOTES
-
-Start presentation with use case, the goal is to buy, sell, and hold
-- Mention that this is just about the hold part
-
-Mention that Ops Manager uses the vendor's console
-- Connect it to George's story
+###Notes on Demo
 
 Check if the whitelisting is on a wallet level
 
 Look into BitGo's MPC implementation
 
-Mention APIs for policy with BitGo and Fireblocks
-- Bitgo has APIs for policy but Fireblocks doesn't
-   - Mention the beta policy mgmt for Fireblocks but don't show the clips
-   - Include it in the Ops Manager
-  
 Show Transaction ID with link after transaction is sent
 https://blockstream.info/testnet/tx/ba5a4b0c06ea443535853e8aeb0d7fb2be08570ac941916cedcb0faebd86c5a1
 
 Have the same currency for both only Bitcoin Testnet
 
-Throw an alert that says can't delete wallet
-
 TODO: Look at BitGo policy APIs
 
-Disable Share button
  
-Fix load time for the wallet addresses
 Create a power point
 - include video links on the PPT (remove the passwords)
-- Remove technology page and put it in the slide
 
-Show how to send funds from Fireblocks to BitGo
+- [ ] add refresh after all activities
 
-add refresh after all activities
+- [x] Disable Share button
+- [x] Fix load time for the wallet addresses
 
-After fireblocks transaction show the transaction ID and URL
+- [ ] After fireblocks transaction show the transaction ID and URL
 https://ropsten.etherscan.io/tx/0xacd76f87aae3ce5d20f6bf0a847503d900d8f87a10bac5c5a7da5c393c19ef64
-Show the tracnsaction ID on BlockDaemon
 
+- Show the tracnsaction ID on BlockDaemon
 
-Include the type of crypto for each wallet in bitgo wallet
+- [x] Include the type of crypto for each wallet in bitgo wallet
 
-Remove frozen column in fireblocks view wallet modal
+- [x] Remove frozen column in fireblocks view wallet modal
 
-remove the delete button from Bitgo Wallet view
+- [x] remove the delete button from Bitgo Wallet view
 
+- [x] In Fireblocks Send remove fee field
+
+- [ ] Also remove asset field keep the two api's separate, create vault and wallet separate
+- [x] Show the transaction ID for Fireblocks
+- [ ] Show the transaction ID for BitGo
+
+### Notes on the Presentation
 mention that we are not buying, selling, just transfering
 
 After the wallet demo, open up the presentation with technology information
@@ -165,5 +157,14 @@ Before I begin mention that this is sitting on my PC
 Mention the Asset To the Wallet
 - How does the customer relate to the wallet
 
-In Fireblocks Send remove fee field
-- Also remove asset field keep the two api's separate
+Start presentation with use case, the goal is to buy, sell, and hold
+- Mention that this is just about the hold part
+
+Mention that Ops Manager uses the vendor's console
+- Connect it to George's story
+
+Mention APIs for policy with BitGo and Fireblocks
+- Bitgo has APIs for policy but Fireblocks doesn't
+    - Mention the beta policy mgmt for Fireblocks but don't show the clips
+    - Include it in the Ops Manager
+  

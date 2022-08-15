@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import TextField from "@material-ui/core/TextField";
-import {Grid,
+import {
+    Grid,
     TableRow,
-    Table,
-    } from "@material-ui/core";
+    Table, FormControl, InputLabel, Select,
+} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useForm } from "react-hook-form";
@@ -12,6 +13,7 @@ import {Card, CardHeader, TableBody, TableCell, TableHead} from "@material-ui/co
 import CardContent from "@material-ui/core/CardContent";
 import Container from "@material-ui/core/Container";
 import {createWallet} from "../../../util/bitgo/bitgo_functions";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function CreateWallet(props) {
     const [pending, setPending] = useState(false);
@@ -25,6 +27,19 @@ export default function CreateWallet(props) {
 
     const [newWalletId, setNewWalletId] = useState('')
     const [newReceiverAddress, setRecieverAddress] = useState('')
+
+    const [selectedCoin, setSelectedCoin] = useState(1);
+
+    const selectionChangeHandler = (event) => {
+
+        if (event.target.value === 1) {
+            setSelectedCoin(1);
+            setCoin('tbtc');
+        } else {
+            setSelectedCoin(2);
+            setCoin('gteth');
+        }
+    };
 
     function handleChange(event) {
         setCoin(event.target.value);
@@ -76,6 +91,15 @@ export default function CreateWallet(props) {
                             fullWidth={true}
                             onChange={(e) => setPassphrase(e.target.value)}
                         />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                        <FormControl>
+                            <InputLabel>Assets</InputLabel>
+                            <Select value={selectedCoin} onChange={selectionChangeHandler}>
+                                <MenuItem value={1}>tbtc</MenuItem>
+                                <MenuItem value={2}>gteth</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item={true} xs={12}>
                         <Button

@@ -24,7 +24,13 @@ import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
 import ShareWallet from "./ShareWallet";
 import WalletHistory from "./WalletHistory";
-import {deleteWallet, getAddressBalance, getAddresses, getWallets} from "../../../util/bitgo/bitgo_functions";
+import {
+    deleteWallet,
+    getAddressBalance,
+    getAddresses,
+    getAllWallets,
+    getWallets
+} from "../../../util/bitgo/bitgo_functions";
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 
@@ -62,6 +68,8 @@ export default function ListOfWallets(props) {
     const [openHistory, setOpenHistory] = React.useState(false);
 
     const [coin, setCoin] = useState("tbtc");
+
+    const [totalBalance, setTotalBalance] = useState(new Map);
 
     const [walletBalance, setWalletBalance] = useState([]);
 
@@ -110,29 +118,37 @@ export default function ListOfWallets(props) {
 
     useEffect(async () => {
         //Listing out all the wallets in the main page, but filtering on only WIM wallets.
-        const listOfWallets = await getWallets(coin)
+        //const listOfWallets = await getWallets(coin)
+
+        const listOfWallets = await getAllWallets()
+
+        console.log(listOfWallets)
 
         let WIMWallets = []
 
         for(const element of listOfWallets) {
-            console.log(element.label.substring(0,3))
-            //if(element.label.substring(0,3) === "WIM") {
+
+            if(element.label.substring(0,3) === "WIM") {
                 WIMWallets.push(element)
-                console.log(wallets)
-            //}
+                //console.log(wallets)
+            }
         }
         setWallets(WIMWallets)
-
-        console.log(wallets);
 
     }, [coin])
 
     useEffect(async () => {
 
+        console.log(getAllAddressBalances())
+        getTotalBalance(walletId, getAllAddressBalances());
+
+    }, [wallets])
+
+    function getAllAddressBalances() {
         let walletsBalancesTmp = []
 
         //Pulling in all the addressess of all the wallets and their balances
-        wallets.map(async (wallet) => {
+        return wallets.map(async (wallet) => {
             console.log("getting addresses for " + wallet.id)
 
             await getAddresses(coin, wallet.id)
@@ -142,16 +158,47 @@ export default function ListOfWallets(props) {
                         const balance = await getAddressBalance(coin, wallet.id, address.address)
                         walletsBalancesTmp.push({id: wallet.id, address:address.address, balance:balance.balance.balanceString})
                     })
+                }).then(() => {
+                    walletsBalancesTmp.sort((a, b) => (a.id > b.id) ? 1 : -1);
+                }).then(() => {
+                    return walletsBalancesTmp;
                 })
 
             walletsBalancesTmp.sort((a, b) => (a.id > b.id) ? 1 : -1);
             console.log("printing wallet balances")
             console.log(walletsBalancesTmp)
             setWalletBalance(walletsBalancesTmp);
-
+            return walletsBalancesTmp;
         });
+    }
 
-    }, [wallets])
+    /**
+     * This function is used to calculate the total balance of all the wallets in the main page.
+     *
+     * @param id
+     * @param balances
+     * @returns {number}
+     */
+    const getTotalBalance = (id, balances) => {
+
+        let total = 0;
+        let totalBalanceTmp = new Map();
+
+        console.log("Balances")
+        console.log(balances.length)
+
+        for(const balance of balances) {
+            console.log(balance)
+            if(balance.id === id) {
+                total += parseFloat(balance.balance);
+            }
+        }
+
+        console.log(totalBalanceTmp);
+
+        return total;
+    }
+
 
     return (
         <div>
@@ -172,7 +219,9 @@ export default function ListOfWallets(props) {
                                 <TableCell>ID</TableCell>
                                 <TableCell>Coin</TableCell>
                                 <TableCell>Name</TableCell>
+
                                 <TableCell>Balance</TableCell>
+
                                 <TableCell>Send Funds</TableCell>
                                 <TableCell>History</TableCell>
                                 <TableCell>Addresses</TableCell>
@@ -190,7 +239,9 @@ export default function ListOfWallets(props) {
                                     <TableCell>
                                             {item.label}
                                     </TableCell>
-                                    <TableCell>{item.balance}</TableCell>
+
+                                    <TableCell>{getTotalBalance(item.id, walletBalance)}</TableCell>
+
                                     <TableCell>
                                         <Button variant="contained"
                                                 startIcon={<SendIcon/>}

@@ -6,7 +6,10 @@ import {getBalance} from "../fireblocks/fireblocks_functions";
 export const createWallet = (label, passphrase, coin) => {
     console.log(label, passphrase);
 
-    return fetch(process.env.NEXT_PUBLIC_BITGO_SERVER + '/create_wallet/' + "coin=" + coin, {
+    const req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + '/create_wallet/' + "coin=" + coin
+    console.log(req_url);
+
+    return fetch(req_url, {
         method: 'POST',
         headers: {
             Accept: "application/json",
@@ -194,4 +197,23 @@ export async function getAllBalances(coin, walletId, wallets) {
         )}
     return balances;
 
+}
+
+export async function getAllWallets() {
+    var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + "/get_all_wallets";
+
+    console.log("Get all Wallets: " + req_url);
+
+    return fetch(req_url, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+    })
+        .then(r => r.json())
+        .then(data => {
+            console.log(data.wallets)
+            return data.wallets;
+        }).catch((error) => { console.log(error)})
 }

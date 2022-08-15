@@ -93,4 +93,10 @@ export class BitgoWalletController {
             });
     }
 
+    @ApiTags('BitGo Wallets - Get All Wallets')
+    @Get('/get_all_wallets')
+    async getAllWallets(): Promise<any> {
+        return this.appService.listAllWallets()
+
+    }
 }
