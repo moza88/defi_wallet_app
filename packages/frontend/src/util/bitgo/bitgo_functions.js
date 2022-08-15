@@ -140,7 +140,7 @@ export function getAddresses(coin, walletId) {
     return fetch(req_url)
         .then(response => response.json())
         .then(data => {
-         //   console.log(data)
+            console.log(data)
             return data.addresses
         }).catch((error) => { console.log(error)})
 }

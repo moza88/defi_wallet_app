@@ -18,13 +18,14 @@ export default function WalletDetails({coin, walletId}, props) {
     const [transferHistory, setTransferHistory] = useState([])
 
     useEffect(async () => {
-        const vaultTxns = getVaultTxns('ETH_TEST', walletId)
+        const vaultTxns = getVaultTxns(coin, walletId)
             .then(r => {
-                console.log(r)
+                console.log("vault txns" + r)
+                console.log(r.id)
                 setTxnHistory(r)
             })
 
-        console.log(await getVaultTxns('ETH_TEST', walletId))
+        console.log(await getVaultTxns(coin, walletId))
 
     }, [walletId]);
 
@@ -47,7 +48,7 @@ export default function WalletDetails({coin, walletId}, props) {
                             {
                                 txnHistory && txnHistory.length>0 && txnHistory.map((item)=>
                                     <TableRow>
-                                        <TableCell>{format(item.lastUpdated, 'dd/mm/yyyy')}</TableCell>
+                                        <TableCell>{item.lastUpdated}</TableCell>
                                         <TableCell>{item.amount}</TableCell>
                                     </TableRow>
                                 )}

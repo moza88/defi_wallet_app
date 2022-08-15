@@ -165,6 +165,8 @@ export async function getVaultTxns(asset, accountId) {
     }).then(response => response.json())
         .then(data => {
             console.log(data)
+            console.log("source type")
+            console.log(data.source)
             return data
         })
 }

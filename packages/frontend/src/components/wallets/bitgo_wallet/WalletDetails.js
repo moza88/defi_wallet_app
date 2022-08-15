@@ -34,7 +34,7 @@ export default function WalletDetails({coin, walletId, data}, props) {
     return(
 
         <div>
-            {addresses && addresses.length > 0 && (
+            {addresses && addresses.length > 0 &&
                 <Container maxWidth="lg">
                     <Typography variant="h6">Addresses for Wallet {walletId}</Typography>
 
@@ -59,7 +59,7 @@ export default function WalletDetails({coin, walletId, data}, props) {
                         </Table>
                     </TableContainer>
                 </Container>
-            )}
+            }
         </div>
 
     )

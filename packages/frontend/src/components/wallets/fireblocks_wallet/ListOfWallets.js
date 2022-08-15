@@ -175,16 +175,20 @@ export default function ListOfWallets(props) {
                 <br></br>
 
                 <br></br>
-                {wallets.length && balances.size &&
+                {wallets.length && balances.size > 0 &&
                 <TableContainer component={Paper}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Id</TableCell>
                                 <TableCell>Name</TableCell>
+{/*
                                 <TableCell>Balance</TableCell>
+*/}
                                 <TableCell>Send Funds</TableCell>
+{/*
                                 <TableCell>History</TableCell>
+*/}
                                 <TableCell>Manage</TableCell>
 
                             </TableRow>
@@ -196,7 +200,9 @@ export default function ListOfWallets(props) {
                                 <TableRow key={index}>
                                     <TableCell>{wallet.id}</TableCell>
                                     <TableCell>{wallet.name}</TableCell>
+{/*
                                     <TableCell>{balances.get(wallet.id)}</TableCell>
+*/}
                                     <TableCell>
                                         <Button variant="contained"
                                                 startIcon={<SendIcon/>}
@@ -206,7 +212,7 @@ export default function ListOfWallets(props) {
                                         > Send
                                         </Button>
                                     </TableCell>
-                                    <TableCell>
+{/*                                    <TableCell>
                                         <Button color='primary' variant="contained"
                                                 startIcon={<ArticleIcon/>}
                                                 onClick={() => {
@@ -214,7 +220,7 @@ export default function ListOfWallets(props) {
                                                 }}>
                                             History
                                         </Button>
-                                    </TableCell>
+                                    </TableCell>*/}
                                     <TableCell>
                                         <Button color='primary' variant="contained" onClick={() => {
                                             /*deleteWallet(item.id)*/

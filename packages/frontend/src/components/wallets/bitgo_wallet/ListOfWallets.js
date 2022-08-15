@@ -138,13 +138,11 @@ export default function ListOfWallets(props) {
     }, [coin])
 
     useEffect(async () => {
+        getAllAddressBalances(coin, wallets)
 
-        console.log(getAllAddressBalances())
-        getTotalBalance(walletId, getAllAddressBalances());
+    }, [coin, wallets])
 
-    }, [wallets])
-
-    function getAllAddressBalances() {
+    function getAllAddressBalances(coin, wallets) {
         let walletsBalancesTmp = []
 
         //Pulling in all the addressess of all the wallets and their balances
@@ -220,10 +218,14 @@ export default function ListOfWallets(props) {
                                 <TableCell>Coin</TableCell>
                                 <TableCell>Name</TableCell>
 
+{/*
                                 <TableCell>Balance</TableCell>
+*/}
 
                                 <TableCell>Send Funds</TableCell>
+{/*
                                 <TableCell>History</TableCell>
+*/}
                                 <TableCell>Addresses</TableCell>
 {/*                                <TableCell>Delete</TableCell>
                                 <TableCell>Share</TableCell>*/}
@@ -236,11 +238,11 @@ export default function ListOfWallets(props) {
                                 <TableRow key={index}>
                                     <TableCell>{item.id}</TableCell>
                                     <TableCell>{item.coin}</TableCell>
-                                    <TableCell>
-                                            {item.label}
-                                    </TableCell>
+                                    <TableCell>{item.label}</TableCell>
 
+{/*
                                     <TableCell>{getTotalBalance(item.id, walletBalance)}</TableCell>
+*/}
 
                                     <TableCell>
                                         <Button variant="contained"
@@ -251,7 +253,7 @@ export default function ListOfWallets(props) {
                                         > Send
                                         </Button>
                                     </TableCell>
-                                    <TableCell>
+{/*                                    <TableCell>
                                         <Button color='primary' variant="contained"
                                                 startIcon={<ArticleIcon/>}
                                                 onClick={() => {
@@ -259,7 +261,7 @@ export default function ListOfWallets(props) {
                                                 }}>
                                             History
                                         </Button>
-                                    </TableCell>
+                                    </TableCell>*/}
                                     <TableCell>
                                         <Button color='primary' variant="contained"
                                                 startIcon={<AccountBalanceWalletIcon/>}
@@ -346,6 +348,7 @@ export default function ListOfWallets(props) {
                 </Box>
             </Modal>
 
+{/*
             <Modal
                 open={openHistory}
                 onClose={handleCloseHistory}
@@ -359,6 +362,7 @@ export default function ListOfWallets(props) {
                     <WalletHistory coin={coin} walletId={walletId}/>
                 </Box>
             </Modal>
+*/}
 
         </div>
     )

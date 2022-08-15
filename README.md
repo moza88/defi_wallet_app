@@ -133,9 +133,10 @@ https://ropsten.etherscan.io/tx/0xacd76f87aae3ce5d20f6bf0a847503d900d8f87a10bac5
 
 - [x] In Fireblocks Send remove fee field
 
-- [ ] Also remove asset field keep the two api's separate, create vault and wallet separate
+- [ ] Remove asset field keep the two api's separate, create vault and wallet separate
 - [x] Show the transaction ID for Fireblocks
 - [ ] Show the transaction ID for BitGo
+- [ ] Present TXN history for Fireblocks
 
 ### Notes on the Presentation
 mention that we are not buying, selling, just transfering
