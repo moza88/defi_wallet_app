@@ -56,7 +56,8 @@ export class BitgoTxnService {
 
     async sendTxn(txn: TXN) {
 
-        this.logger.log("Sending txn for " + txn.toString());
+        this.logger.log("Sending txn for ")
+        this.logger.log(txn);
 
         const accountService = new BitgoAccountService(this.httpService);
 
@@ -73,7 +74,7 @@ export class BitgoTxnService {
 
         const amount = Number(txn.amount);
 
-        this.logger.log(walletInstance.balance())
+        this.logger.log(amount)
 
         if(amount > walletInstance.balance()){
             this.logger.log("Amount is greater than balance, balance is " + walletInstance.balance())

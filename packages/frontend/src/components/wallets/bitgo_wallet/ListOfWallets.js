@@ -67,7 +67,7 @@ export default function ListOfWallets(props) {
     const [openDetails, setOpenDetails] = React.useState(false);
     const [openHistory, setOpenHistory] = React.useState(false);
 
-    const [coin, setCoin] = useState("tbtc");
+    const [coin, setCoin] = useState("");
 
     const [totalBalance, setTotalBalance] = useState(new Map);
 
@@ -92,8 +92,9 @@ export default function ListOfWallets(props) {
         }
     }
 
-    function handleOpenSendFunds(id)  {
+    function handleOpenSendFunds(id, coin)  {
         setWalletId(id)
+        setCoin(coin)
         setOpenSendFunds(true);
     }
 
@@ -145,16 +146,22 @@ export default function ListOfWallets(props) {
     function getAllAddressBalances(coin, wallets) {
         let walletsBalancesTmp = []
 
+
         //Pulling in all the addressess of all the wallets and their balances
         return wallets.map(async (wallet) => {
-            console.log("getting addresses for " + wallet.id)
+            console.log("getting addresses for " + wallet.id +  " and " + wallet.coin)
+            console.log(wallet)
 
-            await getAddresses(coin, wallet.id)
+            await getAddresses(wallet.coin, wallet.id)
                 .then(res => {
                     res.map(async address => {
                         console.log(address)
-                        const balance = await getAddressBalance(coin, wallet.id, address.address)
-                        walletsBalancesTmp.push({id: wallet.id, address:address.address, balance:balance.balance.balanceString})
+                        const balance = await getAddressBalance(wallet.coin, wallet.id, address.address)
+                        console.log("Address balances for " + wallet.coin + " is ")
+                        console.log(balance)
+                        if(balance !== null) {
+                            walletsBalancesTmp.push({id: wallet.id, address:address.address, balance:balance.balance.balanceString})
+                        }
                     })
                 }).then(() => {
                     walletsBalancesTmp.sort((a, b) => (a.id > b.id) ? 1 : -1);
@@ -167,7 +174,7 @@ export default function ListOfWallets(props) {
             console.log(walletsBalancesTmp)
             setWalletBalance(walletsBalancesTmp);
             return walletsBalancesTmp;
-        });
+        })
     }
 
     /**
@@ -248,7 +255,7 @@ export default function ListOfWallets(props) {
                                         <Button variant="contained"
                                                 startIcon={<SendIcon/>}
                                                 onClick={() => {
-                                                    handleOpenSendFunds(item.id)
+                                                    handleOpenSendFunds(item.id, item.coin)
                                                 }}
                                         > Send
                                         </Button>
@@ -304,7 +311,7 @@ export default function ListOfWallets(props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={sm_modal_style}>
+                <Box sx={lg_modal_style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>

@@ -123,7 +123,7 @@ Create a power point
 - [ ] After fireblocks transaction show the transaction ID and URL
 https://ropsten.etherscan.io/tx/0xacd76f87aae3ce5d20f6bf0a847503d900d8f87a10bac5c5a7da5c393c19ef64
 
-- Show the tracnsaction ID on BlockDaemon
+- [x] Show the tracnsaction ID on BlockDaemon
 
 - [x] Include the type of crypto for each wallet in bitgo wallet
 
@@ -135,8 +135,7 @@ https://ropsten.etherscan.io/tx/0xacd76f87aae3ce5d20f6bf0a847503d900d8f87a10bac5
 
 - [ ] Remove asset field keep the two api's separate, create vault and wallet separate
 - [x] Show the transaction ID for Fireblocks
-- [ ] Show the transaction ID for BitGo
-- [ ] Present TXN history for Fireblocks
+- [x] Show the transaction ID for BitGo
 
 ### Notes on the Presentation
 mention that we are not buying, selling, just transfering

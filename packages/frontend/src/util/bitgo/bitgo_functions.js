@@ -76,9 +76,11 @@ export function transferFunds(txn) {
                     "Content-Type": "application/json"
         },
         body: JSON.stringify(txn)
-    }).then(r => r)
-      .then(data => {
-            console.log(data)
+      }).then( resp => {
+            //console.log( resp.json())
+            return resp.json();
+        }).then(data => {
+            console.log(data);
             return data;
         }).catch((error) => {
             console.log(error)
