@@ -7,29 +7,48 @@ import { useForm } from "react-hook-form";
 import {useRouter} from "next/router";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import {Card, CardHeader, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core";
+import {
+    Card,
+    CardHeader,
+    FormControl,
+    InputLabel, Select,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow
+} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import {createWallet} from "../../../util/fireblocks/fireblocks_functions";
+import MenuItem from "@mui/material/MenuItem";
 
-export default function CreateWallet(props) {
+export default function CreateWallet({supportedAssets}, props) {
     const [pending, setPending] = useState(false);
 
     const [vaultName, setVaultName] = React.useState('');
 
     const {handleSubmit, getValues, errors, sendFunds} = useForm();
 
-    const [asset, setAsset] = useState("ETH_TEST");
-
     const [newWalletId, setNewWalletId] = useState('')
     const [newReceiverAddress, setRecieverAddress] = useState('')
 
     const [walletInfo, setWalletInfo] = useState(null);
 
+    const [coin, setCoin] = useState("BTC_TEST");
+
+    const [selectedCoin, setSelectedCoin] = useState("BTC_TEST");
+
+    const selectionChangeHandler = (event) => {
+
+        console.log(event.target.value);
+        setCoin(event.target.value);
+        setSelectedCoin(event.target.value);
+    };
+
     const onSubmit = () => {
         console.log(vaultName)
-        console.log(asset)
 
-        setWalletInfo(createWallet(vaultName, asset).then(
+        setWalletInfo(createWallet(vaultName, coin).then(
             (wallet) => {
                 console.log(wallet)
 
@@ -64,7 +83,7 @@ export default function CreateWallet(props) {
                             onChange={(e) => setVaultName(e.target.value)}
                         />
                     </Grid>
-                    <Grid item={true} xs={12}>
+{/*                    <Grid item={true} xs={12}>
                         <TextField
                             variant="outlined"
                             type="text"
@@ -74,7 +93,20 @@ export default function CreateWallet(props) {
                             fullWidth={true}
                             onChange={(e) => setAsset(e.target.value)}
                         />
+                    </Grid>*/}
+
+                    <Grid item={true} xs={12}>
+                        <FormControl>
+                            <InputLabel>Assets</InputLabel>
+                            <Select value={selectedCoin} onChange={selectionChangeHandler}>
+                                {supportedAssets.map((asset, index) =>
+
+                                    <MenuItem value={asset.id}>{asset.id}</MenuItem>
+                                )}
+                            </Select>
+                        </FormControl>
                     </Grid>
+
                     <Grid item={true} xs={12}>
                         <Button
                             variant="contained"
@@ -97,7 +129,7 @@ export default function CreateWallet(props) {
                 <CardHeader title ="New Wallet Details"/>
                 <CardContent>
                     <Typography>
-                        Your new vault has been created with a wallet to support {asset} assets.
+                        Your new vault has been created with a wallet to support {coin} assets.
                     </Typography>
                     <Table>
                         <TableHead>

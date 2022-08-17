@@ -8,9 +8,9 @@ import {
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import {
-    Checkbox,
+    Checkbox, FormControl,
     FormControlLabel,
-    FormGroup,
+    FormGroup, Grid, InputLabel, Select,
     Table,
     TableBody,
     TableCell,
@@ -20,9 +20,10 @@ import {
 } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import {useForm} from "react-hook-form";
+import MenuItem from "@mui/material/MenuItem";
 
 
-export default function ManageWallet({accountId, depositAddress}, props) {
+export default function ManageWallet({accountId, depositAddress, supportedAssets}, props) {
 
     const [vaultInfo, setVaultInfo] = useState([]);
     const [vaultName, setVaultName] = useState(null);
@@ -32,6 +33,17 @@ export default function ManageWallet({accountId, depositAddress}, props) {
     const [selectedAsset, setSelectedAsset] = useState([]);
     const [newAddress, setNewAddress] = useState(null);
     const [whiteWalletAddress, setWhiteWalletAddress] = useState(null);
+
+    const [coin, setCoin] = useState("BTC_TEST");
+
+    const [selectedCoin, setSelectedCoin] = useState("BTC_TEST");
+
+    const selectionChangeHandler = (event) => {
+
+        console.log(event.target.value);
+        setCoin(event.target.value);
+        setSelectedCoin(event.target.value);
+    };
 
     // const [depositAddress, setDepositAddress] = useState(new Map);
 
@@ -59,11 +71,11 @@ export default function ManageWallet({accountId, depositAddress}, props) {
     }
 
     function createWallet() {
-        console.log("Assets: ", selectedAsset);
+        console.log("Selected Coin: ", selectedAsset);
         console.log("Account ID: ", accountId);
         //setNewAddress(createWalletOnly('BTC_TEST', accountId));
 
-        createWalletOnly('ETH_TEST', accountId)
+        createWalletOnly(coin, accountId)
             .then(res => {
                 console.log("Is the New Wallet Created: ", res.statusText);
             }).catch(err => {
@@ -72,6 +84,10 @@ export default function ManageWallet({accountId, depositAddress}, props) {
 
         getAddressesForVault(accountId)
 
+    }
+
+    function refreshPage() {
+        window.location.reload(false);
     }
 
     const onSubmit = (data) => {
@@ -128,10 +144,18 @@ export default function ManageWallet({accountId, depositAddress}, props) {
                 Customer ID: {customerId}
             </Typography>
 
-            <FormControlLabel
-                control={<Checkbox checked={selectedAsset} onChange={handleChange} />}
-                label="ETH_TEST"
-            />
+            <Grid item={true} xs={12}>
+                <FormControl>
+                    <InputLabel>Assets</InputLabel>
+                    <Select value={selectedCoin} onChange={selectionChangeHandler}>
+                        {supportedAssets.map((asset, index) =>
+
+                            <MenuItem value={asset.id}>{asset.id}</MenuItem>
+                        )}
+                    </Select>
+                </FormControl>
+            </Grid>
+
             <Button variant="contained" color='secondary'
                     onClick={createWallet}>
                 Create Wallet

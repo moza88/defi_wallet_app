@@ -21,8 +21,16 @@ export class FireblocksAccountService {
     }
 
     async getSupportedAssets() {
-        this.logger.log("Getting supported assets");
-        return fireblocks().getSupportedAssets();
+
+        const supportedAssets = await fireblocks().getSupportedAssets();
+
+        let test_supportedAssets = [];
+        for (const element of supportedAssets) {
+            if (element.id.substring(element.id.length - 4, element.id.length) === 'TEST') {
+                test_supportedAssets.push(element);
+            }
+        }
+        return test_supportedAssets;
     }
 }
 

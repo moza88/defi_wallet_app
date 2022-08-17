@@ -23,10 +23,11 @@ export default function CreateWallet(props) {
 
     const {handleSubmit, getValues, errors, sendFunds} = useForm();
 
-    const [coin, setCoin] = useState("tbtc");
-
     const [newWalletId, setNewWalletId] = useState('')
     const [newReceiverAddress, setRecieverAddress] = useState('')
+
+
+    const [coin, setCoin] = useState("tbtc");
 
     const [selectedCoin, setSelectedCoin] = useState(1);
 

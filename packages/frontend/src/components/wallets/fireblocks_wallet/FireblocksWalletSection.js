@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
@@ -11,6 +11,7 @@ import { useAuth } from "util/auth";
 import {CardHeader, Button, Modal} from "@material-ui/core";
 import CreateWallet from "./CreateWallet"
 import ListOfWallets from "./ListOfWallets";
+import {getSupportedAssets} from "../../../util/fireblocks/fireblocks_functions";
 
 const useStyles = makeStyles((theme) => ({
     cardContent: {
@@ -32,6 +33,7 @@ const style = {
 function FireblocksWalletSection(props) {
     const [openCreateWallet, setOpenCreateWallet] = React.useState(false);
     const handleCreateWallet = () => setOpenCreateWallet(false);
+    const [supportedAssets, setSupportedAssets] = React.useState([]);
 
     const handleOpenCreateWallet = () => {
         setOpenCreateWallet(true);
@@ -41,6 +43,13 @@ function FireblocksWalletSection(props) {
 
     const auth = useAuth();
     const router = useRouter();
+
+    useEffect( async () => {
+        await getSupportedAssets().then(r => {
+            console.log(r);
+            setSupportedAssets(r)
+        })
+    })
 
     return (
         <Section
@@ -71,7 +80,7 @@ function FireblocksWalletSection(props) {
                 <br/><br/>
                 <Typography variant="h6">Below are your vaults</Typography>
 
-                <ListOfWallets/>
+                <ListOfWallets supportedAssets={supportedAssets}/>
 
                 <Card>
                 </Card>
@@ -86,7 +95,7 @@ function FireblocksWalletSection(props) {
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                         </Typography>
 
-                        <CreateWallet/>
+                        <CreateWallet supportedAssets={supportedAssets}/>
                     </Box>
                 </Modal>
 

@@ -25,7 +25,7 @@ import CoPresentIcon from '@mui/icons-material/CoPresent';
 import {
     getAllBalances, getAllDepositAddresses,
     getBalance,
-    getDepositAddress,
+    getDepositAddress, getSupportedAssets,
     getWallets,
     test
 } from "../../../util/fireblocks/fireblocks_functions";
@@ -68,7 +68,7 @@ const lg_modal_style = {
     p: 4,
 };
 
-export default function ListOfWallets(props) {
+export default function ListOfWallets({supportedAssets}, props) {
     //const [wallets, setWallets] = useState([]);
     const [wallets, setWallets] = useState([]);
     const [walletId, setWalletId] = useState('');
@@ -182,9 +182,6 @@ export default function ListOfWallets(props) {
                             <TableRow>
                                 <TableCell>Id</TableCell>
                                 <TableCell>Name</TableCell>
-{/*
-                                <TableCell>Balance</TableCell>
-*/}
                                 <TableCell>Send Funds</TableCell>
 {/*
                                 <TableCell>History</TableCell>
@@ -199,8 +196,7 @@ export default function ListOfWallets(props) {
                             {wallets.map((wallet, index) =>
                                 <TableRow key={index}>
                                     <TableCell>{wallet.id}</TableCell>
-                                    <TableCell>{wallet.name}</TableCell>
-{/*
+                                    <TableCell>{wallet.name}</TableCell>{/*
                                     <TableCell>{balances.get(wallet.id)}</TableCell>
 */}
                                     <TableCell>
@@ -282,7 +278,7 @@ export default function ListOfWallets(props) {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
 
-                    <ManageWallet accountId={walletId} depositAddress={addresses}/>
+                    <ManageWallet accountId={walletId} depositAddress={addresses} supportedAssets={supportedAssets}/>
                 </Box>
             </Modal>
             }

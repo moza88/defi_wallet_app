@@ -235,3 +235,23 @@ export async function getAllDepositAddresses(vaults) {
 
 }
 
+export function getSupportedAssets() {
+    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/supported_assets";
+    console.log(req_url);
+
+    return fetch(req_url, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        }
+    }).then(response => {
+        console.log(response)
+        return response.json()
+    })
+/*        .then(data => {
+            console.log(data)
+            return data
+        })*/
+}
+
