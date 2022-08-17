@@ -38,34 +38,31 @@ export default function BitgoMgmtSection(props) {
 
                 <br/><br/><br/>
 
-                <Typography align="center" variant="h5">Workspace Management</Typography>
-                <VideoEmbed embedId="731622211" />
-
-
-                <br/>
-
-                <Typography align="center" variant="h5">Adding Users</Typography>
-                <VideoEmbed embedId="731774770" />
+                <Typography align="center" variant="h4">Workspace Management</Typography>
+                <VideoEmbed embedId="740387133" />
 
                 <br/>
 
-                <Typography align="center" variant="h5">Approvals</Typography>
+                <Typography align="center" variant="h4">Manage Transaction Participants</Typography>
+                <VideoEmbed embedId="740393788" />
+
+                <br/>
+
+                <Typography align="center" variant="h4">Enforce Digital Asset Policies</Typography>
+                <VideoEmbed embedId="740396220" />
+
+                <br/>
+
+                <Typography align="center" variant="h4">Creating API Key</Typography>
+                <VideoEmbed embedId="740398191" />
+
+                <br/>
+
+                <Typography align="center" variant="h4">Collaborating on a Txn</Typography>
                 <VideoEmbed embedId="727134344" />
 
-
                 <br/>
 
-                <Typography align="center" variant="h5">Creating API Key</Typography>
-
-                <br/>
-
-                <Typography align="center" variant="h5">Collaborating on a Txn</Typography>
-                <VideoEmbed embedId="727134344" />
-
-                <br/>
-
-                <Typography align="center" variant="h5">Creating Wallets & Setting Policy</Typography>
-                <VideoEmbed embedId="731795310" />
             </Box>
         </Container>
         </Section>
