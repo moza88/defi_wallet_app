@@ -78,7 +78,6 @@ function FireblocksWalletSection(props) {
                 </Button>
 
                 <br/><br/>
-                <Typography variant="h6">Below are your vaults</Typography>
 
                 <ListOfWallets supportedAssets={supportedAssets}/>
 

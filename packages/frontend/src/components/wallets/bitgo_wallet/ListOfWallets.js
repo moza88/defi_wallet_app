@@ -58,8 +58,7 @@ const lg_modal_style = {
     p: 4,
 };
 
-export default function ListOfWallets(props) {
-    const [wallets, setWallets] = useState([]);
+export default function ListOfWallets({wallets}, props) {
     const [walletId, setWalletId] = useState('');
 
     const [openSendFunds, setOpenSendFunds] = React.useState(false);
@@ -117,7 +116,7 @@ export default function ListOfWallets(props) {
         window.location.reload(false);
     }
 
-    useEffect(async () => {
+/*    useEffect(async () => {
         //Listing out all the wallets in the main page, but filtering on only WIM wallets.
         //const listOfWallets = await getWallets(coin)
 
@@ -136,7 +135,7 @@ export default function ListOfWallets(props) {
         }
         setWallets(WIMWallets)
 
-    }, [coin])
+    }, [coin])*/
 
     useEffect(async () => {
         getAllAddressBalances(coin, wallets)
@@ -210,7 +209,7 @@ export default function ListOfWallets(props) {
             <Card sx={{ maxWidth: 345 }} >
 
                 <br></br>
-                <Typography variant="h5" align="center">BitGo Bitcoin Wallets</Typography>
+                <Typography variant="h5" align="center">WIM Wallets on BitGo</Typography>
 
                 <br></br>
 

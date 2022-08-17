@@ -77,7 +77,7 @@ export default function CreateWallet(props) {
                             type="text"
                             label="Customer Name"
                             name="label"
-                            placeholder="Bob Smith"
+                            placeholder="WIM Family Trust"
                             fullWidth={true}
                             onChange={(e) => setLabel(e.target.value)}
                         />

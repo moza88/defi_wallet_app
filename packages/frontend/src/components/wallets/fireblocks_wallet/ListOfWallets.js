@@ -171,7 +171,7 @@ export default function ListOfWallets({supportedAssets}, props) {
             <Card sx={{ maxWidth: 345 }} >
 
                 <br></br>
-                <Typography variant="h5" align="center">WIM Customer Vaults on Fireblocks</Typography>
+                <Typography variant="h5" align="center">WIM Vaults on Fireblocks</Typography>
                 <br></br>
 
                 <br></br>
