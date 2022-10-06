@@ -20,6 +20,8 @@ function FireblocksTechSection(props) {
         >
 
             <Container>
+
+
                 <SectionHeader
                     title={props.title}
                     subtitle={props.subtitle}

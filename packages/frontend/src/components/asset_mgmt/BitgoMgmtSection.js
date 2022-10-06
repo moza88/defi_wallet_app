@@ -38,27 +38,27 @@ export default function BitgoMgmtSection(props) {
 
                 <br/><br/><br/>
 
-                <Typography align="center" variant="h4">Workspace Management</Typography>
-                <VideoEmbed embedId="740387133" />
+                <Typography align="center" variant="h4">Workspace Management (No APIs)</Typography>
+                <VideoEmbed embedId="744861910" />
 
                 <br/>
 
-                <Typography align="center" variant="h4">Manage Transaction Participants</Typography>
+                <Typography align="center" variant="h4">Manage Transaction Participants (No APIs)</Typography>
                 <VideoEmbed embedId="740393788" />
 
                 <br/>
 
-                <Typography align="center" variant="h4">Enforce Digital Asset Policies</Typography>
+                <Typography align="center" variant="h4">Enforce Digital Asset Policies (Available in APIs)</Typography>
                 <VideoEmbed embedId="740396220" />
 
                 <br/>
 
-                <Typography align="center" variant="h4">Creating API Key</Typography>
+                <Typography align="center" variant="h4">Creating API Key (No APIs)</Typography>
                 <VideoEmbed embedId="740398191" />
 
                 <br/>
 
-                <Typography align="center" variant="h4">Collaborating on a Txn</Typography>
+                <Typography align="center" variant="h4">Collaborating on a Txn (Available in APIs)</Typography>
                 <VideoEmbed embedId="727134344" />
 
                 <br/>

@@ -53,7 +53,7 @@ export default function CreateWallet(props) {
 
     const onSubmit = () => {
 
-        const walletInfo = createWallet(label, passphrase, coin);
+        const walletInfo = createWallet("WIM-" + label, "something", coin);
 
         console.log(walletInfo.then(res => {
             console.log(res)
@@ -82,7 +82,7 @@ export default function CreateWallet(props) {
                             onChange={(e) => setLabel(e.target.value)}
                         />
                     </Grid>
-                    <Grid item={true} xs={12}>
+{/*                    <Grid item={true} xs={12}>
                         <TextField
                             variant="outlined"
                             type="text"
@@ -92,7 +92,7 @@ export default function CreateWallet(props) {
                             fullWidth={true}
                             onChange={(e) => setPassphrase(e.target.value)}
                         />
-                    </Grid>
+                    </Grid>*/}
                     <Grid item={true} xs={12}>
                         <FormControl>
                             <InputLabel>Assets</InputLabel>
@@ -128,7 +128,6 @@ export default function CreateWallet(props) {
                             <TableRow>
                                 <TableCell>Wallet ID</TableCell>
                                 <TableCell>Receiver Address</TableCell>
-                                <TableCell>Backup</TableCell>
 
                             </TableRow>
                         </TableHead>
@@ -136,7 +135,6 @@ export default function CreateWallet(props) {
                             <TableRow>
                                 <TableCell>{newWalletId}</TableCell>
                                 <TableCell>{newReceiverAddress}</TableCell>
-                                <TableCell>Backup</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

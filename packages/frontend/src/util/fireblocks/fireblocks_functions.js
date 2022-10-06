@@ -105,7 +105,7 @@ export function getWallets(coin) {
         },
         body: JSON.stringify({
             //TODO: Change the suffix to WIM before the demo
-            namePrefix: "WIM ",
+            namePrefix: "WIM-",
             nameSuffix: "",
             minAmountThreshold: 0,
             assetId: ""

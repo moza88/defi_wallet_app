@@ -31,7 +31,7 @@ export default function SendFunds({coin, walletId}, props) {
                 walletId: walletId,
                 amount: amount,
                 destAddress: destAddress,
-                password: password
+                password: "something"
             };
 
         const transfer = transferFunds(txn);
@@ -61,7 +61,7 @@ export default function SendFunds({coin, walletId}, props) {
                         <TextField
                             variant="outlined"
                             type="text"
-                            label="Destiantion Address"
+                            label="Destination Address"
                             name="destAddress"
                             fullWidth={true}
                             onChange={(e) => setDestAddress(e.target.value)}
@@ -79,7 +79,7 @@ export default function SendFunds({coin, walletId}, props) {
                         />
                     </Grid>
 
-                    <Grid item={true} xs={12}>
+{/*                    <Grid item={true} xs={12}>
                         <TextField
                             variant="outlined"
                             type="password"
@@ -89,7 +89,7 @@ export default function SendFunds({coin, walletId}, props) {
                             fullWidth={true}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                    </Grid>
+                    </Grid>*/}
                     <Grid item={true} xs={12}>
                         <Button
                             variant="contained"

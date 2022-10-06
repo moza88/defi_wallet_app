@@ -9,6 +9,10 @@ import Button from "@material-ui/core/Button";
 import Link from "next/link";
 import router from "next/router";
 import Box from "@material-ui/core/Box";
+import tap_policy from "../../assets/tap_policy.png";
+import agenda from "../../assets/agenda.png"
+import keypoints from "../../assets/keypoints.png"
+import {ListItem, ListItemText} from "@material-ui/core";
 
 function TechnologyInfoSection(props) {
 
@@ -37,7 +41,13 @@ function TechnologyInfoSection(props) {
                     textAlign="center"
                 />
 
-                <Typography variant="h5">
+                <Image
+                    src={keypoints}
+                    alt="agenda"
+                    width="850px"
+                    height="500px"
+                />
+{/*                <Typography variant="h5">
                     Differences between Fireblocks and BitGo
                 </Typography>
 
@@ -59,7 +69,7 @@ function TechnologyInfoSection(props) {
                         onClick={bitgo_tech}>
                         Learn More About BitGo
                     </Button>
-                </Box>
+                </Box>*/}
 
 
             </Container>

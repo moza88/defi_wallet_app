@@ -32,7 +32,11 @@ const style = {
 
 function FireblocksWalletSection(props) {
     const [openCreateWallet, setOpenCreateWallet] = React.useState(false);
-    const handleCreateWallet = () => setOpenCreateWallet(false);
+    const handleCreateWallet = () => {
+        setOpenCreateWallet(false);
+        window.location.reload(false);
+
+    }
     const [supportedAssets, setSupportedAssets] = React.useState([]);
 
     const handleOpenCreateWallet = () => {

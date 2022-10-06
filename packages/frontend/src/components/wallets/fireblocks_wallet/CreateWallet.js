@@ -48,7 +48,7 @@ export default function CreateWallet({supportedAssets}, props) {
     const onSubmit = () => {
         console.log(vaultName)
 
-        setWalletInfo(createWallet(vaultName, coin).then(
+        setWalletInfo(createWallet("WIM-"+vaultName, coin).then(
             (wallet) => {
                 console.log(wallet)
 

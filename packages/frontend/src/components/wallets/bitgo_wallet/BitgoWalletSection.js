@@ -66,9 +66,10 @@ function BitgoWalletSection(props) {
 
         for(const element of listOfWallets) {
 
-            if(element.label.substring(0,3) === "WIM") {
+            if(element.label.substring(0,4) === "WIM-") {
                 WIMWallets.push(element)
                 //console.log(wallets)
+                WIMWallets.sort()
             }
         }
         setWallets(WIMWallets)

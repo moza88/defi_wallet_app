@@ -75,8 +75,7 @@ function Footer(props) {
   const darkMode = useDarkMode();
   // Use inverted logo if specified
   // and we are in dark mode
-  const logo =
-    props.logoInverted && darkMode.value ? props.logoInverted : props.logo;
+  //const logo = props.logoInverted && darkMode.value ? props.logoInverted : props.logo;
 
   return (
     <Section
@@ -91,7 +90,9 @@ function Footer(props) {
           <div className={`${classes.item} ${classes.left}`}>
             <Link href="/">
               <a>
+{/*
                 <img src={logo} alt="Logo" className={classes.brand} />
+*/}
               </a>
             </Link>
           </div>

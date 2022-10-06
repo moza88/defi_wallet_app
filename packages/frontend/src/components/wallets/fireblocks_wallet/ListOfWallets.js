@@ -175,7 +175,7 @@ export default function ListOfWallets({supportedAssets}, props) {
                 <br></br>
 
                 <br></br>
-                {wallets.length && balances.size > 0 &&
+                {wallets && balances &&
                 <TableContainer component={Paper}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
@@ -267,7 +267,7 @@ export default function ListOfWallets({supportedAssets}, props) {
                 </Box>
             </Modal>
 
-            {addresses && addresses.size &&
+            {addresses &&
             <Modal
                 open={openManage}
                 onClose={handleCloseManage}

@@ -41,21 +41,26 @@ export default function FireblocksMgmtSection(props) {
 
                 <br/><br/><br/>
                 <Typography align="center" variant="h5">Workspace Management</Typography>
-                <VideoEmbed embedId="729740514" />
+                <VideoEmbed embedId="744053613" />
 
                 <br/>
 
-                <Typography align="center" variant="h5">Add Users & Approves</Typography>
+                <Typography align="center" variant="h5">Add Users & Approves (No APIs)</Typography>
                 <VideoEmbed embedId="730210605" />
 
                 <br/>
 
-                <Typography align="center" variant="h5">Issuing API Key to Control Assets</Typography>
+                <Typography align="center" variant="h5">Issuing API Key to Control Assets (No APIs)</Typography>
                 <VideoEmbed embedId="729725788" />
+
+                <br/>
+
+                <Typography align="center" variant="h5">Enforcing Digital Asset Policies - TAP in Beta  (No APIs)</Typography>
+                <VideoEmbed embedId="743998220" />
 
                 <br/><br/><br/>
 
-                <Typography align="center" variant="h5">Enforcing Digital Asset Policies</Typography>
+                <Typography align="center" variant="h5">Enforcing Digital Asset Policies - TAP in Current  (No APIs)</Typography>
                 <br/>
                 <Typography>Excel Spreadsheet for Specifying Policy. This spreadsheet needs to be submitted to a Fireblocks support staff.</Typography>
                 <Image
@@ -72,6 +77,9 @@ export default function FireblocksMgmtSection(props) {
                     width="850px"
                     height="400px"
                 />
+
+                <br/>
+
 
             </Box>
         </Container>
