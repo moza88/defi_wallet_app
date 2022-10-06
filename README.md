@@ -97,3 +97,74 @@ docker push us-central1-docker.pkg.dev/wallet-app-54dff/defi-wallet-app/backend:
 3. Verify that the image is now available in the registry. By visiting the following page in the console:
    https://console.cloud.google.com/artifacts/docker/wallet-app-54dff/us-central1/defi-wallet-app?project=wallet-app-54dff
 
+
+###Notes on Demo
+
+Check if the whitelisting is on a wallet level
+
+Look into BitGo's MPC implementation
+
+Show Transaction ID with link after transaction is sent
+https://blockstream.info/testnet/tx/ba5a4b0c06ea443535853e8aeb0d7fb2be08570ac941916cedcb0faebd86c5a1
+
+Have the same currency for both only Bitcoin Testnet
+
+TODO: Look at BitGo policy APIs
+
+ 
+Create a power point
+- include video links on the PPT (remove the passwords)
+
+- [ ] add refresh after all activities
+
+- [x] Disable Share button
+- [x] Fix load time for the wallet addresses
+
+- [ ] After fireblocks transaction show the transaction ID and URL
+https://ropsten.etherscan.io/tx/0xacd76f87aae3ce5d20f6bf0a847503d900d8f87a10bac5c5a7da5c393c19ef64
+
+- [x] Show the tracnsaction ID on BlockDaemon
+
+- [x] Include the type of crypto for each wallet in bitgo wallet
+
+- [x] Remove frozen column in fireblocks view wallet modal
+
+- [x] remove the delete button from Bitgo Wallet view
+
+- [x] In Fireblocks Send remove fee field
+
+- [ ] Remove asset field keep the two api's separate, create vault and wallet separate
+- [x] Show the transaction ID for Fireblocks
+- [x] Show the transaction ID for BitGo
+
+### Notes on the Presentation
+mention that we are not buying, selling, just transfering
+
+After the wallet demo, open up the presentation with technology information
+- Notes & comparison
+- Include the diagram sent us with confluence site links
+
+Can do Opals the Ops manager jobs with APIs, or is there a single sign-on
+- What are the options for seamless integrations
+- Add parenthesis on if the function is available on API
+
+Relate back to the customer when going through structure
+
+When talking about Opal the Ops Manager mention that the API keys would possibly be handled from a tech side
+
+Before I begin mention that this is sitting on my PC
+
+Mention the Asset To the Wallet
+- How does the customer relate to the wallet
+
+Start presentation with use case, the goal is to buy, sell, and hold
+- Mention that this is just about the hold part
+
+Mention that Ops Manager uses the vendor's console
+- Connect it to George's story
+
+Mention APIs for policy with BitGo and Fireblocks
+- Bitgo has APIs for policy but Fireblocks doesn't
+    - Mention the beta policy mgmt for Fireblocks but don't show the clips
+    - Include it in the Ops Manager
+  

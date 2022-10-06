@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Alert from "@material-ui/lab/Alert";
@@ -18,6 +18,7 @@ import {CardHeader, Button, Modal} from "@material-ui/core";
 import CreateWallet from "./CreateWallet"
 import ListOfWallets from "./ListOfWallets";
 import {getWallets} from "../../../util/fireblocks/fireblocks_functions";
+import {getAllWallets} from "../../../util/bitgo/bitgo_functions";
 
 const useStyles = makeStyles((theme) => ({
     cardContent: {
@@ -51,6 +52,29 @@ function BitgoWalletSection(props) {
 
     const auth = useAuth();
     const router = useRouter();
+    const [wallets, setWallets] = React.useState([]);
+
+    useEffect(async () => {
+        //Listing out all the wallets in the main page, but filtering on only WIM wallets.
+        //const listOfWallets = await getWallets(coin)
+
+        const listOfWallets = await getAllWallets()
+
+        console.log(listOfWallets)
+
+        let WIMWallets = []
+
+        for(const element of listOfWallets) {
+
+            if(element.label.substring(0,4) === "WIM-") {
+                WIMWallets.push(element)
+                //console.log(wallets)
+                WIMWallets.sort()
+            }
+        }
+        setWallets(WIMWallets)
+
+    }, [])
 
     return (
         <Section
@@ -67,7 +91,10 @@ function BitgoWalletSection(props) {
                     textAlign="center"
                 />
 
-                <Typography variant="h6">Don't have a wallet? Click below to create one</Typography>
+                <Typography variant="h6">Onboard your customers by creating a wallet.
+                    Each wallet holds a specific asset.</Typography>
+
+                <Typography><b>Note: </b> You can have multiple wallets for an asset, so you can have two Ethereum mainnent wallets. </Typography>
 
                 <Button variant="contained" color='primary'
                         onClick={() => {
@@ -77,9 +104,8 @@ function BitgoWalletSection(props) {
                 </Button>
 
                 <br/><br/>
-                <Typography variant="h6">Below are your multi-signature wallets</Typography>
 
-                <ListOfWallets/>
+                <ListOfWallets  wallets={wallets}/>
 
                 <Card>
                 </Card>

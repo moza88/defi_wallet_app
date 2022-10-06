@@ -46,7 +46,6 @@ export class BitgoTxnService {
         return walletInstance.spendableBalanceString();
     }
 
-
     async walletTransfers(coin: string, walletId: string) {
         this.logger.log("Getting wallet transfers for " + walletId + " on " + coin);
 
@@ -55,10 +54,10 @@ export class BitgoTxnService {
         return walletInstance.transfers();
     }
 
-
     async sendTxn(txn: TXN) {
 
-        this.logger.log("Sending txn for " + txn.toString());
+        this.logger.log("Sending txn for ")
+        this.logger.log(txn);
 
         const accountService = new BitgoAccountService(this.httpService);
 
@@ -75,7 +74,7 @@ export class BitgoTxnService {
 
         const amount = Number(txn.amount);
 
-        this.logger.log(walletInstance.balance())
+        this.logger.log(amount)
 
         if(amount > walletInstance.balance()){
             this.logger.log("Amount is greater than balance, balance is " + walletInstance.balance())
@@ -86,7 +85,7 @@ export class BitgoTxnService {
         } else {
             return walletInstance.send(txn_data)
                 .then((response) => {
-                    this.logger.log(response);
+                    this.logger.log(response.transfer.txid);
                     return response;
 
                 })
@@ -114,13 +113,12 @@ export class BitgoTxnService {
         const txn_data = {
             walletPassphrase: txn.password,
             address: txn.destAddress,
-            //amount: 0.001 * 1e8
             amount: Number(txn.amount)
         };
 
         const amount = Number(txn.amount);
 
-        this.logger.log(walletInstance.balance())
+        this.logger.log("Current Wallet Balance: " + walletInstance.balance())
 
 /*        if(amount > walletInstance.balance()){
             this.logger.log("Amount is greater than balance, balance is " + walletInstance.balance())
@@ -129,9 +127,11 @@ export class BitgoTxnService {
             /!*} else if(amount < 2730) {
                 this.logger.log("Txn didn't go through because the gas fees will be higher, enter a number greater than 2730")*!/
         } else {*/
-        const transaction = await walletInstance.send(txn_data)
+        return walletInstance.send(txn_data)
                 .then((response) => {
                     this.logger.log(response);
+                    this.logger.log(response.transfer);
+
                     return response;
 
                 })
@@ -140,13 +140,5 @@ export class BitgoTxnService {
 
                     return error
                 })
-
-        const basecoin = bitgoCoin(txn.coin) as Coin.Tbtc;
-        const explanation = await basecoin.explainTransaction({ txHex: transaction.tx });
-        this.logger.log("Explain transaction: " + JSON.stringify(explanation));
-        this.logger.log(explanation.id);
-
-        return explanation
-
     }
 }

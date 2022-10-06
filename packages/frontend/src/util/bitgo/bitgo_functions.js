@@ -6,7 +6,10 @@ import {getBalance} from "../fireblocks/fireblocks_functions";
 export const createWallet = (label, passphrase, coin) => {
     console.log(label, passphrase);
 
-    return fetch(process.env.NEXT_PUBLIC_BITGO_SERVER + '/create_wallet/' + "coin=" + coin, {
+    const req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + '/create_wallet/' + "coin=" + coin
+    console.log(req_url);
+
+    return fetch(req_url, {
         method: 'POST',
         headers: {
             Accept: "application/json",
@@ -62,25 +65,26 @@ export function shareWallet(walletShare) {
         }).catch((error) => { console.log(error)})
 }
 
-export function transferFunds(txn, amount) {
+export function transferFunds(txn) {
     const req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + "/send_txn";
     console.log(req_url);
-
-    console.log(amount);
 
     return fetch(req_url, {
         method: 'POST',
         headers: {
             Accept: "application/json",
-            "Content-Type": "application/json",
-            'Access-Control-Allow-Origin': '*'
+                    "Content-Type": "application/json"
         },
         body: JSON.stringify(txn)
-    }).then(r => {
-
-        console.log(r);
-        return r;
-    }).catch((error) => { console.log(error)})
+      }).then( resp => {
+            //console.log( resp.json())
+            return resp.json();
+        }).then(data => {
+            console.log(data);
+            return data;
+        }).catch((error) => {
+            console.log(error)
+        })
 }
 
 export const getTxnHistory = (coin, walletId) => {
@@ -138,7 +142,7 @@ export function getAddresses(coin, walletId) {
     return fetch(req_url)
         .then(response => response.json())
         .then(data => {
-         //   console.log(data)
+            console.log(data)
             return data.addresses
         }).catch((error) => { console.log(error)})
 }
@@ -195,4 +199,23 @@ export async function getAllBalances(coin, walletId, wallets) {
         )}
     return balances;
 
+}
+
+export async function getAllWallets() {
+    var req_url = process.env.NEXT_PUBLIC_BITGO_SERVER + "/get_all_wallets";
+
+    console.log("Get all Wallets: " + req_url);
+
+    return fetch(req_url, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+    })
+        .then(r => r.json())
+        .then(data => {
+            console.log(data.wallets)
+            return data.wallets;
+        }).catch((error) => { console.log(error)})
 }

@@ -1,3 +1,0 @@
-Bitgo
-- Where are the key shares stored? Can we use any HSM?
-- We need to store them in HSM in a traditional manner, we will have to manage multiple HSM clusters

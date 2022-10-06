@@ -37,13 +37,18 @@ export class BitgoWalletService {
 
         const label = wallet_params.label
         const passphrase = wallet_params.passphrase
+        const enterprise = process.env.BITGO_ENTERPRISE_ID
+        //const coldDerivationSeed = "65342321"
 
         const walletOptions = {
             label,
             passphrase,
+            enterprise,
+           // coldDerivationSeed,
         };
 
-        console.log(walletOptions);
+        this.logger.log(walletOptions);
+        this.logger.log("Coin for Request " + coin);
 
         const wallet = await bitgoCoin(coin).wallets().generateWallet(walletOptions);
 
@@ -51,7 +56,7 @@ export class BitgoWalletService {
 
         let newWallet = new NewWallet(walletInstance.id(), walletInstance.receiveAddress(), wallet.userKeychain.encryptedPrv, wallet.userKeychain.encryptedPrv, label)
 
-        console.log(newWallet);
+        this.logger.log(newWallet);
 
         return newWallet;
     }
@@ -139,6 +144,14 @@ export class BitgoWalletService {
         .then(response => response.json())
         .catch(error => console.log(error));
         //const response =  this.httpService.post(req_url );
+    }
+
+    listAllWallets() {
+        const req_url = process.env.BITGO_SERVER_URL + "/wallets";
+
+        return this.httpService.get(req_url, getOptions(req_url)).pipe(
+            map(response => response.data)
+        );
     }
 
 }

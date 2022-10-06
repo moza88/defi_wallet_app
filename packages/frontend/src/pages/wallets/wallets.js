@@ -1,10 +1,8 @@
 import React from "react";
 import Meta from "components/section/Meta";
-import DashboardSection from "components/dashboard/DashboardSection";
-import { requireAuth } from "util/auth";
 import WalletSection from "../../components/wallets/WalletSection";
 
-function DashboardPage(props) {
+function WalletPage(props) {
   return (
     <>
       <Meta title="Wallets" />
@@ -20,4 +18,5 @@ function DashboardPage(props) {
   );
 }
 
-export default requireAuth(DashboardPage);
+export default WalletPage;
+

@@ -8,6 +8,7 @@ import Section from "../section/Section";
 import Image from "next/image";
 import tap_retail_ex from "../../assets/tap_retail_ex.png";
 import tap_policy from "../../assets/tap_policy.png";
+import accounts_using_fireblocks from "../../assets/accounts_using_fireblocks.png";
 
 export default function FireblocksMgmtSection(props) {
 
@@ -26,22 +27,40 @@ export default function FireblocksMgmtSection(props) {
             />
         <Container>
             <Box align="center">
+
+                <Image
+                    src={accounts_using_fireblocks}
+                    alt="Account Structure with Bitgo"
+                    width="830px"
+                    height="600px"
+                />
+
+                <br/><br/>
+
+                <Typography align="center" variant="h5">There is only 1 signature to a transaction.</Typography>
+
+                <br/><br/><br/>
                 <Typography align="center" variant="h5">Workspace Management</Typography>
-                <VideoEmbed embedId="729740514" />
+                <VideoEmbed embedId="744053613" />
 
                 <br/>
 
-                <Typography align="center" variant="h5">Add Users & Approves</Typography>
+                <Typography align="center" variant="h5">Add Users & Approves (No APIs)</Typography>
                 <VideoEmbed embedId="730210605" />
 
                 <br/>
 
-                <Typography align="center" variant="h5">Issuing API Key to Control Assets</Typography>
+                <Typography align="center" variant="h5">Issuing API Key to Control Assets (No APIs)</Typography>
                 <VideoEmbed embedId="729725788" />
+
+                <br/>
+
+                <Typography align="center" variant="h5">Enforcing Digital Asset Policies - TAP in Beta  (No APIs)</Typography>
+                <VideoEmbed embedId="743998220" />
 
                 <br/><br/><br/>
 
-                <Typography align="center" variant="h5">Enforcing Digital Asset Policies</Typography>
+                <Typography align="center" variant="h5">Enforcing Digital Asset Policies - TAP in Current  (No APIs)</Typography>
                 <br/>
                 <Typography>Excel Spreadsheet for Specifying Policy. This spreadsheet needs to be submitted to a Fireblocks support staff.</Typography>
                 <Image
@@ -58,6 +77,9 @@ export default function FireblocksMgmtSection(props) {
                     width="850px"
                     height="400px"
                 />
+
+                <br/>
+
 
             </Box>
         </Container>

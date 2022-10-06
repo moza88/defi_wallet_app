@@ -1,6 +1,3 @@
-import {useState} from "react";
-
-
 export async function getAllBalances(coin, wallets) {
     let balances = new Map()
 
@@ -72,6 +69,8 @@ export const createWallet = (vaultName, asset) => {
 export async function transferFunds(txn) {
     const req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER + "/createTxnVaultToVault";
 
+    console.log(txn);
+
     return fetch(req_url, {
         method: 'POST',
         headers: {
@@ -80,15 +79,17 @@ export async function transferFunds(txn) {
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify(txn)
+
     })
-        .then(resp => resp)
-        .then(txnId => {
-            console.log(txnId);
-            return txnId;
-        })
-        .catch(err => {
-            console.log(err);
-        });
+      .then(  async resp => {
+          //console.log(await resp.json())
+          return await resp.json();
+      })
+      .then(data => {
+            console.log(data);
+            return data;
+            //return data;
+      });
 }
 
 export function getWallets(coin) {
@@ -104,7 +105,7 @@ export function getWallets(coin) {
         },
         body: JSON.stringify({
             //TODO: Change the suffix to WIM before the demo
-            namePrefix: "",
+            namePrefix: "WIM-",
             nameSuffix: "",
             minAmountThreshold: 0,
             assetId: ""
@@ -115,6 +116,23 @@ export function getWallets(coin) {
 
 export async function getVaultInfo(accountId) {
     var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/get_vault_account/" + accountId;
+    console.log(req_url);
+
+    return fetch(req_url, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        }
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data)
+            return data
+        })
+}
+
+export async function getTxnStatus(txnId) {
+    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/get_txn/" + txnId;
     console.log(req_url);
 
     return fetch(req_url, {
@@ -147,6 +165,8 @@ export async function getVaultTxns(asset, accountId) {
     }).then(response => response.json())
         .then(data => {
             console.log(data)
+            console.log("source type")
+            console.log(data.source)
             return data
         })
 }
@@ -175,10 +195,10 @@ export async function createWalletOnly(asset, accountId) {
         })
 }
 
-export async function getDepositAddress(asset, accountId) {
+export function getDepositAddress(asset, accountId) {
     var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/vault/accounts/" + accountId + "/" + asset + "/addresses";
     console.log(req_url);
-    console.log(asset, accountId);
+   // console.log(asset, accountId);
     return fetch(req_url, {
         method: 'GET',
         headers: {
@@ -187,8 +207,51 @@ export async function getDepositAddress(asset, accountId) {
         }
     }).then(response => response.json())
         .then(data => {
-            console.log(data)
+          //  console.log(data)
             return data
         })
+}
+
+export async function getAllDepositAddresses(vaults) {
+
+    let addresses = new Map
+
+    return vaults.map(async (vault) => {
+       // console.log(vault);
+
+        for (let asset of vault.assets) {
+
+            console.log("asset type" + asset)
+            getDepositAddress(asset.id, vault.id)
+
+                .then(response => {
+                    addresses.set(vault.id + "|" + asset.id, response)
+                })
+        }
+
+        console.log(addresses);
+        return addresses;
+    });
+
+}
+
+export function getSupportedAssets() {
+    var req_url = process.env.NEXT_PUBLIC_FIREBLOCKS_SERVER +"/supported_assets";
+    console.log(req_url);
+
+    return fetch(req_url, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        }
+    }).then(response => {
+        console.log(response)
+        return response.json()
+    })
+/*        .then(data => {
+            console.log(data)
+            return data
+        })*/
 }
 

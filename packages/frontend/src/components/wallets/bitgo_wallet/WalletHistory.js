@@ -28,10 +28,7 @@ export default function WalletHistory({coin, walletId}, props) {
             {data && data.length > 0 ? (
             <Container>
 
-                <Typography>
-                    Below are your past transactions for {walletId}
-                </Typography>
-                <Typography variant="h5">Transaction History</Typography>
+                <Typography variant="h6">Transaction History for Wallet {walletId}</Typography>
 
                 <TableContainer component={Paper}>
                     <Table stickyHeader aria-label="sticky table">

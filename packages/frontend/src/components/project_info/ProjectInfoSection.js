@@ -5,9 +5,14 @@ import Section from "../section/Section";
 import Image from "next/image";
 import wip_architecture from "../../assets/wip_architecture.png";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import router from "next/router";
 
 function ProjectInfoSection(props) {
 
+    function techInfo() {
+        router.push("/project_info/tech-info");
+    }
     return (
 
         <Section
@@ -45,6 +50,15 @@ function ProjectInfoSection(props) {
                     Google Cloud Console Project is: <a href="https://console.firebase.google.com/u/0/project/wallet-app-54dff">Firebase Defi Wallet Console</a>
                 </Typography>
 
+                <br/><br/><br/>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    fullWidth={true}
+                    onClick={techInfo}>
+                    Technologies Used with Fireblocks and BitGo
+                </Button>
 
             </Container>
         </Section>

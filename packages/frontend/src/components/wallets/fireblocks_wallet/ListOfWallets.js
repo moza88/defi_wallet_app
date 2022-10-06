@@ -22,7 +22,13 @@ import SendFunds from "./SendFunds";
 import SendIcon from '@mui/icons-material/Send';
 import ArticleIcon from '@mui/icons-material/Article';
 import CoPresentIcon from '@mui/icons-material/CoPresent';
-import {getAllBalances, getBalance, getWallets, test} from "../../../util/fireblocks/fireblocks_functions";
+import {
+    getAllBalances, getAllDepositAddresses,
+    getBalance,
+    getDepositAddress, getSupportedAssets,
+    getWallets,
+    test
+} from "../../../util/fireblocks/fireblocks_functions";
 import ManageWallet from "./ManageWallet";
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
@@ -62,13 +68,14 @@ const lg_modal_style = {
     p: 4,
 };
 
-export default function ListOfWallets(props) {
+export default function ListOfWallets({supportedAssets}, props) {
     //const [wallets, setWallets] = useState([]);
     const [wallets, setWallets] = useState([]);
     const [walletId, setWalletId] = useState('');
     const [openSendFunds, setOpenSendFunds] = React.useState(false);
     const [balances, setBalances] = useState(new Map());
     const [balance, setBalance] = useState(0);
+    const [addresses, setAddresses] = useState(new Map());
 
     const [openShareWallet, setOpenShareWallet] = useState(false);
 
@@ -111,6 +118,9 @@ export default function ListOfWallets(props) {
         window.location.reload(false);
     }
 
+    /**
+     * Get all Wallets for the table
+     */
     useEffect(async () => {
 
         const wallets = await getWallets(coin);
@@ -127,6 +137,9 @@ export default function ListOfWallets(props) {
         console.log(wallets)
     }, [coin])
 
+    /**
+     * Get the balances of all wallets
+     */
     useEffect(() => {
         getAllBalances(coin, wallets)
             .then(data => {
@@ -135,30 +148,44 @@ export default function ListOfWallets(props) {
                // setBalances(balances => [...balances, data])
             })
             .catch((error)=> {
-            console.log(error)
+            //console.log(error)
         })
 
     }, [wallets])
+
+    useEffect(  async () => {
+        let mapAddresses = new Map();
+        await getAllDepositAddresses(wallets).then(
+            async data => {
+                //console.log(await data[0])
+                mapAddresses = await data[0]
+                setAddresses(await data[0])
+            }
+        )
+        console.log(mapAddresses)
+        setAddresses(mapAddresses)
+    }, [wallets]);
 
     return (
         <div>
             <Card sx={{ maxWidth: 345 }} >
 
                 <br></br>
-                <Typography variant="h5" align="center">WIM Customer Vaults on Fireblocks</Typography>
+                <Typography variant="h5" align="center">WIM Vaults on Fireblocks</Typography>
                 <br></br>
 
                 <br></br>
-                {wallets.length && balances.size &&
+                {wallets && balances &&
                 <TableContainer component={Paper}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>Id</TableCell>
                                 <TableCell>Name</TableCell>
-                                <TableCell>Balance</TableCell>
                                 <TableCell>Send Funds</TableCell>
+{/*
                                 <TableCell>History</TableCell>
+*/}
                                 <TableCell>Manage</TableCell>
 
                             </TableRow>
@@ -169,8 +196,9 @@ export default function ListOfWallets(props) {
                             {wallets.map((wallet, index) =>
                                 <TableRow key={index}>
                                     <TableCell>{wallet.id}</TableCell>
-                                    <TableCell>{wallet.name}</TableCell>
+                                    <TableCell>{wallet.name}</TableCell>{/*
                                     <TableCell>{balances.get(wallet.id)}</TableCell>
+*/}
                                     <TableCell>
                                         <Button variant="contained"
                                                 startIcon={<SendIcon/>}
@@ -180,7 +208,7 @@ export default function ListOfWallets(props) {
                                         > Send
                                         </Button>
                                     </TableCell>
-                                    <TableCell>
+{/*                                    <TableCell>
                                         <Button color='primary' variant="contained"
                                                 startIcon={<ArticleIcon/>}
                                                 onClick={() => {
@@ -188,7 +216,7 @@ export default function ListOfWallets(props) {
                                                 }}>
                                             History
                                         </Button>
-                                    </TableCell>
+                                    </TableCell>*/}
                                     <TableCell>
                                         <Button color='primary' variant="contained" onClick={() => {
                                             /*deleteWallet(item.id)*/
@@ -211,7 +239,7 @@ export default function ListOfWallets(props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={lg_modal_style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -239,6 +267,7 @@ export default function ListOfWallets(props) {
                 </Box>
             </Modal>
 
+            {addresses &&
             <Modal
                 open={openManage}
                 onClose={handleCloseManage}
@@ -249,9 +278,11 @@ export default function ListOfWallets(props) {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                     </Typography>
 
-                    <ManageWallet accountId={walletId}/>
+                    <ManageWallet accountId={walletId} depositAddress={addresses} supportedAssets={supportedAssets}/>
                 </Box>
             </Modal>
+            }
+
         </div>
     )
 }
