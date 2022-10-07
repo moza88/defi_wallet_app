@@ -25,6 +25,9 @@ export default function SendFunds({coin, walletId}, props) {
 
         console.log("Sending funds to " + walletId)
 
+        if(amount < 3200) {
+            alert("Amount must be greater than 3200, the fees will be greater than the txn")
+        }
         const txn =
             {
                 coin: coin,
