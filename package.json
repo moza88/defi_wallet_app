@@ -7,7 +7,8 @@
     "frontend:build": "cd packages/frontend; npm install",
     "backend:start": "cd packages/backend; npm start",
     "frontend:start": "cd packages/frontend; npm run dev",
-    "start": "concurrently \"npm run backend:start\" \"npm run frontend:start\"",
-    "build": "concurrently \"npm run frontend:build\" \"npm run backend:build\""
+    "start": "concurrently \"npm run backend:start\" \"npm run frontend:start\" \"npm run bitgodocker\"",
+    "build": "concurrently \"npm run frontend:build\" \"npm run backend:build\"",
+    "bitgodocker":"docker-compose up"
   }
 }
